@@ -199,50 +199,49 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, onValue, set, remove, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
     
     const db = getDatabase(initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" }));
 
-    // Stessa lista precisa degli articoli con le chiavi ID usate nel menu
+    // Lista aggiornata con gli ID esatti visibili nelle tue schermate
     const menuCompleto = {
         classiche: [
-            { id: "Margherita", nome: "Margherita" },
-            { id: "Marinara", nome: "Marinara" },
-            { id: "Napoli", nome: "Napoli" },
-            { id: "Capricciosa", nome: "Capricciosa" },
-            { id: "Quattro Stagioni", nome: "Quattro Stagioni" },
-            { id: "Diavola", nome: "Diavola" },
-            { id: "Wudy e Patatine", nome: "Wudy e Patatine" },
-            { id: "Romana", nome: "Romana" },
-            { id: "Siciliana", nome: "Siciliana" },
-            { id: "Ortolana / Vegetariana", nome: "Ortolana / Vegetariana" }
+            { id: "margherita", nome: "Margherita" },
+            { id: "marinara", nome: "Marinara" },
+            { id: "napoli", nome: "Napoli" },
+            { id: "capricciosa", nome: "Capricciosa" },
+            { id: "quattro_stagioni", nome: "Quattro Stagioni" },
+            { id: "diavola", nome: "Diavola" },
+            { id: "wudy_patatine", nome: "Wudy e Patatine" },
+            { id: "romana", nome: "Romana" },
+            { id: "siciliana", nome: "Siciliana" },
+            { id: "ortolana", nome: "Ortolana / Vegetariana" }
         ],
         speciali: [
-            { id: "Quattro Formaggi", nome: "Quattro Formaggi" },
-            { id: "Calzone Normale o Fritto", nome: "Calzone Normale o Fritto" },
-            { id: "Bufalina", nome: "Bufalina" },
-            { id: "Boscaiola", nome: "Boscaiola" },
-            { id: "Saporita / Parmigiana", nome: "Saporita / Parmigiana" },
-            { id: "Tonno e Cipolla", nome: "Tonno e Cipolla" },
-            { id: "Salsiccia e Friarielli", nome: "Salsiccia e Friarielli" },
-            { id: "TIROLESE (Speck e Brie)", nome: "Tirolese (Speck e Brie)" },
-            { id: "CARBONARA (Uovo e Pancetta)", nome: "Carbonara" },
-            { id: "AI FUNGHI PORCINI", nome: "Ai Funghi Porcini" }
+            { id: "quattro_formaggi", nome: "Quattro Formaggi" },
+            { id: "calzone", nome: "Calzone Normale o Fritto" },
+            { id: "bufalina", nome: "Bufalina" },
+            { id: "boscaiola", nome: "Boscaiola" },
+            { id: "saporita", nome: "Saporita / Parmigiana" },
+            { id: "tonno_cipolla", nome: "Tonno e Cipolla" },
+            { id: "salsiccia_friarielli", nome: "Salsiccia e Friarielli" },
+            { id: "tirolese", nome: "Tirolese (Speck e Brie)" },
+            { id: "carbonara", nome: "Carbonara" },
+            { id: "porcini", nome: "Ai Funghi Porcini" }
         ],
         focacce: [
-            { id: "Focaccia Liscia", nome: "Focaccia Liscia" },
-            { id: "Focaccia Rosmarino", nome: "Rosmarino / Olio" },
-            { id: "Pizza Speciale dello Chef", nome: "Speciale dello Chef" }
+            { id: "focaccia_liscia", nome: "Focaccia Liscia" },
+            { id: "focaccia_rosmarino", nome: "Rosmarino / Olio" },
+            { id: "speciale_chef", nome: "Speciale dello Chef" }
         ],
         bibite: [
-            { id: "Coca Cola", nome: "Coca Cola" },
-            { id: "Acqua Naturale", nome: "Acqua Naturale" },
-            { id: "Acqua Frizzante", nome: "Acqua Frizzante" },
-            { id: "Birra", nome: "Birra artigianale" }
+            { id: "coca_cola", nome: "Coca Cola" },
+            { id: "acqua_naturale", nome: "Acqua Naturale" },
+            { id: "acqua_frizzante", nome: "Acqua Frizzante" },
+            { id: "birra", nome: "Birra artigianale" }
         ]
     };
 
-    // Costruisce i box con le checkbox nel pannello di gestione
     function creaInterfacciaDisponibilita(disponibilita) {
         disponibilita = disponibilita || {};
 
@@ -251,7 +250,6 @@
             container.innerHTML = '';
             
             lista.forEach(item => {
-                // Di default è true se non specificato altrimenti
                 const attivo = disponibilita[item.id] !== false;
 
                 const label = document.createElement('label');
@@ -270,24 +268,20 @@
         renderGruppoGestione(menuCompleto.bibite, 'gest-bibite');
     }
 
-    // Funzione globale richiamata al cambio della checkbox
     window.aggiornaStatoProdotto = (idProdotto, isChecked) => {
         set(ref(db, `infoSerata/disponibilita/${idProdotto}`), isChecked);
     };
 
-    // Ascolta la disponibilità corrente da Firebase
     onValue(ref(db, 'infoSerata/disponibilita'), (snapshot) => {
         creaInterfacciaDisponibilita(snapshot.val());
     });
 
-    // Salva il nome della serata
     window.salvaSerata = () => {
         const nome = document.getElementById('input-serata').value.trim();
         set(ref(db, 'infoSerata/ospiteCorrente'), nome);
         alert("Serata aggiornata con successo! ✨");
     };
 
-    // Riempi input nome serata all'avvio se già presente
     onValue(ref(db, 'infoSerata/ospiteCorrente'), (snapshot) => {
         const ospite = snapshot.val();
         if(ospite) {
@@ -295,14 +289,12 @@
         }
     });
 
-    // Gestione eliminazione ordini arrivati
     window.eliminaOrdine = (idOrdine) => {
         if(confirm("Vuoi segnare questo ordine come completato/eliminato?")) {
             remove(ref(db, 'ordini/' + idOrdine));
         }
     };
 
-    // Ascolta gli ordini in arrivo in tempo reale
     onValue(ref(db, 'ordini'), (snapshot) => {
         const ordini = snapshot.val() || {};
         const container = document.getElementById('ordini-cucina-container');
