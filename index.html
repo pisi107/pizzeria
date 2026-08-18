@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Pizzeria</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background-color: #f4f4f4; max-width: 500px; margin: auto; }
+        .card { background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        button { background: #e63946; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; width: 100%; font-size: 16px; margin-top: 10px; }
+        input { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+
+    <h2>🍕 Ordina la tua Pizza</h2>
+
+    <label for="nome"><b>Il tuo nome:</b></label>
+    <input type="text" id="nome" placeholder="Inserisci il tuo nome">
+
+    <div class="card">
+        <h3>Margherita</h3>
+        <p>Pomodoro, Mozzarella, Basilico</p>
+        <button onclick="inviaOrdine('Margherita')">Ordina Margherita</button>
+    </div>
+
+    <div class="card">
+        <h3>Diavola</h3>
+        <p>Pomodoro, Mozzarella, Salame piccante</p>
+        <button onclick="inviaOrdine('Diavola')">Ordina Diavola</button>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app/"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        window.inviaOrdine = function(pizza) {
+            const nomeCliente = document.getElementById('nome').value;
+            
+            if (!nomeCliente) {
+                alert("Per favore, inserisci il tuo nome prima di ordinare!");
+                return;
+            }
+
+            push(ref(db, 'ordini'), {
+                cliente: nomeCliente,
+                pizza: pizza,
+                orario: new Date().toLocaleTimeString()
+            }).then(() => {
+                alert("Ordine inviato in cucina per " + nomeCliente + "!");
+            }).catch((error) => {
+                alert("Errore nell'invio dell'ordine: " + error.message);
+            });
+        };
+    </script>
+
+</body>
+</html>
