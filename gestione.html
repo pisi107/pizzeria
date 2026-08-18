@@ -3,93 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pizzeria di Famiglia - Gestione Cucina</title>
+    <title>Pizzeria di Famiglia - Gestione Menu</title>
     <style>
         :root { --primary: #ff3b30; --success: #34c759; --bg: #f2f2f7; --card-bg: #ffffff; --text: #1d1d1f; }
-        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: var(--bg); margin: 0; padding: 20px; color: var(--text); }
-        .container { max-width: 800px; margin: 0 auto; }
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: var(--bg); margin: 0; padding: 20px; padding-bottom: 60px; color: var(--text); }
+        .container { max-width: 600px; margin: 0 auto; }
         .header { text-align: center; margin-bottom: 25px; }
         .header h2 { margin: 0 0 5px 0; }
         .header p { color: #86868b; font-size: 14px; margin: 0; }
         
-        #ordini-container { display: flex; flex-direction: column; gap: 15px; }
-        .ordine-card { background: var(--card-bg); padding: 20px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-left: 6px solid var(--primary); display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; }
-        .ordine-info { flex-grow: 1; }
-        .ordine-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .cliente-nome { font-size: 18px; font-weight: 700; color: var(--text); }
-        .ordine-orario { font-size: 13px; color: #86868b; background: #f2f2f7; padding: 4px 8px; border-radius: 6px; }
+        .section-title { font-size: 18px; font-weight: 700; margin: 25px 0 10px 5px; }
+        .card { background: var(--card-bg); padding: 12px 15px; border-radius: 14px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); display: flex; justify-content: space-between; align-items: center; }
+        .card-info h3 { margin: 0 0 2px 0; font-size: 15px; }
+        .card-info p { color: #86868b; font-size: 12px; margin: 0; }
+
+        /* Stile Toggle Switch (Interruttore) */
+        .switch { position: relative; display: inline-block; width: 50px; height: 28px; flex-shrink: 0; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .3s; border-radius: 28px; }
+        .slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--success); }
+        input:checked + .slider:before { transform: translateX(22px); }
         
-        .prodotti-lista { margin: 12px 0 0 0; padding-left: 20px; font-size: 15px; line-height: 1.5; }
-        .prodotti-lista li { margin-bottom: 4px; }
-        
-        .btn-completato { background: var(--success); color: white; border: none; padding: 10px 16px; border-radius: 10px; font-weight: 600; cursor: pointer; white-space: nowrap; font-size: 14px; box-shadow: 0 2px 5px rgba(52, 199, 89, 0.3); }
-        .btn-completato:hover { opacity: 0.9; }
-        
-        .no-ordini { text-align: center; color: #86868b; font-size: 16px; margin-top: 50px; background: var(--card-bg); padding: 40px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+        .status-label { font-size: 12px; font-weight: 600; margin-right: 10px; color: #86868b; }
+        .right-side { display: flex; align-items: center; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <div class="header">
-            <h2>👨‍🍳 Monitor Cucina / Cassa</h2>
-            <p>Gli ordini di pizze, focacce, bibite, birre e vini appariranno qui in tempo reale</p>
+            <h2>⚙️ Gestione Disponibilità Menu</h2>
+            <p>Attiva o disattiva i prodotti in tempo reale per i clienti</p>
         </div>
 
-        <div id="ordini-container">
-            <div class="no-ordini">Nessun ordine in arrivo al momento...</div>
+        <div id="gestione-menu">
+            <!-- Verrà popolato dinamicamente o controllato tramite Firebase -->
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
         
         const db = getDatabase(initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" }));
-        const ordiniRef = ref(db, 'ordini');
 
-        onValue(ordiniRef, (snapshot) => {
-            const data = snapshot.val();
-            const container = document.getElementById('ordini-container');
+        // Lista completa di tutti i prodotti divisi per categoria
+        const menuStruttura = [
+            { categoria: "Pizze", prodotti: [
+                { id: "margherita", nome: "Margherita", desc: "Pomodoro, Mozzarella, Basilico" },
+                { id: "diavola", nome: "Diavola", desc: "Pomodoro, Mozzarella, Salame piccante" },
+                { id: "4formaggi", nome: "4 Formaggi", desc: "Mozzarella, Gorgonzola, Fontina, Parmigiano" },
+                { id: "capricciosa", nome: "Capricciosa", desc: "Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi" },
+                { id: "marinara", nome: "Marinara", desc: "Pomodoro, Aglio, Origano, Olio EVO" },
+                { id: "vegetariana", nome: "Vegetariana", desc: "Pomodoro, Mozzarella, Zucchine, Melanzane, Peperoni" },
+                { id: "prosciuttoefunghi", nome: "Prosciutto e Funghi", desc: "Pomodoro, Mozzarella, Prosciutto cotto, Funghi" },
+                { id: "quattrostagioni", nome: "Quattro Stagioni", desc: "Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi, Olive" },
+                { id: "bufalina", nome: "Bufalina", desc: "Pomodoro, Mozzarella di Bufala Campana DOP" },
+                { id: "boscaiola", nome: "Boscaiola", desc: "Mozzarella, Salsiccia, Funghi pioppini, Panna" },
+                { id: "bresaolaerucola", nome: "Bresaola e Rucola", desc: "Mozzarella, Bresaola, Rucola, Grana" },
+                { id: "americana", nome: "Americana", desc: "Pomodoro, Mozzarella, Wurstel, Patatine fritte" },
+                { id: "calzoneclassico", nome: "Calzone Classico", desc: "Pomodoro, Mozzarella, Prosciutto cotto, Salame" },
+                { id: "napoli", nome: "Napoli", desc: "Pomodoro, Mozzarella, Acciughe, Origano" },
+                { id: "romana", nome: "Romana", desc: "Pomodoro, Mozzarella, Acciughe, Capperi" },
+                { id: "pugliese", nome: "Pugliese", desc: "Pomodoro, Mozzarella, Cipolla rossa" },
+                { id: "salsicciaefriarelli", nome: "Salsiccia e Friarelli", desc: "Mozzarella, Salsiccia, Friarelli napoletani" },
+                { id: "tonnoecipolla", nome: "Tonno e Cipolla", desc: "Pomodoro, Mozzarella, Tonno, Cipolla rossa" },
+                { id: "siciliana", nome: "Siciliana", desc: "Pomodoro, Mozzarella, Melanzane, Ricotta salata" },
+                { id: "tirolese", nome: "Tirolese", desc: "Pomodoro, Mozzarella, Speck, Gorgonzola" },
+                { id: "pistacchiosa", nome: "Pistacchiosa", desc: "Mozzarella, Mortadella, Pistacchio, Burrata" }
+            ]},
+            { categoria: "Focacce", prodotti: [
+                { id: "focacciaclassica", nome: "Focaccia Classica", desc: "Olio, Sale, Rosmarino" },
+                { id: "focacciacrudo", nome: "Focaccia con Crudo", desc: "Olio, Prosciutto Crudo" }
+            ]},
+            { categoria: "Bibite", prodotti: [
+                { id: "cocacola", nome: "Coca Cola 33cl", desc: "Lattina" },
+                { id: "fanta", nome: "Fanta 33cl", desc: "Lattina" },
+                { id: "acquanaturale", nome: "Acqua Naturale 0.75l", desc: "Bottiglia" },
+                { id: "acquafrizzante", nome: "Acqua Frizzante 0.75l", desc: "Bottiglia" }
+            ]},
+            { categoria: "Birre", prodotti: [
+                { id: "birraartigianale", nome: "Birra Artigianale 33cl", desc: "Bottiglia" },
+                { id: "birrachiara", nome: "Birra Chiara 66cl", desc: "Bottiglia" },
+                { id: "birrarossa", nome: "Birra Rossa 33cl", desc: "Bottiglia" }
+            ]},
+            { categoria: "Vini", prodotti: [
+                { id: "vinorosso", nome: "Calice di Vino Rosso", desc: "Calice" },
+                { id: "vinobianco", nome: "Calice di Vino Bianco", desc: "Calice" },
+                { id: "chianti", nome: "Bottiglia di Chianti", desc: "Bottiglia" }
+            ]}
+        ];
 
-            if (!data) {
-                container.innerHTML = '<div class="no-ordini">Nessun ordine in arrivo al momento...</div>';
-                return;
-            }
+        const container = document.getElementById('gestione-menu');
 
-            container.innerHTML = '';
+        // Ascolta lo stato di disponibilità dal database in tempo reale
+        const dispRef = ref(db, 'disponibilita');
+        
+        onValue(dispRef, (snapshot) => {
+            const statoSalvataggio = snapshot.val() || {};
             
-            // Ordina gli elementi per chiave/tempo
-            Object.entries(data).reverse().forEach(([id, ordine]) => {
-                // Separa i prodotti uniti dal separatore " + " per mostrarli come elenco puntato pulito
-                const listaProdotti = ordine.prodotti ? ordine.prodotti.split(' + ') : [ordine.prodotti];
-                
-                let htmlProdotti = '<ul class="prodotti-lista">';
-                listaProdotti.forEach(prod => {
-                    htmlProdotti += `<li>${prod}</li>`;
-                });
-                htmlProdotti += '</ul>';
+            container.innerHTML = '';
 
-                const card = document.createElement('div');
-                card.className = 'ordine-card';
-                card.innerHTML = `
-                    <div class="ordine-info">
-                        <div class="ordine-header">
-                            <span class="cliente-nome">👤 ${ordine.cliente}</span>
-                            <span class="ordine-orario">🕒 ${ordine.orario || 'Orario non specificato'}</span>
+            menuStrutturaforEach(catObj => {
+                // Titolo Categoria
+                const titolo = document.createElement('div');
+                titolo.className = 'section-title';
+                titolo.innerText = catObj.categoria;
+                container.appendChild(titolo);
+
+                catObj.prodotti.forEach(prod => {
+                    // Se non è specificato nel DB, di default è disponibile (true)
+                    const isDisponibile = statoSalvataggio[prod.id] !== undefined ? statoSalvataggio[prod.id] : true;
+
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div class="card-info">
+                            <h3>${prod.nome}</h3>
+                            <p>${prod.desc}</p>
                         </div>
-                        ${htmlProdotti}
-                    </div>
-                    <button class="btn-completato" onclick="completaOrdine('${id}')">Fatto ✓</button>
-                `;
-                container.appendChild(card);
+                        <div class="right-side">
+                            <span class="status-label">${isDisponibile ? 'Disponibile' : 'Esaurito'}</span>
+                            <label class="switch">
+                                <input type="checkbox" ${isDisponibile ? 'checked' : ''} onchange="aggiornaStato('${prod.id}', this.checked)">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
             });
         });
 
-        window.completaOrdine = (id) => {
-            if (confirm("Confermi di voler completare e rimuovere questo ordine?")) {
-                remove(ref(db, `ordini/${id}`));
-            }
+        // Funzione globale per cambiare lo stato su Firebase quando tocchi l'interruttore
+        window.aggiornaStato = (idProdotto, stato) => {
+            set(ref(db, `disponibilita/${idProdotto}`), stato);
         };
     </script>
 </body>
