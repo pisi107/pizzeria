@@ -9,20 +9,20 @@
         body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: var(--bg); margin: 0; padding: 20px; color: var(--text); }
         .container { max-width: 700px; margin: 0 auto; }
         
-        .audio-box { background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; border: 2px solid var(--blue); }
+        .audio-box { background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; border: 2px solid var(--blue); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .btn-audio { background: var(--blue); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
         .section-title { font-size: 18px; font-weight: 700; margin: 25px 0 12px 5px; }
         
-        .ospite-box { background: var(--card-bg); padding: 18px; border-radius: 16px; margin-bottom: 25px; display: flex; gap: 10px; }
-        .ospite-box input { flex-grow: 1; padding: 12px; border: 1px solid #ddd; border-radius: 10px; }
-        .btn-ospite { background: var(--blue); color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; }
+        .ospite-box { background: var(--card-bg); padding: 18px; border-radius: 16px; margin-bottom: 25px; display: flex; gap: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .ospite-box input { flex-grow: 1; padding: 12px; border: 1px solid #ddd; border-radius: 10px; outline: none; }
+        .btn-ospite { background: var(--blue); color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; }
 
-        .order-card { background: white; padding: 20px; border-radius: 16px; margin-bottom: 15px; border-left: 6px solid var(--primary); display: flex; justify-content: space-between; align-items: center; }
-        .btn-completato { background: var(--success); color: white; border: none; padding: 12px 20px; border-radius: 12px; cursor: pointer; }
+        .order-card { background: white; padding: 20px; border-radius: 16px; margin-bottom: 15px; border-left: 6px solid var(--primary); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .btn-completato { background: var(--success); color: white; border: none; padding: 12px 20px; border-radius: 12px; cursor: pointer; font-weight: bold; }
         
-        .history-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .btn-elimina { background: #ffebeb; color: var(--primary); border: none; padding: 8px; border-radius: 8px; cursor: pointer; }
+        .history-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 4px rgba(0,0,0,0.02); }
+        .btn-elimina { background: #ffebeb; color: var(--primary); border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; }
         
         /* Divisore Serata */
         .serata-divider { margin-top: 30px; margin-bottom: 10px; padding: 5px; font-size: 19px; font-weight: 800; border-bottom: 2px solid #000; color: #000; }
@@ -34,8 +34,8 @@
     <h2>🔔 Monitor Cucina</h2>
     
     <div class="audio-box" id="audio-ui">
-        <p>Attiva l'audio per sentire gli ordini:</p>
-        <button class="btn-audio" onclick="initAudio()">Attiva Audio</button>
+        <p style="margin: 0 0 10px 0; font-size: 14px; color: #555;">Tocca il pulsante per attivare l'audio delle notifiche:</p>
+        <button class="btn-audio" onclick="initAudio()">🔊 Attiva Audio</button>
     </div>
 
     <div class="section-title">👥 Ospite della Serata</div>
@@ -58,20 +58,47 @@
     const db = getDatabase(initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" }));
     let audioCtx = null;
 
+    // Funzione per sbloccare l'audio tramite interazione utente
     window.initAudio = () => {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        document.getElementById('audio-ui').innerHTML = "<p style='color:green; font-weight:bold;'>🔊 Audio Attivo!</p>";
-        suona();
+        try {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            suona(); // Suona subito un trillo di prova
+            document.getElementById('audio-ui').innerHTML = "<p style='color:#28a745; font-weight:bold; margin:0;'>🔊 Audio Attivo e Funzionante!</p>";
+        } catch (e) {
+            alert("Il browser ha bloccato l'audio. Riprova a cliccare.");
+        }
     };
 
     function suona() {
-        if (!audioCtx) return;
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.frequency.setValueAtTime(880, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+        try {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // Nota Re
+            osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.15); // Nota La
+
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
+
+            osc.connect(gain); 
+            gain.connect(audioCtx.destination);
+            
+            osc.start(); 
+            osc.stop(audioCtx.currentTime + 0.6);
+        } catch (err) {
+            console.log("Errore riproduzione audio:", err);
+        }
     }
 
     window.salvaSerata = () => {
@@ -84,13 +111,22 @@
         const ordini = snapshot.val() || {};
         const container = document.getElementById('ordini-container');
         container.innerHTML = '';
-        if(!primoCaricamento && Object.keys(ordini).length > 0) suona();
+        
+        const numOrdini = Object.keys(ordini).length;
+
+        if (!primoCaricamento && numOrdini > 0) {
+            suona();
+        }
         primoCaricamento = false;
+
+        if (numOrdini === 0) {
+            container.innerHTML = '<div style="text-align:center; color:#86868b; padding:20px; font-style:italic; background:white; border-radius:12px;">Nessun ordine attivo al momento...</div>';
+        }
 
         Object.entries(ordini).forEach(([id, o]) => {
             container.innerHTML += `
                 <div class="order-card">
-                    <div><strong>${o.cliente}</strong><br>${o.prodotti}</div>
+                    <div><strong>👤 ${o.cliente}</strong><br><span style="font-size:16px;">${o.prodotti}</span></div>
                     <button class="btn-completato" onclick="spostaInStorico('${id}')">Fatto ✓</button>
                 </div>`;
         });
@@ -118,6 +154,13 @@
         const storico = snapshot.val() || {};
         const container = document.getElementById('storico-container');
         container.innerHTML = '';
+        
+        const chiaviStorico = Object.keys(storico);
+        if (chiaviStorico.length === 0) {
+            container.innerHTML = '<div style="text-align:center; color:#86868b; padding:20px; font-style:italic; background:white; border-radius:12px;">Nessuna cronologia registrata.</div>';
+            return;
+        }
+
         let ultimoOspite = "";
 
         Object.entries(storico).reverse().forEach(([id, s]) => {
@@ -132,7 +175,7 @@
             const card = document.createElement('div');
             card.className = 'history-card';
             card.innerHTML = `
-                <div>${s.dettagli} <small>(${s.data})</small></div>
+                <div>${s.dettagli} <small style="color:#86868b;">(${s.data})</small></div>
                 <button class="btn-elimina" onclick="eliminaStorico('${id}')">🗑️</button>
             `;
             container.appendChild(card);
