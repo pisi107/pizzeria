@@ -19,7 +19,7 @@
             background-color: var(--bg);
             margin: 0;
             padding: 20px;
-            padding-bottom: 120px; /* Spazio per evitare che il carrello fisso copra i prodotti */
+            padding-bottom: 120px;
             color: var(--text);
             -webkit-font-smoothing: antialiased;
         }
@@ -72,7 +72,6 @@
             border-color: var(--primary);
             background: #ffffff;
         }
-        /* Filtri Categorie */
         .categories {
             display: flex;
             gap: 8px;
@@ -167,7 +166,7 @@
             cursor: not-allowed;
         }
 
-        /* Barra del Carrello in basso */
+        /* Barra del Carrello fissa in basso */
         .cart-bar {
             position: fixed;
             bottom: 0;
@@ -180,23 +179,25 @@
             box-shadow: 0 -10px 30px rgba(0,0,0,0.08);
             display: none;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             z-index: 1000;
             max-width: 600px;
             margin: 0 auto;
         }
-        .cart-info-row {
+        .cart-top-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: 600;
             font-size: 15px;
         }
-        .cart-items-list {
-            font-size: 13px;
-            color: var(--text-secondary);
-            max-height: 80px;
-            overflow-y: auto;
+        .btn-modifica {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
         }
         .btn-invia-carrello {
             width: 100%;
@@ -208,9 +209,73 @@
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
-            transition: transform 0.1s;
         }
-        .btn-invia-carrello:active { transform: scale(0.98); }
+
+        /* Modale di Gestione Carrello */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 2000;
+        }
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 600px;
+            max-height: 80vh;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            padding: 24px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .modal-close {
+            background: var(--bg);
+            border: none;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-list {
+            overflow-y: auto;
+            max-height: 40vh;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .modal-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg);
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .btn-rimuovi-item {
+            background: #ff3b3015;
+            color: var(--primary);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -226,7 +291,6 @@
             <input type="text" id="nome" placeholder="es. Mario o Tavolo 4">
         </div>
 
-        <!-- Filtri Categorie -->
         <div class="categories">
             <button class="cat-btn active" onclick="filtraCategoria('tutte', this)">Tutto</button>
             <button class="cat-btn" onclick="filtraCategoria('pizze', this)">Pizze</button>
@@ -275,14 +339,27 @@
         </div>
     </div>
 
-    <!-- BARRA CARRELLO FISSA IN BASSO -->
+    <!-- BARRA CARRELLO IN BASSO -->
     <div id="cart-bar" class="cart-bar">
-        <div class="cart-info-row">
-            <span>🛒 Il tuo carrello</span>
-            <span id="cart-count">0 articoli</span>
+        <div class="cart-top-row">
+            <span id="cart-count-text">🛒 0 articoli nel carrello</span>
+            <button class="btn-modifica" onclick="apriModaleCarrello()">Modifica</button>
         </div>
-        <div id="cart-items" class="cart-items-list"></div>
         <button class="btn-invia-carrello" onclick="inviaCarrelloInCucina()">Invia Ordine in Cucina</button>
+    </div>
+
+    <!-- SCHERMATA MODALE PER MODIFICARE IL CARRELLO -->
+    <div id="cart-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Modifica Carrello</span>
+                <button class="modal-close" onclick="chiudiModaleCarrello()">✕</button>
+            </div>
+            <div id="modal-items-list" class="modal-list">
+                <!-- Gli elementi verranno inseriti qui via JS -->
+            </div>
+            <button class="btn-invia-carrello" onclick="chiudiModaleCarrello()">Fatto</button>
+        </div>
     </div>
 
     <script type="module">
@@ -308,10 +385,9 @@
         };
 
         window.aggiungiAlCarrello = function(nomeProdotto, idProdotto) {
-            carrello.push(nomeProdotto);
+            carrello.push({ id: Date.now() + Math.random(), nome: nomeProdotto });
             aggiornaBarraCarrello();
             
-            // Piccolo feedback visivo sul bottone
             const btn = document.getElementById('btn-' + idProdotto);
             if(btn) {
                 const vecchioTesto = btn.innerText;
@@ -324,18 +400,54 @@
             }
         };
 
+        window.rimuoviDalCarrello = function(uniqueId) {
+            carrello = carrello.filter(item => item.id !== uniqueId);
+            aggiornaBarraCarrello();
+            renderizzaModaleCarrello();
+            if (carrello.length === 0) {
+                chiudiModaleCarrello();
+            }
+        };
+
         function aggiornaBarraCarrello() {
             const cartBar = document.getElementById('cart-bar');
-            const cartCount = document.getElementById('cart-count');
-            const cartItems = document.getElementById('cart-items');
+            const cartCountText = document.getElementById('cart-count-text');
 
             if (carrello.length > 0) {
                 cartBar.style.display = 'flex';
-                cartCount.innerText = carrello.length + (carrello.length === 1 ? " articolo" : " articoli");
-                cartItems.innerText = carrello.join(', ');
+                cartCountText.innerText = `🛒 ${carrello.length} ${carrello.length === 1 ? 'articolo' : 'articoli'} nel carrello`;
             } else {
                 cartBar.style.display = 'none';
             }
+        }
+
+        window.apriModaleCarrello = function() {
+            renderizzaModaleCarrello();
+            document.getElementById('cart-modal').style.display = 'flex';
+        };
+
+        window.chiudiModaleCarrello = function() {
+            document.getElementById('cart-modal').style.display = 'none';
+        };
+
+        function renderizzaModaleCarrello() {
+            const listContainer = document.getElementById('modal-items-list');
+            listContainer.innerHTML = '';
+
+            if (carrello.length === 0) {
+                listContainer.innerHTML = '<p style="text-align:center; color: #86868b;">Il carrello è vuoto</p>';
+                return;
+            }
+
+            carrello.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'modal-item';
+                div.innerHTML = `
+                    <span>${item.nome}</span>
+                    <button class="btn-rimuovi-item" onclick="rimuoviDalCarrello(${item.id})">Rimuovi</button>
+                `;
+                listContainer.appendChild(div);
+            });
         }
 
         window.inviaCarrelloInCucina = function() {
@@ -348,12 +460,12 @@
 
             if (carrello.length === 0) return;
 
-            // Unisce tutti i prodotti del carrello in un'unica stringa (es. "Margherita, Coca Cola, Fanta")
-            const riepilogoProdotti = carrello.join(' + ');
+            const prodottiNomi = carrello.map(i => i.nome);
+            const riepilogoProdotti = prodottiNomi.join(' + ');
 
             push(ref(db, 'ordini'), {
                 cliente: nomeCliente,
-                pizza: riepilogoProdotti, // Arriverà in cucina come un'unica comanda ricca
+                pizza: riepilogoProdotti,
                 orario: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             }).then(() => {
                 alert("Ordine inviato con successo in cucina!");
