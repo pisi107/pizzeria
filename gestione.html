@@ -5,126 +5,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestione Pizze - Pizzeria</title>
   <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: #f5f5f7;
-      margin: 0;
-      padding: 20px;
-    }
-    .container {
-      max-width: 500px;
-      margin: 0 auto;
-    }
-    h1 {
-      font-size: 24px;
-      margin-bottom: 5px;
-      color: #1d1d1f;
-    }
-    p {
-      color: #86868b;
-      font-size: 14px;
-      margin-bottom: 20px;
-    }
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
-    .pizza-name {
-      font-weight: 600;
-      font-size: 16px;
-    }
-    /* Interruttore iOS style */
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 50px;
-      height: 28px;
-    }
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #e9e9ea;
-      transition: .3s;
-      border-radius: 34px;
-    }
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 22px;
-      width: 22px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: .3s;
-      border-radius: 50%;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-    input:checked + .slider {
-      background-color: #34c759;
-    }
-    input:checked + .slider:before {
-      transform: translateX(22px);
-    }
+    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: #f5f5f7; padding: 20px; }
+    .container { max-width: 500px; margin: 0 auto; }
+    .card { background: white; border-radius: 12px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #e9e9ea; transition: .3s; border-radius: 34px; }
+    .slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+    input:checked + .slider { background-color: #34c759; }
+    input:checked + .slider:before { transform: translateX(22px); }
   </style>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 </head>
 <body>
 
   <div class="container">
     <h1>🍕 Gestione Disponibilità</h1>
-    <p>Spegni l'interruttore quando finiscono gli ingredienti di una pizza.</p>
+    <p>Spegni l'interruttore quando finisce una pizza.</p>
 
     <div class="card">
-      <span class="pizza-name">Margherita</span>
+      <span>Margherita</span>
       <label class="switch">
-        <input type="checkbox" id="check-margherita" checked onchange="cambiaStato('margherita', this.checked)">
+        <input type="checkbox" id="check-margherita" onchange="cambiaStato('margherita', this.checked)">
         <span class="slider"></span>
       </label>
     </div>
 
     <div class="card">
-      <span class="pizza-name">Diavola</span>
+      <span>Diavola</span>
       <label class="switch">
-        <input type="checkbox" id="check-diavola" checked onchange="cambiaStato('diavola', this.checked)">
+        <input type="checkbox" id="check-diavola" onchange="cambiaStato('diavola', this.checked)">
         <span class="slider"></span>
       </label>
     </div>
 
     <div class="card">
-      <span class="pizza-name">4 Formaggi</span>
+      <span>4 Formaggi</span>
       <label class="switch">
-        <input type="checkbox" id="check-4formaggi" checked onchange="cambiaStato('4formaggi', this.checked)">
+        <input type="checkbox" id="check-4formaggi" onchange="cambiaStato('4formaggi', this.checked)">
         <span class="slider"></span>
       </label>
     </div>
 
     <div class="card">
-      <span class="pizza-name">Capricciosa</span>
+      <span>Capricciosa</span>
       <label class="switch">
-        <input type="checkbox" id="check-capricciosa" checked onchange="cambiaStato('capricciosa', this.checked)">
+        <input type="checkbox" id="check-capricciosa" onchange="cambiaStato('capricciosa', this.checked)">
         <span class="slider"></span>
       </label>
     </div>
   </div>
 
-  <script>
-    // IMPORTANTE: Sostituisci questo blocco con le TUE credenziali Firebase
-    // le trovi identiche nel tuo file index.html o cucina.html
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    // INCOLLA QUI LA TUA CONFIGURAZIONE FIREBASE ORIGINALE
     const firebaseConfig = {
       apiKey: "LA_TUA_API_KEY",
       authDomain: "TUO-PROGETTO.firebaseapp.com",
@@ -135,25 +70,24 @@
       appId: "1:123456789:web:abcdef"
     };
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const pizze = ['margherita', 'diavola', '4formaggi', 'capricciosa'];
 
-    // Legge lo stato iniziale dal database per impostare gli interruttori
-    db.ref('disponibilita').on('value', (snapshot) => {
+    onValue(ref(db, 'disponibilita'), (snapshot) => {
       const data = snapshot.val() || {};
-      for (const pizza in data) {
+      pizze.forEach((pizza) => {
         const checkbox = document.getElementById('check-' + pizza);
         if (checkbox) {
-          checkbox.checked = data[pizza];
+          // Se nel database non c'è ancora nulla, di default l'interruttore è acceso (true)
+          checkbox.checked = data[pizza] !== undefined ? data[pizza] : true;
         }
-      }
+      });
     });
 
-    // Funzione per aggiornare lo stato quando si clicca lo switch
-    function cambiaStato(pizza, disponibile) {
-      db.ref('disponibilita/' + pizza).set(disponibile);
-    }
+    window.cambiaStato = function(pizza, disponibile) {
+      set(ref(db, 'disponibilita/' + pizza), disponibile);
+    };
   </script>
-
 </body>
 </html>
