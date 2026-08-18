@@ -29,9 +29,12 @@
         .no-ordini { text-align: center; color: var(--gray); font-style: italic; background: var(--card-bg); padding: 30px 20px; border-radius: 16px; font-size: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
         
         /* Stile Storico */
-        .history-card { background: var(--card-bg); padding: 15px; border-radius: 14px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid #e5e5ea; }
-        .history-top { display: flex; justify-content: space-between; font-weight: bold; font-size: 15px; margin-bottom: 5px; color: #333; }
+        .history-card { background: var(--card-bg); padding: 15px; border-radius: 14px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid #e5e5ea; display: flex; justify-content: space-between; align-items: center; }
+        .history-content { flex-grow: 1; }
+        .history-top { display: flex; justify-content: space-between; font-weight: bold; font-size: 15px; margin-bottom: 5px; color: #333; padding-right: 15px; }
         .history-prodotti { font-size: 14px; color: var(--gray); }
+        .btn-elimina-storia { background: #ff3b301a; color: var(--primary); border: none; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px; transition: 0.2s; white-space: nowrap; }
+        .btn-elimina-storia:hover { background: var(--primary); color: white; }
 
         .audio-banner { background: #fff3cd; color: #856404; padding: 12px; border-radius: 12px; text-align: center; font-size: 14px; margin-bottom: 20px; font-weight: 500; border: 1px solid #ffeeba; cursor: pointer; }
     </style>
@@ -169,13 +172,10 @@
             });
         });
 
-        // Quando completi l'ordine, lo sposta automaticamente nello Storico su Firebase
         window.completaOrdine = (idOrdine, cliente, prodotti, orario) => {
-            // Prendi il nome della serata corrente o metti un default
             const ospiteSerata = document.getElementById('input-serata').value.trim() || "Serata Pizzeria";
             const dataOdierna = new Date().toLocaleDateString();
 
-            // Salva nello storico
             push(ref(db, 'storicoSerate'), {
                 serata: ospiteSerata,
                 cliente: cliente,
@@ -184,17 +184,16 @@
                 orario: orario
             });
 
-            // Rimuovi dagli ordini attivi
             remove(ref(db, `ordini/${idOrdine}`));
         };
 
-        // --- ASCOLTO STORICO SERATE ---
+        // --- ASCOLTO STORICO SERATE CON PULSANTE ELIMINA ---
         onValue(ref(db, 'storicoSerate'), (snapshot) => {
             const storico = snapshot.val() || {};
             const containerStorico = document.getElementById('storico-container');
             containerStorico.innerHTML = '';
 
-            const chiaviStorico = Object.keys(storico).reverse(); // Mette le più recenti in cima
+            const chiaviStorico = Object.keys(storico).reverse();
 
             if (chiaviStorico.length === 0) {
                 containerStorico.innerHTML = '<div class="no-ordini">Nessuna cronologia registrata.</div>';
@@ -206,15 +205,25 @@
                 const card = document.createElement('div');
                 card.className = 'history-card';
                 card.innerHTML = `
-                    <div class="history-top">
-                        <span>🏷️ Serata: ${s.serata} (${s.cliente})</span>
-                        <span style="font-size: 12px; color: var(--gray);">${s.data} - ${s.orario}</span>
+                    <div class="history-content">
+                        <div class="history-top">
+                            <span>🏷️ Serata: ${s.serata} (${s.cliente})</span>
+                            <span style="font-size: 12px; color: var(--gray);">${s.data} - ${s.orario}</span>
+                        </div>
+                        <div class="history-prodotti">🍕 ${s.prodotti}</div>
                     </div>
-                    <div class="history-prodotti">🍕 ${s.prodotti}</div>
+                    <button class="btn-elimina-storia" onclick="eliminaDallaStoria('${id}')">🗑️</button>
                 `;
                 containerStorico.appendChild(card);
             });
         });
+
+        // Funzione per eliminare una singola voce dallo storico
+        window.eliminaDallaStoria = (idStoria) => {
+            if(confirm("Vuoi davvero eliminare questo elemento dalla cronologia?")) {
+                remove(ref(db, `storicoSerate/${idStoria}`));
+            }
+        };
     </script>
 </body>
 </html>
