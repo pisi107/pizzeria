@@ -149,61 +149,61 @@
     
 
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+      <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        const firebaseConfig = {
-            databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app/"
-        };
+    const firebaseConfig = {
+      databaseURL: "https://pizzeria-251a1-default-rtdb.firebaseio.com"
+      // (mantieni qui tutte le altre righe della tua configurazione se le avevi)
+    };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-        window.inviaOrdine = function(pizza) {
-            const nomeCliente = document.getElementById('nome').value;
-            
-            if (!nomeCliente) {
-                alert("Per favore, inserisci il tuo nome prima di ordinare!");
-                return;
-            }
+    window.inviaOrdine = function(pizza) {
+      const nomeCliente = document.getElementById('nome').value;
 
-            push(ref(db, 'ordini'), {
-                cliente: nomeCliente,
-                pizza: pizza,
-                orario: new Date().toLocaleTimeString()
-            }).then(() => {
-                alert("Ordine inviato in cucina per " + nomeCliente + "!");
-            }).catch((error) => {
-                alert("Errore nell'invio dell'ordine: " + error.message);
-            });
-        };
-        // Ascolta le modifiche della disponibilità pizze
-db.ref('disponibilita').on('value', (snapshot) => {
-  const disponibilita = snapshot.val() || {};
-
-  // Lista ID dei pulsanti delle pizze
-  const pizze = ['margherita', 'diavola', '4formaggi', 'capricciosa'];
-
-  pizze.forEach((pizza) => {
-    // Trova il pulsante della pizza (assicurati che il pulsante abbia id="btn-margherita", ecc.)
-    const btn = document.getElementById('btn-' + pizza);
-    
-    if (btn) {
-      if (disponibilita[pizza] === false) {
-        btn.disabled = true;
-        btn.innerText = "Esaurita";
-        btn.style.backgroundColor = "#cccccc";
-      } else {
-        btn.disabled = false;
-        btn.innerText = "Ordina " + pizza.charAt(0).toUpperCase() + pizza.slice(1);
-        btn.style.backgroundColor = "#ff3b30";
+      if (!nomeCliente) {
+        alert("Per favore, inserisci il tuo nome prima di ordinare!");
+        return;
       }
-    }
-  });
-});
 
-    </script>
+      push(ref(db, 'ordini'), {
+        cliente: nomeCliente,
+        pizza: pizza,
+        orario: new Date().toLocaleTimeString()
+      }).then(() => {
+        alert("Ordine inviato con successo!");
+      }).catch((error) => {
+        alert("Errore nell'invio dell'ordine: " + error.message);
+      });
+    };
 
-</body>
-</html>
+    // --- AGGIUNGI QUESTO PER SPEGNERE LE PIZZE ---
+    const pizze = [
+      'margherita', 'diavola', '4formaggi', 'capricciosa', 'marinara', 
+      'vegetariana', 'prosciuttoefunghi', 'quattrostagioni', 'bufalina', 
+      'boscaiola', 'bresaolaerucola', 'americana', 'calzoneclassico', 
+      'napoli', 'romana', 'pugliese', 'salsicciaefriarelli', 
+      'tonnoecipolla', 'siciliana', 'tirolese', 'pistacchiosa'
+    ];
+
+    onValue(ref(db, 'disponibilita'), (snapshot) => {
+        const data = snapshot.val() || {};
+        pizze.forEach(nome => {
+            const btn = document.getElementById('btn-' + nome);
+            if (btn) {
+                if (data[nome] === false) {
+                    btn.disabled = true;
+                    btn.innerText = "Esaurito";
+                    btn.style.backgroundColor = "#cccccc";
+                } else {
+                    btn.disabled = false;
+                    btn.innerText = "Ordina " + btn.getAttribute('onclick').match(/'([^']+)'/)[1];
+                    btn.style.backgroundColor = "#ff3b30";
+                }
+            }
+        });
+    });
+  </script>
