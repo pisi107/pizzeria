@@ -175,6 +175,31 @@
                 alert("Errore nell'invio dell'ordine: " + error.message);
             });
         };
+        // Ascolta le modifiche della disponibilità pizze
+db.ref('disponibilita').on('value', (snapshot) => {
+  const disponibilita = snapshot.val() || {};
+
+  // Lista ID dei pulsanti delle pizze
+  const pizze = ['margherita', 'diavola', '4formaggi', 'capricciosa'];
+
+  pizze.forEach((pizza) => {
+    // Trova il pulsante della pizza (assicurati che il pulsante abbia id="btn-margherita", ecc.)
+    const btn = document.getElementById('btn-' + pizza);
+    
+    if (btn) {
+      if (disponibilita[pizza] === false) {
+        btn.disabled = true;
+        btn.innerText = "Esaurita";
+        btn.style.backgroundColor = "#cccccc";
+      } else {
+        btn.disabled = false;
+        btn.innerText = "Ordina " + pizza.charAt(0).toUpperCase() + pizza.slice(1);
+        btn.style.backgroundColor = "#ff3b30";
+      }
+    }
+  });
+});
+
     </script>
 
 </body>
