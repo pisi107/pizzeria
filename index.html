@@ -26,7 +26,6 @@
 
         .container { max-width: 550px; margin: 0 auto; }
 
-        /* Stile Antico / Menu Ristorante */
         .header { 
             background: var(--card-bg); 
             color: var(--text); 
@@ -40,7 +39,44 @@
         .header h1 { margin: 0 0 8px 0; font-size: 28px; font-weight: normal; font-style: italic; letter-spacing: 1px; color: var(--primary); }
         .header p { margin: 0; font-size: 15px; font-style: italic; color: var(--gray); }
 
-        /* Box Stato Serata */
+        /* Navigazione Pagine / Tab */
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: var(--card-bg);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            font-family: "Georgia", serif;
+            font-style: italic;
+            font-size: 15px;
+            font-weight: bold;
+            color: var(--gray);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(139, 0, 0, 0.2);
+        }
+
+        /* Pagine */
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
         .serata-banner { 
             background: var(--card-bg); 
             padding: 14px 18px; 
@@ -53,18 +89,16 @@
         }
         .serata-banner span { font-size: 16px; }
 
-        /* Sezioni */
         .section-title { 
             font-size: 20px; 
             font-style: italic; 
             font-weight: normal; 
-            margin: 30px 0 15px 5px; 
+            margin: 15px 0 15px 5px; 
             color: var(--primary);
             border-bottom: 1px dashed var(--accent);
             padding-bottom: 5px;
         }
 
-        /* Card Form Ordine */
         .card-form { 
             background: var(--card-bg); 
             padding: 25px; 
@@ -91,19 +125,18 @@
         }
         .input-group input:focus { border-color: var(--primary); }
 
-        /* Menu Categorie in stile antico */
-        .category-subtitle { font-size: 15px; font-style: italic; font-weight: bold; color: var(--primary); margin: 20px 0 10px 2px; }
+        .category-subtitle { font-size: 16px; font-style: italic; font-weight: bold; color: var(--primary); margin: 20px 0 10px 2px; }
         .menu-grid { 
             display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 8px; 
+            grid-template-columns: repeat(1, 1fr); 
+            gap: 10px; 
         }
         .btn-menu-item { 
             background: #fdfbf7; 
             border: 1px solid #e8dfd1; 
-            padding: 12px; 
+            padding: 14px; 
             border-radius: 8px; 
-            font-size: 14px; 
+            font-size: 15px; 
             font-style: italic;
             color: var(--text); 
             cursor: pointer; 
@@ -116,7 +149,6 @@
         .btn-menu-item:hover { background: #f4ecdf; border-color: var(--accent); }
         .btn-menu-item:active { transform: scale(0.98); }
 
-        /* Pulsante Invia Ordine */
         .btn-invia { 
             background: var(--primary); 
             color: white; 
@@ -133,7 +165,6 @@
         }
         .btn-invia:active { transform: scale(0.98); }
 
-        /* Lista Ordini Inviati */
         .order-status-card { 
             background: var(--card-bg); 
             padding: 16px 20px; 
@@ -173,67 +204,100 @@
     <!-- HEADER -->
     <div class="header">
         <h1>~ Pizzeria di Famiglia ~</h1>
-        <p>Il nostro menu artigianale, direttamente in tavola</p>
+        <p>Sfoglia il menu completo e invia la tua ordinazione</p>
     </div>
 
-    <!-- BANNER SERATA IN CORSO -->
+    <!-- BANNER SERATA -->
     <div class="serata-banner">
         <span>✨</span>
         <div id="display-serata" style="font-style: italic; color: var(--text); font-size: 15px;">Caricamento serata...</div>
     </div>
 
-    <!-- CARD FORM ORDINE -->
-    <div class="section-title">La Vostra Ordinazione</div>
-    <div class="card-form">
-        <div class="input-group">
-            <label for="input-cliente">Il Vostro Nome</label>
-            <input type="text" id="input-cliente" placeholder="es. Marco, Sara, Nonno...">
-        </div>
-
-        <div class="input-group">
-            <label>Le Nostre Proposte (clicca per aggiungere)</label>
-            
-            <!-- Pizze Classiche -->
-            <div class="category-subtitle">- Pizze Classiche -</div>
-            <div class="menu-grid">
-                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Margherita')"><span>Margherita</span> ➕</button>
-                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Marinara')"><span>Marinara</span> ➕</button>
-                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Diavola')"><span>Diavola</span> ➕</button>
-                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Capricciosa')"><span>Capricciosa</span> ➕</button>
-                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Quattro Formaggi')"><span>4 Formaggi</span> ➕</button>
-                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Wudy e Patatine')"><span>Wudy e Patatine</span> ➕</button>
-            </div>
-
-            <!-- Focacce & Speciali -->
-            <div class="category-subtitle">- Focacce & Speciali -</div>
-            <div class="menu-grid">
-                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Focaccia Liscia')"><span>Focaccia Liscia</span> ➕</button>
-                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Focaccia Rosmarino')"><span>Rosmarino / Olio</span> ➕</button>
-                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Pizza Speciale dello Chef')"><span>Speciale dello Chef</span> ➕</button>
-            </div>
-
-            <!-- Bibite & Birre -->
-            <div class="category-subtitle">- Bibite & Cantina -</div>
-            <div class="menu-grid">
-                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Coca Cola')"><span>Coca Cola</span> ➕</button>
-                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Acqua Naturale')"><span>Acqua Naturale</span> ➕</button>
-                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Acqua Frizzante')"><span>Acqua Frizzante</span> ➕</button>
-                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Birra')"><span>Birra artigianale</span> ➕</button>
-            </div>
-        </div>
-
-        <div class="input-group">
-            <label for="input-prodotti">Il vostro ordine</label>
-            <input type="text" id="input-prodotti" placeholder="es. Margherita + Coca Cola">
-        </div>
-
-        <button class="btn-invia" onclick="inviaOrdine()">Invia l'Ordine alla Cucina 🍷</button>
+    <!-- TAB DI NAVIGAZIONE A PAGINE -->
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="cambiaPagina('menu')">📖 Sfoglia Menu</button>
+        <button class="tab-btn" onclick="cambiaPagina('ordine')">📝 Il Mio Ordine</button>
+        <button class="tab-btn" onclick="cambiaPagina('stato')">📋 In Corso</button>
     </div>
 
-    <!-- I MIEI ORDINI ATTIVI -->
-    <div class="section-title">I Vostri Ordini in Corso</div>
-    <div id="miei-ordini-container">
-        <div class="empty-state">Nessun ordine registrato al momento.</div>
+    <!-- PAGINA 1: MENU COMPLETO CON 20 PIZZE + FOCACCE + BIBITE -->
+    <div id="page-menu" class="page active">
+        <div class="card-form">
+            <div class="section-title">Le Nostre Proposte</div>
+            <p style="font-style: italic; color: var(--gray); font-size: 14px; margin-top: 0;">Tocca un prodotto per aggiungerlo direttamente al tuo ordine.</p>
+            
+            <div class="category-subtitle">~ Pizze Tradizionali & Classiche ~</div>
+            <div class="menu-grid">
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Margherita')"><span>🍕 Margherita</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Marinara')"><span>🍕 Marinara</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Napoli')"><span>🍕 Napoli</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Capricciosa')"><span>🍕 Capricciosa</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Quattro Stagioni')"><span>🍕 Quattro Stagioni</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Diavola')"><span>🍕 Diavola</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Wudy e Patatine')"><span>🍕 Wudy e Patatine</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Romana')"><span>🍕 Romana</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Siciliana')"><span>🍕 Siciliana</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Ortolana / Vegetariana')"><span>🍕 Ortolana / Vegetariana</span> <span>➕</span></button>
+            </div>
+
+            <div class="category-subtitle">~ Pizze Speciali & Ricche ~</div>
+            <div class="menu-grid">
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Quattro Formaggi')"><span>🍕 Quattro Formaggi</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Calzone Normale o Fritto')"><span>🥟 Calzone Normale o Fritto</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Bufalina')"><span>🍕 Bufalina</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Boscaiola')"><span>🍕 Boscaiola</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Saporita / Parmigiana')"><span>🍕 Saporita / Parmigiana</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Tonno e Cipolla')"><span>🍕 Tonno e Cipolla</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Salsiccia e Friarielli')"><span>🍕 Salsiccia e Friarielli</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('TIROLESE (Speck e Brie)')"><span>🍕 Tirolese (Speck e Brie)</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('CARBONARA (Uovo e Pancetta)')"><span>🍕 Carbonara</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('AI FUNGHI PORCINI')"><span>🍕 Ai Funghi Porcini</span> <span>➕</span></button>
+            </div>
+
+            <div class="category-subtitle">~ Focacce & Speciali dello Chef ~</div>
+            <div class="menu-grid">
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Focaccia Liscia')"><span>🫓 Focaccia Liscia</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Focaccia Rosmarino')"><span>🫓 Rosmarino / Olio</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Pizza Speciale dello Chef')"><span>⭐ Speciale dello Chef</span> <span>➕</span></button>
+            </div>
+
+            <div class="category-subtitle">~ Bibite & Cantina ~</div>
+            <div class="menu-grid">
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Coca Cola')"><span>🥤 Coca Cola</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Acqua Naturale')"><span>💧 Acqua Naturale</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Acqua Frizzante')"><span>🫧 Acqua Frizzante</span> <span>➕</span></button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoceDaMenu('Birra')"><span>🍺 Birra artigianale</span> <span>➕</span></button>
+            </div>
+            
+            <button class="btn-invia" style="margin-top: 25px;" onclick="cambiaPagina('ordine')">Procedi all'Ordine ➔</button>
+        </div>
+    </div>
+
+    <!-- PAGINA 2: COMPILAZIONE ORDINE -->
+    <div id="page-ordine" class="page">
+        <div class="card-form">
+            <div class="section-title">Conferma Ordinazione</div>
+            
+            <div class="input-group">
+                <label for="input-cliente">Il Vostro Nome</label>
+                <input type="text" id="input-cliente" placeholder="es. Marco, Sara, Nonno...">
+            </div>
+
+            <div class="input-group">
+                <label for="input-prodotti">Il vostro carrello</label>
+                <input type="text" id="input-prodotti" placeholder="Seleziona dal menu o scrivi qui...">
+            </div>
+
+            <button class="btn-invia" onclick="inviaOrdine()">Invia l'Ordine alla Cucina 🍷</button>
+        </div>
+    </div>
+
+    <!-- PAGINA 3: STATO ORDINI -->
+    <div id="page-stato" class="page">
+        <div class="section-title">I Vostri Ordini in Corso</div>
+        <div id="miei-ordini-container">
+            <div class="empty-state">Nessun ordine registrato al momento.</div>
+        </div>
     </div>
 
 </div>
@@ -244,13 +308,27 @@
     
     const db = getDatabase(initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" }));
 
-    window.aggiungiVoce = (voce) => {
+    window.cambiaPagina = (nomePagina) => {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        
+        document.getElementById('page-' + nomePagina).classList.add('active');
+        
+        if(nomePagina === 'menu') document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        if(nomePagina === 'ordine') document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        if(nomePagina === 'stato') document.querySelectorAll('.tab-btn')[2].classList.add('active');
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.aggiungiVoceDaMenu = (voce) => {
         const inputProdotti = document.getElementById('input-prodotti');
         if (inputProdotti.value.trim() === "") {
             inputProdotti.value = voce;
         } else {
             inputProdotti.value += " + " + voce;
         }
+        cambiaPagina('ordine');
     };
 
     onValue(ref(db, 'infoSerata/ospiteCorrente'), (snapshot) => {
@@ -269,12 +347,13 @@
         
         if(!cliente) {
             alert("Per favore, inserite il vostro nome.");
+            cambiaPagina('ordine');
             document.getElementById('input-cliente').focus();
             return;
         }
         if(!prodotti) {
-            alert("Selezionate o scrivete qualcosa dal menu.");
-            document.getElementById('input-prodotti').focus();
+            alert("Il carrello è vuoto. Scegliete qualcosa dal menu!");
+            cambiaPagina('menu');
             return;
         }
 
@@ -288,7 +367,9 @@
 
         localStorage.setItem('pizzeria_nome_utente', cliente);
         document.getElementById('input-prodotti').value = '';
+        
         alert("Ordine trasmesso con successo alla cucina! 🍕");
+        cambiaPagina('stato');
     };
 
     window.addEventListener('DOMContentLoaded', () => {
