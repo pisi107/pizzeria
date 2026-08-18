@@ -7,7 +7,9 @@
     <style>
         :root {
             --primary: #ff3b30;
-            --bg: #f5f5f7;
+            --primary-hover: #e0322b;
+            --success: #34c759;
+            --bg: #f2f2f7;
             --card-bg: #ffffff;
             --text: #1d1d1f;
             --text-secondary: #86868b;
@@ -19,68 +21,94 @@
             margin: 0;
             padding: 20px;
             color: var(--text);
+            -webkit-font-smoothing: antialiased;
         }
         .container {
             max-width: 600px;
             margin: 0 auto;
         }
-        h2 {
+        .header {
             text-align: center;
             margin-bottom: 24px;
+        }
+        .header h2 {
+            margin: 0 0 4px 0;
+            font-size: 24px;
             font-weight: 700;
+        }
+        .header p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin: 0;
         }
         .input-group {
             background: var(--card-bg);
             padding: 16px 20px;
             border-radius: 16px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
         }
         .input-group label {
             display: block;
             font-weight: 600;
             margin-bottom: 8px;
-            font-size: 14px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .input-group input {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             box-sizing: border-box;
             border: 1px solid #d2d2d7;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 16px;
             outline: none;
+            background: #fafafa;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .input-group input:focus {
+            border-color: var(--primary);
+            background: #ffffff;
         }
         .card {
             background: var(--card-bg);
             padding: 20px;
             border-radius: 16px;
             margin-bottom: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
-        .card h3 {
-            margin: 0 0 6px 0;
+        .card-content h3 {
+            margin: 0 0 4px 0;
             font-size: 18px;
             font-weight: 600;
         }
-        .card p {
+        .card-content p {
             color: var(--text-secondary);
             font-size: 14px;
-            margin: 0 0 16px 0;
+            margin: 0;
+            line-height: 1.4;
         }
         .card button {
             width: 100%;
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 16px;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.1s;
+            transition: background-color 0.2s, transform 0.1s;
         }
         .card button:active { transform: scale(0.98); }
+        .card button.success {
+            background-color: var(--success) !important;
+        }
         .card button:disabled {
             background-color: var(--gray-btn) !important;
             color: #8e8e93;
@@ -91,34 +119,37 @@
 <body>
 
     <div class="container">
-        <h2>🍕 Ordina la tua Pizza</h2>
+        <div class="header">
+            <h2>🍕 Pizzeria Master</h2>
+            <p>Scegli la tua pizza preferita</p>
+        </div>
         
         <div class="input-group">
-            <label for="nome">Il tuo nome:</label>
-            <input type="text" id="nome" placeholder="Inserisci il tuo nome">
+            <label for="nome">Il tuo nome</label>
+            <input type="text" id="nome" placeholder="es. Mario Rossi">
         </div>
 
-        <div class="card"><h3>Margherita</h3><p>Pomodoro, Mozzarella, Basilico</p><button id="btn-margherita" onclick="inviaOrdine('Margherita')">Ordina Margherita</button></div>
-        <div class="card"><h3>Diavola</h3><p>Pomodoro, Mozzarella, Salame piccante</p><button id="btn-diavola" onclick="inviaOrdine('Diavola')">Ordina Diavola</button></div>
-        <div class="card"><h3>4 Formaggi</h3><p>Mozzarella, Gorgonzola, Fontina, Parmigiano</p><button id="btn-4formaggi" onclick="inviaOrdine('4 Formaggi')">Ordina 4 Formaggi</button></div>
-        <div class="card"><h3>Capricciosa</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Funghi, Carciofi, Olive</p><button id="btn-capricciosa" onclick="inviaOrdine('Capricciosa')">Ordina Capricciosa</button></div>
-        <div class="card"><h3>Marinara</h3><p>Pomodoro, Aglio, Origano, Olio EVO</p><button id="btn-marinara" onclick="inviaOrdine('Marinara')">Ordina Marinara</button></div>
-        <div class="card"><h3>Vegetariana</h3><p>Pomodoro, Mozzarella, Zucchine, Melanzane, Peperoni</p><button id="btn-vegetariana" onclick="inviaOrdine('Vegetariana')">Ordina Vegetariana</button></div>
-        <div class="card"><h3>Prosciutto e Funghi</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Funghi freschi</p><button id="btn-prosciuttoefunghi" onclick="inviaOrdine('Prosciutto e Funghi')">Ordina Prosciutto e Funghi</button></div>
-        <div class="card"><h3>Quattro Stagioni</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Funghi, Carciofi, Olive</p><button id="btn-quattrostagioni" onclick="inviaOrdine('Quattro Stagioni')">Ordina Quattro Stagioni</button></div>
-        <div class="card"><h3>Bufalina</h3><p>Pomodoro, Mozzarella di Bufala Campana DOP, Basilico</p><button id="btn-bufalina" onclick="inviaOrdine('Bufalina')">Ordina Bufalina</button></div>
-        <div class="card"><h3>Boscaiola</h3><p>Mozzarella, Salsiccia, Funghi pioppini, Panna</p><button id="btn-boscaiola" onclick="inviaOrdine('Boscaiola')">Ordina Boscaiola</button></div>
-        <div class="card"><h3>Bresaola e Rucola</h3><p>Mozzarella, Bresaola, Rucola, Grana</p><button id="btn-bresaolaerucola" onclick="inviaOrdine('Bresaola e Rucola')">Ordina Bresaola e Rucola</button></div>
-        <div class="card"><h3>Americana</h3><p>Pomodoro, Mozzarella, Wurstel, Patatine fritte</p><button id="btn-americana" onclick="inviaOrdine('Americana')">Ordina Americana</button></div>
-        <div class="card"><h3>Calzone Classico</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Salame</p><button id="btn-calzoneclassico" onclick="inviaOrdine('Calzone Classico')">Ordina Calzone Classico</button></div>
-        <div class="card"><h3>Napoli</h3><p>Pomodoro, Mozzarella, Acciughe, Origano</p><button id="btn-napoli" onclick="inviaOrdine('Napoli')">Ordina Napoli</button></div>
-        <div class="card"><h3>Romana</h3><p>Pomodoro, Mozzarella, Acciughe, Capperi, Origano</p><button id="btn-romana" onclick="inviaOrdine('Romana')">Ordina Romana</button></div>
-        <div class="card"><h3>Pugliese</h3><p>Pomodoro, Mozzarella, Cipolla rossa, Origano</p><button id="btn-pugliese" onclick="inviaOrdine('Pugliese')">Ordina Pugliese</button></div>
-        <div class="card"><h3>Salsiccia e Friarelli</h3><p>Mozzarella, Salsiccia, Friarelli napoletani</p><button id="btn-salsicciaefriarelli" onclick="inviaOrdine('Salsiccia e Friarelli')">Ordina Salsiccia e Friarelli</button></div>
-        <div class="card"><h3>Tonno e Cipolla</h3><p>Pomodoro, Mozzarella, Tonno, Cipolla rossa</p><button id="btn-tonnoecipolla" onclick="inviaOrdine('Tonno e Cipolla')">Ordina Tonno e Cipolla</button></div>
-        <div class="card"><h3>Siciliana</h3><p>Pomodoro, Mozzarella, Melanzane, Ricotta salata</p><button id="btn-siciliana" onclick="inviaOrdine('Siciliana')">Ordina Siciliana</button></div>
-        <div class="card"><h3>Tirolese</h3><p>Pomodoro, Mozzarella, Speck, Gorgonzola</p><button id="btn-tirolese" onclick="inviaOrdine('Tirolese')">Ordina Tirolese</button></div>
-        <div class="card"><h3>Pistacchiosa</h3><p>Mozzarella, Mortadella, Pistacchio, Burrata</p><button id="btn-pistacchiosa" onclick="inviaOrdine('Pistacchiosa')">Ordina Pistacchiosa</button></div>
+        <div class="card"><div class="card-content"><h3>Margherita</h3><p>Pomodoro, Mozzarella, Basilico</p></div><button id="btn-margherita" onclick="inviaOrdine('Margherita', this)">Ordina Margherita</button></div>
+        <div class="card"><div class="card-content"><h3>Diavola</h3><p>Pomodoro, Mozzarella, Salame piccante</p></div><button id="btn-diavola" onclick="inviaOrdine('Diavola', this)">Ordina Diavola</button></div>
+        <div class="card"><div class="card-content"><h3>4 Formaggi</h3><p>Mozzarella, Gorgonzola, Fontina, Parmigiano</p></div><button id="btn-4formaggi" onclick="inviaOrdine('4 Formaggi', this)">Ordina 4 Formaggi</button></div>
+        <div class="card"><div class="card-content"><h3>Capricciosa</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Funghi, Carciofi, Olive</p></div><button id="btn-capricciosa" onclick="inviaOrdine('Capricciosa', this)">Ordina Capricciosa</button></div>
+        <div class="card"><div class="card-content"><h3>Marinara</h3><p>Pomodoro, Aglio, Origano, Olio EVO</p></div><button id="btn-marinara" onclick="inviaOrdine('Marinara', this)">Ordina Marinara</button></div>
+        <div class="card"><div class="card-content"><h3>Vegetariana</h3><p>Pomodoro, Mozzarella, Zucchine, Melanzane, Peperoni</p></div><button id="btn-vegetariana" onclick="inviaOrdine('Vegetariana', this)">Ordina Vegetariana</button></div>
+        <div class="card"><div class="card-content"><h3>Prosciutto e Funghi</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Funghi freschi</p></div><button id="btn-prosciuttoefunghi" onclick="inviaOrdine('Prosciutto e Funghi', this)">Ordina Prosciutto e Funghi</button></div>
+        <div class="card"><div class="card-content"><h3>Quattro Stagioni</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Funghi, Carciofi, Olive</p></div><button id="btn-quattrostagioni" onclick="inviaOrdine('Quattro Stagioni', this)">Ordina Quattro Stagioni</button></div>
+        <div class="card"><div class="card-content"><h3>Bufalina</h3><p>Pomodoro, Mozzarella di Bufala Campana DOP, Basilico</p></div><button id="btn-bufalina" onclick="inviaOrdine('Bufalina', this)">Ordina Bufalina</button></div>
+        <div class="card"><div class="card-content"><h3>Boscaiola</h3><p>Mozzarella, Salsiccia, Funghi pioppini, Panna</p></div><button id="btn-boscaiola" onclick="inviaOrdine('Boscaiola', this)">Ordina Boscaiola</button></div>
+        <div class="card"><div class="card-content"><h3>Bresaola e Rucola</h3><p>Mozzarella, Bresaola, Rucola, Grana</p></div><button id="btn-bresaolaerucola" onclick="inviaOrdine('Bresaola e Rucola', this)">Ordina Bresaola e Rucola</button></div>
+        <div class="card"><div class="card-content"><h3>Americana</h3><p>Pomodoro, Mozzarella, Wurstel, Patatine fritte</p></div><button id="btn-americana" onclick="inviaOrdine('Americana', this)">Ordina Americana</button></div>
+        <div class="card"><div class="card-content"><h3>Calzone Classico</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Salame</p></div><button id="btn-calzoneclassico" onclick="inviaOrdine('Calzone Classico', this)">Ordina Calzone Classico</button></div>
+        <div class="card"><div class="card-content"><h3>Napoli</h3><p>Pomodoro, Mozzarella, Acciughe, Origano</p></div><button id="btn-napoli" onclick="inviaOrdine('Napoli', this)">Ordina Napoli</button></div>
+        <div class="card"><div class="card-content"><h3>Romana</h3><p>Pomodoro, Mozzarella, Acciughe, Capperi, Origano</p></div><button id="btn-romana" onclick="inviaOrdine('Romana', this)">Ordina Romana</button></div>
+        <div class="card"><div class="card-content"><h3>Pugliese</h3><p>Pomodoro, Mozzarella, Cipolla rossa, Origano</p></div><button id="btn-pugliese" onclick="inviaOrdine('Pugliese', this)">Ordina Pugliese</button></div>
+        <div class="card"><div class="card-content"><h3>Salsiccia e Friarelli</h3><p>Mozzarella, Salsiccia, Friarelli napoletani</p></div><button id="btn-salsicciaefriarelli" onclick="inviaOrdine('Salsiccia e Friarelli', this)">Ordina Salsiccia e Friarelli</button></div>
+        <div class="card"><div class="card-content"><h3>Tonno e Cipolla</h3><p>Pomodoro, Mozzarella, Tonno, Cipolla rossa</p></div><button id="btn-tonnoecipolla" onclick="inviaOrdine('Tonno e Cipolla', this)">Ordina Tonno e Cipolla</button></div>
+        <div class="card"><div class="card-content"><h3>Siciliana</h3><p>Pomodoro, Mozzarella, Melanzane, Ricotta salata</p></div><button id="btn-siciliana" onclick="inviaOrdine('Siciliana', this)">Ordina Siciliana</button></div>
+        <div class="card"><div class="card-content"><h3>Tirolese</h3><p>Pomodoro, Mozzarella, Speck, Gorgonzola</p></div><button id="btn-tirolese" onclick="inviaOrdine('Tirolese', this)">Ordina Tirolese</button></div>
+        <div class="card"><div class="card-content"><h3>Pistacchiosa</h3><p>Mozzarella, Mortadella, Pistacchio, Burrata</p></div><button id="btn-pistacchiosa" onclick="inviaOrdine('Pistacchiosa', this)">Ordina Pistacchiosa</button></div>
     </div>
 
     <script type="module">
@@ -128,17 +159,30 @@
         const app = initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" });
         const db = getDatabase(app);
 
-        window.inviaOrdine = function(pizza) {
+        window.inviaOrdine = function(pizza, btn) {
             const nomeCliente = document.getElementById('nome').value.trim();
             if (!nomeCliente) {
-                alert("Per favore, inserisci il tuo nome!");
+                alert("Per favore, inserisci prima il tuo nome!");
+                document.getElementById('nome').focus();
                 return;
             }
-            // Invia l'ordine in silenzio senza mostrare pop-up di conferma fastidiosi
+
+            // Effetto visivo immediato sul bottone
+            const testoOriginale = btn.innerText;
+            btn.innerText = "✓ Ordinato!";
+            btn.classList.add('success');
+            btn.disabled = true;
+
             push(ref(db, 'ordini'), {
                 cliente: nomeCliente,
                 pizza: pizza,
                 orario: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            }).then(() => {
+                setTimeout(() => {
+                    btn.innerText = testoOriginale;
+                    btn.classList.remove('success');
+                    btn.disabled = false;
+                }, 1500);
             });
         };
 
@@ -154,7 +198,7 @@
             const data = snapshot.val() || {};
             pizze.forEach(nome => {
                 const btn = document.getElementById('btn-' + nome);
-                if (btn) {
+                if (btn && !btn.classList.contains('success')) {
                     if (data[nome] === false) {
                         btn.disabled = true;
                         btn.innerText = "Non disponibile";
