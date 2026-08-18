@@ -3,22 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pizzeria di Famiglia 🍕</title>
+    <title>Trattoria di Famiglia 🍕</title>
     <style>
         :root { 
-            --primary: #ff3b30; 
-            --primary-hover: #e0322b;
-            --success: #34c759; 
-            --bg: #f8f8fa; 
-            --card-bg: #ffffff; 
-            --text: #1d1d1f; 
-            --gray: #86868b; 
-            --blue: #007aff; 
-            --radius: 18px;
+            --primary: #8b0000; 
+            --success: #2e7d32; 
+            --bg: #f7f3e8; 
+            --card-bg: #fffdf9; 
+            --text: #2c221e; 
+            --gray: #7d7065; 
+            --accent: #d4a373; 
         }
 
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            font-family: "Georgia", serif; 
             background-color: var(--bg); 
             margin: 0; 
             padding: 20px; 
@@ -28,81 +26,86 @@
 
         .container { max-width: 550px; margin: 0 auto; }
 
-        /* Header Accattivante */
+        /* Stile Antico / Menu Ristorante */
         .header { 
-            background: linear-gradient(135deg, #ff3b30, #ff9500); 
-            color: white; 
-            padding: 25px 20px; 
-            border-radius: var(--radius); 
+            background: var(--card-bg); 
+            color: var(--text); 
+            padding: 30px 20px; 
+            border-radius: 12px; 
             text-align: center; 
             margin-bottom: 25px; 
-            box-shadow: 0 8px 25px rgba(255, 59, 48, 0.25); 
+            border: 3px double var(--accent);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
         }
-        .header h1 { margin: 0 0 8px 0; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
-        .header p { margin: 0; font-size: 15px; opacity: 0.95; font-weight: 500; }
+        .header h1 { margin: 0 0 8px 0; font-size: 28px; font-weight: normal; font-style: italic; letter-spacing: 1px; color: var(--primary); }
+        .header p { margin: 0; font-size: 15px; font-style: italic; color: var(--gray); }
 
-        /* Box Stato Serata / Ospite */
+        /* Box Stato Serata */
         .serata-banner { 
-            background: white; 
+            background: var(--card-bg); 
             padding: 14px 18px; 
-            border-radius: 14px; 
+            border-radius: 10px; 
             margin-bottom: 25px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04); 
+            border: 1px solid var(--accent);
             display: flex; 
             align-items: center; 
             gap: 12px;
-            border-left: 5px solid var(--blue);
         }
-        .serata-banner span { font-size: 15px; font-weight: 600; color: var(--text); }
+        .serata-banner span { font-size: 16px; }
 
         /* Sezioni */
         .section-title { 
-            font-size: 19px; 
-            font-weight: 800; 
-            margin: 25px 0 15px 5px; 
-            letter-spacing: -0.3px;
+            font-size: 20px; 
+            font-style: italic; 
+            font-weight: normal; 
+            margin: 30px 0 15px 5px; 
+            color: var(--primary);
+            border-bottom: 1px dashed var(--accent);
+            padding-bottom: 5px;
         }
 
-        /* Form Ordinazione */
+        /* Card Form Ordine */
         .card-form { 
             background: var(--card-bg); 
-            padding: 22px; 
-            border-radius: var(--radius); 
-            box-shadow: 0 6px 20px rgba(0,0,0,0.05); 
+            padding: 25px; 
+            border-radius: 12px; 
+            border: 1px solid var(--accent); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
             margin-bottom: 25px; 
         }
         
-        .input-group { margin-bottom: 18px; }
-        .input-group label { display: block; font-size: 14px; font-weight: 700; margin-bottom: 8px; color: #444; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 14px; font-style: italic; font-weight: bold; margin-bottom: 8px; color: var(--gray); }
         
         .input-group input { 
             width: 100%; 
-            padding: 14px 16px; 
-            border: 2px solid #e5e5ea; 
-            border-radius: 12px; 
+            padding: 12px 16px; 
+            border: 1px solid var(--accent); 
+            border-radius: 8px; 
             font-size: 16px; 
+            font-family: "Georgia", serif;
             outline: none; 
             box-sizing: border-box; 
-            transition: all 0.2s ease;
-            background: #fafafc;
+            background: #fff;
+            color: var(--text);
         }
-        .input-group input:focus { border-color: var(--blue); background: #fff; box-shadow: 0 0 0 4px rgba(0,122,255,0.1); }
+        .input-group input:focus { border-color: var(--primary); }
 
-        /* Pulsanti Prodotti / Categorie veloci */
-        .quick-pizze { 
+        /* Menu Categorie in stile antico */
+        .category-subtitle { font-size: 15px; font-style: italic; font-weight: bold; color: var(--primary); margin: 20px 0 10px 2px; }
+        .menu-grid { 
             display: grid; 
             grid-template-columns: repeat(2, 1fr); 
-            gap: 10px; 
-            margin-bottom: 15px; 
+            gap: 8px; 
         }
-        .btn-pizza-preset { 
-            background: #f1f1f6; 
-            border: 2px solid transparent; 
+        .btn-menu-item { 
+            background: #fdfbf7; 
+            border: 1px solid #e8dfd1; 
             padding: 12px; 
-            border-radius: 12px; 
+            border-radius: 8px; 
             font-size: 14px; 
-            font-weight: 700; 
-            color: #333; 
+            font-style: italic;
+            color: var(--text); 
             cursor: pointer; 
             text-align: left;
             transition: all 0.2s;
@@ -110,58 +113,56 @@
             justify-content: space-between;
             align-items: center;
         }
-        .btn-pizza-preset:hover { background: #e5e5ea; border-color: #d1d1d6; }
-        .btn-pizza-preset.active { background: #e8f4fd; border-color: var(--blue); color: var(--blue); }
+        .btn-menu-item:hover { background: #f4ecdf; border-color: var(--accent); }
+        .btn-menu-item:active { transform: scale(0.98); }
 
-        /* Pulsante Invia Ordine Gigante */
+        /* Pulsante Invia Ordine */
         .btn-invia { 
-            background: linear-gradient(135deg, var(--success), #28a745); 
+            background: var(--primary); 
             color: white; 
             border: none; 
             width: 100%; 
             padding: 16px; 
-            border-radius: 14px; 
-            font-size: 17px; 
-            font-weight: 800; 
+            border-radius: 8px; 
+            font-size: 16px; 
+            font-style: italic; 
+            font-weight: bold; 
             cursor: pointer; 
-            box-shadow: 0 6px 20px rgba(52, 199, 89, 0.35);
-            transition: transform 0.1s, opacity 0.2s;
+            box-shadow: 0 4px 10px rgba(139, 0, 0, 0.2);
+            margin-top: 15px;
         }
         .btn-invia:active { transform: scale(0.98); }
 
-        /* Lista Ordini Inviati dall'ospite */
+        /* Lista Ordini Inviati */
         .order-status-card { 
-            background: white; 
+            background: var(--card-bg); 
             padding: 16px 20px; 
-            border-radius: 14px; 
+            border-radius: 10px; 
             margin-bottom: 12px; 
-            box-shadow: 0 3px 10px rgba(0,0,0,0.03); 
+            border: 1px solid var(--accent); 
             display: flex; 
             justify-content: space-between; 
             align-items: center;
-            border-left: 5px solid var(--success);
-            animation: fadeIn 0.3s ease;
         }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         .badge-attivo { 
-            background: #e1f5fe; 
-            color: #0288d1; 
+            background: #e8f5e9; 
+            color: var(--success); 
             padding: 6px 12px; 
-            border-radius: 20px; 
+            border-radius: 15px; 
             font-size: 12px; 
-            font-weight: 700; 
-            text-transform: uppercase;
+            font-style: italic; 
+            font-weight: bold; 
         }
 
         .empty-state { 
             text-align: center; 
             color: var(--gray); 
             font-style: italic; 
-            background: white; 
+            background: var(--card-bg); 
             padding: 25px; 
-            border-radius: var(--radius); 
-            box-shadow: 0 3px 10px rgba(0,0,0,0.02); 
+            border-radius: 10px; 
+            border: 1px solid var(--accent); 
         }
     </style>
 </head>
@@ -171,46 +172,68 @@
     
     <!-- HEADER -->
     <div class="header">
-        <h1>🍕 Pizzeria di Famiglia</h1>
-        <p>Scegli la tua pizza e ordinala al volo!</p>
+        <h1>~ Pizzeria di Famiglia ~</h1>
+        <p>Il nostro menu artigianale, direttamente in tavola</p>
     </div>
 
     <!-- BANNER SERATA IN CORSO -->
     <div class="serata-banner">
-        <span style="font-size: 20px;">✨</span>
-        <div id="display-serata" style="font-weight: 700; color: #333; font-size: 15px;">Caricamento serata...</div>
+        <span>✨</span>
+        <div id="display-serata" style="font-style: italic; color: var(--text); font-size: 15px;">Caricamento serata...</div>
     </div>
 
     <!-- CARD FORM ORDINE -->
-    <div class="section-title">📝 Fai il tuo Ordine</div>
+    <div class="section-title">La Vostra Ordinazione</div>
     <div class="card-form">
         <div class="input-group">
-            <label for="input-cliente">Il tuo Nome</label>
+            <label for="input-cliente">Il Vostro Nome</label>
             <input type="text" id="input-cliente" placeholder="es. Marco, Sara, Nonno...">
         </div>
 
         <div class="input-group">
-            <label>Scelte Rapide (tocca per aggiungere)</label>
-            <div class="quick-pizze">
-                <button type="button" class="btn-pizza-preset" onclick="aggiungiPizza('Margherita 🍅')"><span>Margherita</span> ➕</button>
-                <button type="button" class="btn-pizza-preset" onclick="aggiungiPizza('Diavola 🌶️')"><span>Diavola</span> ➕</button>
-                <button type="button" class="btn-pizza-preset" onclick="aggiungiPizza('Capricciosa 🍄')"><span>Capricciosa</span> ➕</button>
-                <button type="button" class="btn-pizza-preset" onclick="aggiungiPizza('Wudy / Patatine 🍟')"><span>Bambini</span> ➕</button>
+            <label>Le Nostre Proposte (clicca per aggiungere)</label>
+            
+            <!-- Pizze Classiche -->
+            <div class="category-subtitle">- Pizze Classiche -</div>
+            <div class="menu-grid">
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Margherita')"><span>Margherita</span> ➕</button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Marinara')"><span>Marinara</span> ➕</button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Diavola')"><span>Diavola</span> ➕</button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Capricciosa')"><span>Capricciosa</span> ➕</button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Quattro Formaggi')"><span>4 Formaggi</span> ➕</button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Wudy e Patatine')"><span>Wudy e Patatine</span> ➕</button>
+            </div>
+
+            <!-- Focacce & Speciali -->
+            <div class="category-subtitle">- Focacce & Speciali -</div>
+            <div class="menu-grid">
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Focaccia Liscia')"><span>Focaccia Liscia</span> ➕</button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Focaccia Rosmarino')"><span>Rosmarino / Olio</span> ➕</button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Pizza Speciale dello Chef')"><span>Speciale dello Chef</span> ➕</button>
+            </div>
+
+            <!-- Bibite & Birre -->
+            <div class="category-subtitle">- Bibite & Cantina -</div>
+            <div class="menu-grid">
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Coca Cola')"><span>Coca Cola</span> ➕</button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Acqua Naturale')"><span>Acqua Naturale</span> ➕</button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Acqua Frizzante')"><span>Acqua Frizzante</span> ➕</button>
+                <button type="button" class="btn-menu-item" onclick="aggiungiVoce('Birra')"><span>Birra artigianale</span> ➕</button>
             </div>
         </div>
 
         <div class="input-group">
-            <label for="input-prodotti">Cosa desideri ordinare?</label>
-            <input type="text" id="input-prodotti" placeholder="es. 1 Margherita e una Coca Cola">
+            <label for="input-prodotti">Il vostro ordine</label>
+            <input type="text" id="input-prodotti" placeholder="es. Margherita + Coca Cola">
         </div>
 
-        <button class="btn-invia" onclick="inviaOrdine()">Invia in Cucina 🚀</button>
+        <button class="btn-invia" onclick="inviaOrdine()">Invia l'Ordine alla Cucina 🍷</button>
     </div>
 
     <!-- I MIEI ORDINI ATTIVI -->
-    <div class="section-title">📋 I tuoi Ordini in Corso</div>
+    <div class="section-title">I Vostri Ordini in Corso</div>
     <div id="miei-ordini-container">
-        <div class="empty-state">Non hai ancora inviato ordini stasera.</div>
+        <div class="empty-state">Nessun ordine registrato al momento.</div>
     </div>
 
 </div>
@@ -221,39 +244,36 @@
     
     const db = getDatabase(initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" }));
 
-    // Funzione per aggiungere rapidamente le pizze al campo di testo
-    window.aggiungiPizza = (testoPizza) => {
+    window.aggiungiVoce = (voce) => {
         const inputProdotti = document.getElementById('input-prodotti');
         if (inputProdotti.value.trim() === "") {
-            inputProdotti.value = testoPizza;
+            inputProdotti.value = voce;
         } else {
-            inputProdotti.value += " + " + testoPizza;
+            inputProdotti.value += " + " + voce;
         }
     };
 
-    // Leggi il nome della serata impostata in cucina
     onValue(ref(db, 'infoSerata/ospiteCorrente'), (snapshot) => {
         const ospite = snapshot.val();
         const display = document.getElementById('display-serata');
         if(ospite) {
-            display.innerText = `Serata: "${ospite}"`;
+            display.innerText = `Serata dedicata a: "${ospite}"`;
         } else {
             display.innerText = `Serata Pizzeria di Famiglia`;
         }
     });
 
-    // Funzione per inviare l'ordine
     window.inviaOrdine = () => {
         const cliente = document.getElementById('input-cliente').value.trim();
         const prodotti = document.getElementById('input-prodotti').value.trim();
         
         if(!cliente) {
-            alert("Per favore, inserisci il tuo nome!");
+            alert("Per favore, inserite il vostro nome.");
             document.getElementById('input-cliente').focus();
             return;
         }
         if(!prodotti) {
-            alert("Scrivi cosa vorresti ordinare!");
+            alert("Selezionate o scrivete qualcosa dal menu.");
             document.getElementById('input-prodotti').focus();
             return;
         }
@@ -266,15 +286,11 @@
             orario: orarioCorrente
         });
 
-        // Salva il nome nel browser così la prossima volta non deve riscriverlo
         localStorage.setItem('pizzeria_nome_utente', cliente);
-
-        // Pulisci solo i prodotti, mantieni il nome
         document.getElementById('input-prodotti').value = '';
-        alert("Ordine inviato con successo alla cucina! 🍕🔥");
+        alert("Ordine trasmesso con successo alla cucina! 🍕");
     };
 
-    // Riempi automaticamente il nome se l'utente lo aveva già inserito in precedenza
     window.addEventListener('DOMContentLoaded', () => {
         const salvato = localStorage.getItem('pizzeria_nome_utente');
         if(salvato) {
@@ -282,31 +298,28 @@
         }
     });
 
-    // Ascolta gli ordini attivi per mostrare all'ospite cosa ha in sospeso
     onValue(ref(db, 'ordini'), (snapshot) => {
         const ordini = snapshot.val() || {};
         const container = document.getElementById('miei-ordini-container');
-        const nomeCorrente = document.getElementById('input-cliente').value.trim().toLowerCase();
         
         container.innerHTML = '';
-        let mieiOrdiniTrovati = false;
+        let ordiniTrovati = false;
 
         Object.entries(ordini).forEach(([id, o]) => {
-            // Mostriamo gli ordini se corrispondono al nome inserito (o mostriamo tutti se il campo è vuoto per comodità)
             container.innerHTML += `
                 <div class="order-status-card">
                     <div>
-                        <strong style="font-size: 16px; color: #111;">👤 ${o.cliente}</strong><br>
-                        <span style="font-size: 14px; color: #444; font-weight: 500;">🍕 ${o.prodotti}</span><br>
-                        <small style="color: var(--gray);">${o.orario}</small>
+                        <strong style="font-size: 16px; font-style: italic; color: var(--text);">👤 ${o.cliente}</strong><br>
+                        <span style="font-size: 14px; font-style: italic; color: var(--gray);">🍕 ${o.prodotti}</span><br>
+                        <small style="color: var(--gray); font-style: italic;">${o.orario}</small>
                     </div>
                     <span class="badge-attivo">In preparazione</span>
                 </div>`;
-            mieiOrdiniTrovati = true;
+            ordiniTrovati = true;
         });
 
-        if (!mieiOrdiniTrovati) {
-            container.innerHTML = '<div class="empty-state">Nessun ordine attivo al momento. Fai il tuo primo ordine!</div>';
+        if (!ordiniTrovati) {
+            container.innerHTML = '<div class="empty-state">Nessun ordine registrato al momento.</div>';
         }
     });
 </script>
