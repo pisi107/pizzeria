@@ -3,273 +3,313 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pizzeria di Famiglia - Menu & Ordini</title>
+    <title>Pizzeria di Famiglia 🍕</title>
     <style>
-        :root { --primary: #ff3b30; --success: #34c759; --bg: #f2f2f7; --card-bg: #ffffff; --text: #1d1d1f; --gray: #86868b; }
-        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: var(--bg); margin: 0; padding: 20px; padding-bottom: 120px; color: var(--text); }
-        .container { max-width: 600px; margin: 0 auto; }
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h2 { margin: 0 0 5px 0; }
-        .header p { color: var(--gray); font-size: 14px; margin: 0; }
-        .input-group { background: var(--card-bg); padding: 15px; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .input-group label { display: block; font-size: 12px; font-weight: 600; color: var(--gray); margin-bottom: 5px; text-transform: uppercase; }
-        input { width: 100%; padding: 12px; border: 1px solid #d2d2d7; border-radius: 12px; box-sizing: border-box; font-size: 15px; outline: none; }
-        
-        .cat-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 10px; scrollbar-width: none; }
-        .cat-scroll::-webkit-scrollbar { display: none; }
-        .cat-btn { background: var(--card-bg); border: none; padding: 8px 16px; border-radius: 20px; font-weight: 600; color: var(--gray); cursor: pointer; white-space: nowrap; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
-        .cat-btn.active { background: var(--primary); color: white; }
-        
-        .section-title { font-size: 18px; font-weight: 700; margin: 20px 0 10px 5px; }
-        .card { background: var(--card-bg); padding: 15px; border-radius: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); display: flex; gap: 15px; align-items: center; transition: 0.3s; }
-        .card.esaurito { opacity: 0.5; background: #e5e5ea; }
-        
-        .card-icon { width: 65px; height: 65px; border-radius: 14px; background: #fff5f5; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .card.esaurito .card-icon { background: #d1d1d6; }
-        .card-icon svg { width: 38px; height: 38px; fill: var(--primary); }
-        .card.esaurito .card-icon svg { fill: #86868b; }
+        :root { 
+            --primary: #ff3b30; 
+            --primary-hover: #e0322b;
+            --success: #34c759; 
+            --bg: #f8f8fa; 
+            --card-bg: #ffffff; 
+            --text: #1d1d1f; 
+            --gray: #86868b; 
+            --blue: #007aff; 
+            --radius: 18px;
+        }
 
-        .card-content { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
-        .card-top { margin-bottom: 8px; }
-        .card-info h3 { margin: 0 0 2px 0; font-size: 16px; display: flex; align-items: center; gap: 8px; }
-        .card-info p { color: var(--gray); font-size: 12px; margin: 0; }
-        .badge-esaurito { background: var(--primary); color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 700; text-transform: uppercase; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            background-color: var(--bg); 
+            margin: 0; 
+            padding: 20px; 
+            padding-bottom: 100px; 
+            color: var(--text); 
+        }
+
+        .container { max-width: 550px; margin: 0 auto; }
+
+        /* Header Accattivante */
+        .header { 
+            background: linear-gradient(135deg, #ff3b30, #ff9500); 
+            color: white; 
+            padding: 25px 20px; 
+            border-radius: var(--radius); 
+            text-align: center; 
+            margin-bottom: 25px; 
+            box-shadow: 0 8px 25px rgba(255, 59, 48, 0.25); 
+        }
+        .header h1 { margin: 0 0 8px 0; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
+        .header p { margin: 0; font-size: 15px; opacity: 0.95; font-weight: 500; }
+
+        /* Box Stato Serata / Ospite */
+        .serata-banner { 
+            background: white; 
+            padding: 14px 18px; 
+            border-radius: 14px; 
+            margin-bottom: 25px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04); 
+            display: flex; 
+            align-items: center; 
+            gap: 12px;
+            border-left: 5px solid var(--blue);
+        }
+        .serata-banner span { font-size: 15px; font-weight: 600; color: var(--text); }
+
+        /* Sezioni */
+        .section-title { 
+            font-size: 19px; 
+            font-weight: 800; 
+            margin: 25px 0 15px 5px; 
+            letter-spacing: -0.3px;
+        }
+
+        /* Form Ordinazione */
+        .card-form { 
+            background: var(--card-bg); 
+            padding: 22px; 
+            border-radius: var(--radius); 
+            box-shadow: 0 6px 20px rgba(0,0,0,0.05); 
+            margin-bottom: 25px; 
+        }
         
-        .card-bottom { display: flex; gap: 8px; align-items: center; width: 100%; }
-        .input-nota { flex-grow: 1; padding: 8px 10px; font-size: 13px; border: 1px solid #e5e5ea; border-radius: 8px; background: #fafafa; }
-        .btn-add { background: var(--primary); color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 600; cursor: pointer; white-space: nowrap; font-size: 13px; }
-        .btn-add:disabled { background: #d1d1d6; cursor: not-allowed; }
+        .input-group { margin-bottom: 18px; }
+        .input-group label { display: block; font-size: 14px; font-weight: 700; margin-bottom: 8px; color: #444; }
         
-        #cart-fab { position: fixed; bottom: 25px; right: 25px; background: var(--success); color: white; width: 60px; height: 60px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 4px 15px rgba(52, 199, 89, 0.4); z-index: 1000; border: none; cursor: pointer; }
-        #badge { position: absolute; top: -5px; right: -5px; background: var(--primary); color: white; font-size: 12px; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-        
-        .modal { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.5); display: none; align-items: flex-end; z-index: 2000; }
-        .modal-content { background: white; width: 100%; max-width: 600px; border-radius: 24px 24px 0 0; padding: 25px; max-height: 75vh; overflow-y: auto; box-sizing: border-box; }
-        .modal-item { display: flex; justify-content: space-between; align-items: center; background: #f2f2f7; padding: 10px 14px; border-radius: 10px; margin-bottom: 8px; font-size: 14px; }
-        .btn-rimuovi { background: none; border: none; color: var(--primary); font-weight: bold; cursor: pointer; font-size: 16px; }
-        .btn-send { width: 100%; background: var(--success); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; font-size: 16px; margin-top: 15px; cursor: pointer; }
+        .input-group input { 
+            width: 100%; 
+            padding: 14px 16px; 
+            border: 2px solid #e5e5ea; 
+            border-radius: 12px; 
+            font-size: 16px; 
+            outline: none; 
+            box-sizing: border-box; 
+            transition: all 0.2s ease;
+            background: #fafafc;
+        }
+        .input-group input:focus { border-color: var(--blue); background: #fff; box-shadow: 0 0 0 4px rgba(0,122,255,0.1); }
+
+        /* Pulsanti Prodotti / Categorie veloci */
+        .quick-pizze { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 10px; 
+            margin-bottom: 15px; 
+        }
+        .btn-pizza-preset { 
+            background: #f1f1f6; 
+            border: 2px solid transparent; 
+            padding: 12px; 
+            border-radius: 12px; 
+            font-size: 14px; 
+            font-weight: 700; 
+            color: #333; 
+            cursor: pointer; 
+            text-align: left;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn-pizza-preset:hover { background: #e5e5ea; border-color: #d1d1d6; }
+        .btn-pizza-preset.active { background: #e8f4fd; border-color: var(--blue); color: var(--blue); }
+
+        /* Pulsante Invia Ordine Gigante */
+        .btn-invia { 
+            background: linear-gradient(135deg, var(--success), #28a745); 
+            color: white; 
+            border: none; 
+            width: 100%; 
+            padding: 16px; 
+            border-radius: 14px; 
+            font-size: 17px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            box-shadow: 0 6px 20px rgba(52, 199, 89, 0.35);
+            transition: transform 0.1s, opacity 0.2s;
+        }
+        .btn-invia:active { transform: scale(0.98); }
+
+        /* Lista Ordini Inviati dall'ospite */
+        .order-status-card { 
+            background: white; 
+            padding: 16px 20px; 
+            border-radius: 14px; 
+            margin-bottom: 12px; 
+            box-shadow: 0 3px 10px rgba(0,0,0,0.03); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            border-left: 5px solid var(--success);
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .badge-attivo { 
+            background: #e1f5fe; 
+            color: #0288d1; 
+            padding: 6px 12px; 
+            border-radius: 20px; 
+            font-size: 12px; 
+            font-weight: 700; 
+            text-transform: uppercase;
+        }
+
+        .empty-state { 
+            text-align: center; 
+            color: var(--gray); 
+            font-style: italic; 
+            background: white; 
+            padding: 25px; 
+            border-radius: var(--radius); 
+            box-shadow: 0 3px 10px rgba(0,0,0,0.02); 
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="header">
-            <h2>🍕 Pizzeria di Famiglia</h2>
-            <p>Scegli i prodotti e invia l'ordine</p>
-        </div>
-        
+<div class="container">
+    
+    <!-- HEADER -->
+    <div class="header">
+        <h1>🍕 Pizzeria di Famiglia</h1>
+        <p>Scegli la tua pizza e ordinala al volo!</p>
+    </div>
+
+    <!-- BANNER SERATA IN CORSO -->
+    <div class="serata-banner">
+        <span style="font-size: 20px;">✨</span>
+        <div id="display-serata" style="font-weight: 700; color: #333; font-size: 15px;">Caricamento serata...</div>
+    </div>
+
+    <!-- CARD FORM ORDINE -->
+    <div class="section-title">📝 Fai il tuo Ordine</div>
+    <div class="card-form">
         <div class="input-group">
-            <label for="nome">Per chi è l'ordine?</label>
-            <input type="text" id="nome" placeholder="es. Marco, Mamma, Divano...">
+            <label for="input-cliente">Il tuo Nome</label>
+            <input type="text" id="input-cliente" placeholder="es. Marco, Sara, Nonno...">
         </div>
 
-        <div class="cat-scroll">
-            <button class="cat-btn active" onclick="filtra('tutte', this)">Tutto</button>
-            <button class="cat-btn" onclick="filtra('pizze', this)">Pizze</button>
-            <button class="cat-btn" onclick="filtra('focacce', this)">Focacce</button>
-            <button class="cat-btn" onclick="filtra('bibite', this)">Bibite</button>
-            <button class="cat-btn" onclick="filtra('birre', this)">Birre</button>
-            <button class="cat-btn" onclick="filtra('vini', this)">Vini</button>
+        <div class="input-group">
+            <label>Scelte Rapide (tocca per aggiungere)</label>
+            <div class="quick-pizze">
+                <button type="button" class="btn-pizza-preset" onclick="aggiungiPizza('Margherita 🍅')"><span>Margherita</span> ➕</button>
+                <button type="button" class="btn-pizza-preset" onclick="aggiungiPizza('Diavola 🌶️')"><span>Diavola</span> ➕</button>
+                <button type="button" class="btn-pizza-preset" onclick="aggiungiPizza('Capricciosa 🍄')"><span>Capricciosa</span> ➕</button>
+                <button type="button" class="btn-pizza-preset" onclick="aggiungiPizza('Wudy / Patatine 🍟')"><span>Bambini</span> ➕</button>
+            </div>
         </div>
 
-        <div id="menu-container"></div>
+        <div class="input-group">
+            <label for="input-prodotti">Cosa desideri ordinare?</label>
+            <input type="text" id="input-prodotti" placeholder="es. 1 Margherita e una Coca Cola">
+        </div>
+
+        <button class="btn-invia" onclick="inviaOrdine()">Invia in Cucina 🚀</button>
     </div>
 
-    <button id="cart-fab" onclick="apriModal()">🛒<span id="badge">0</span></button>
-
-    <div id="modal" class="modal" onclick="chiudiModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <h3>Il tuo ordine</h3>
-            <div id="lista-carrello" style="margin: 15px 0;"></div>
-            <button class="btn-send" onclick="inviaOrdine()">Invia in Cucina</button>
-        </div>
+    <!-- I MIEI ORDINI ATTIVI -->
+    <div class="section-title">📋 I tuoi Ordini in Corso</div>
+    <div id="miei-ordini-container">
+        <div class="empty-state">Non hai ancora inviato ordini stasera.</div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, onValue, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    
+    const db = getDatabase(initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" }));
+
+    // Funzione per aggiungere rapidamente le pizze al campo di testo
+    window.aggiungiPizza = (testoPizza) => {
+        const inputProdotti = document.getElementById('input-prodotti');
+        if (inputProdotti.value.trim() === "") {
+            inputProdotti.value = testoPizza;
+        } else {
+            inputProdotti.value += " + " + testoPizza;
+        }
+    };
+
+    // Leggi il nome della serata impostata in cucina
+    onValue(ref(db, 'infoSerata/ospiteCorrente'), (snapshot) => {
+        const ospite = snapshot.val();
+        const display = document.getElementById('display-serata');
+        if(ospite) {
+            display.innerText = `Serata: "${ospite}"`;
+        } else {
+            display.innerText = `Serata Pizzeria di Famiglia`;
+        }
+    });
+
+    // Funzione per inviare l'ordine
+    window.inviaOrdine = () => {
+        const cliente = document.getElementById('input-cliente').value.trim();
+        const prodotti = document.getElementById('input-prodotti').value.trim();
         
-        const db = getDatabase(initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" }));
-        let carrello = [];
+        if(!cliente) {
+            alert("Per favore, inserisci il tuo nome!");
+            document.getElementById('input-cliente').focus();
+            return;
+        }
+        if(!prodotti) {
+            alert("Scrivi cosa vorresti ordinare!");
+            document.getElementById('input-prodotti').focus();
+            return;
+        }
 
-        const icone = {
-            pizza: '<svg viewBox="0 0 24 24"><path d="M12 2.5C9.5 7.5 5 13 3 17.5c-.5 1.2.2 2.5 1.5 2.5h15c1.3 0 2-1.3 1.5-2.5C19 13 14.5 7.5 12 2.5zm0 4.2c1.7 3.5 4.5 7.9 6 11.3H6c1.5-3.4 4.3-7.8 6-11.3z"/><circle cx="10" cy="11" r="1.2"/><circle cx="14" cy="14" r="1.2"/><circle cx="11" cy="16" r="1"/></svg>',
-            focaccia: '<svg viewBox="0 0 24 24"><path d="M19 5H5C3.3 5 2 6.3 2 8v8c0 1.7 1.3 3 3 3h14c1.7 0 3-1.3 3-3V8c0-1.7-1.3-3-3-3zm-1 11H6c-.6 0-1-.4-1-1s.4-1 1-1h12c.6 0 1 .4 1 1s-.4 1-1 1zm0-4H6c-.6 0-1-.4-1-1s.4-1 1-1h12c.6 0 1 .4 1 1s-.4 1-1 1z"/><circle cx="8" cy="8.5" r="1"/><circle cx="16" cy="8.5" r="1"/></svg>',
-            bibita: '<svg viewBox="0 0 24 24"><path d="M6 2h12l-1.5 18.5c-.1 1-.9 1.5-1.9 1.5H9.4c-1 0-1.8-.5-1.9-1.5L6 2zm2.2 3l.7 3.5h6.2l.7-3.5H8.2z"/><path d="M13 2v3h1V2z"/></svg>',
-            birra: '<svg viewBox="0 0 24 24"><path d="M5 4h10c.6 0 1 .4 1 1v1.3c1.7.5 3 2 3 3.7v1.5c0 1.7-1.3 3.2-3 3.7V19c0 .6-.4 1-1 1H5c-.6 0-1-.4-1-1V5c0-.6.4-1 1-1zm11 5.5c1.1 0 2 .9 2 2v1.5c0 1.1-.9 2-2 2V9.5z"/><path d="M7 2h8v2H7z"/></svg>',
-            vino: '<svg viewBox="0 0 24 24"><path d="M6 3h12c.6 0 1 .4 1 1v1c0 3.3-2.2 6.1-5.2 6.8V19h3c.6 0 1 .4 1 1s-.4 1-1 1H9c-.6 0-1-.4-1-1s.4-1 1-1h3v-6.2C9.2 11.1 7 8.3 7 5V4c0-.6.4-1 1-1zm2 3h8v1c0 2.2-1.8 4-4 4s-4-1.8-4-4V6z"/></svg>'
-        };
+        const orarioCorrente = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-        const menuStruttura = [
-            { categoria: "Pizze", icona: 'pizza', prodotti: [
-                { id: "margherita", nome: "Margherita", desc: "Pomodoro, Mozzarella, Basilico" },
-                { id: "diavola", nome: "Diavola", desc: "Pomodoro, Mozzarella, Salame piccante" },
-                { id: "4formaggi", nome: "4 Formaggi", desc: "Mozzarella, Gorgonzola, Fontina, Parmigiano" },
-                { id: "capricciosa", nome: "Capricciosa", desc: "Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi" },
-                { id: "marinara", nome: "Marinara", desc: "Pomodoro, Aglio, Origano, Olio EVO" },
-                { id: "vegetariana", nome: "Vegetariana", desc: "Pomodoro, Mozzarella, Zucchine, Melanzane, Peperoni" },
-                { id: "prosciuttoefunghi", nome: "Prosciutto e Funghi", desc: "Pomodoro, Mozzarella, Prosciutto cotto, Funghi" },
-                { id: "quattrostagioni", nome: "Quattro Stagioni", desc: "Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi, Olive" },
-                { id: "bufalina", nome: "Bufalina", desc: "Pomodoro, Mozzarella di Bufala Campana DOP" },
-                { id: "boscaiola", nome: "Boscaiola", desc: "Mozzarella, Salsiccia, Funghi pioppini, Panna" },
-                { id: "bresaolaerucola", nome: "Bresaola e Rucola", desc: "Mozzarella, Bresaola, Rucola, Grana" },
-                { id: "americana", nome: "Americana", desc: "Pomodoro, Mozzarella, Wurstel, Patatine fritte" },
-                { id: "calzoneclassico", nome: "Calzone Classico", desc: "Pomodoro, Mozzarella, Prosciutto cotto, Salame" },
-                { id: "napoli", nome: "Napoli", desc: "Pomodoro, Mozzarella, Acciughe, Origano" },
-                { id: "romana", nome: "Romana", desc: "Pomodoro, Mozzarella, Acciughe, Capperi" },
-                { id: "pugliese", nome: "Pugliese", desc: "Pomodoro, Mozzarella, Cipolla rossa" },
-                { id: "salsicciaefriarelli", nome: "Salsiccia e Friarelli", desc: "Mozzarella, Salsiccia, Friarelli napoletani" },
-                { id: "tonnoecipolla", nome: "Tonno e Cipolla", desc: "Pomodoro, Mozzarella, Tonno, Cipolla rossa" },
-                { id: "siciliana", nome: "Siciliana", desc: "Pomodoro, Mozzarella, Melanzane, Ricotta salata" },
-                { id: "tirolese", nome: "Tirolese", desc: "Pomodoro, Mozzarella, Speck, Gorgonzola" },
-                { id: "pistacchiosa", nome: "Pistacchiosa", desc: "Mozzarella, Mortadella, Pistacchio, Burrata" }
-            ]},
-            { categoria: "Focacce", icona: 'focaccia', prodotti: [
-                { id: "focacciaclassica", nome: "Focaccia Classica", desc: "Olio, Sale, Rosmarino" },
-                { id: "focacciacrudo", nome: "Focaccia con Crudo", desc: "Olio, Prosciutto Crudo" }
-            ]},
-            { categoria: "Bibite", icona: 'bibita', prodotti: [
-                { id: "cocacola", nome: "Coca Cola 33cl", desc: "Lattina" },
-                { id: "fanta", nome: "Fanta 33cl", desc: "Lattina" },
-                { id: "acquanaturale", nome: "Acqua Naturale 0.75l", desc: "Bottiglia" },
-                { id: "acquafrizzante", nome: "Acqua Frizzante 0.75l", desc: "Bottiglia" }
-            ]},
-            { categoria: "Birre", icona: 'birra', prodotti: [
-                { id: "birraartigianale", nome: "Birra Artigianale 33cl", desc: "Bottiglia" },
-                { id: "birrachiara", nome: "Birra Chiara 66cl", desc: "Bottiglia" },
-                { id: "birrarossa", nome: "Birra Rossa 33cl", desc: "Bottiglia" }
-            ]},
-            { categoria: "Vini", icona: 'vino', prodotti: [
-                { id: "vinorosso", nome: "Calice di Vino Rosso", desc: "Calice" },
-                { id: "vinobianco", nome: "Calice di Vino Bianco", desc: "Calice" },
-                { id: "chianti", nome: "Bottiglia di Chianti", desc: "Bottiglia" }
-            ]}
-        ];
-
-        onValue(ref(db, 'disponibilita'), (snapshot) => {
-            const statoDisp = snapshot.val() || {};
-            const container = document.getElementById('menu-container');
-            container.innerHTML = '';
-
-            menuStruttura.forEach(catObj => {
-                const groupDiv = document.createElement('div');
-                groupDiv.className = 'categoria-group';
-                groupDiv.setAttribute('data-cat', catObj.categoria.toLowerCase());
-
-                const titolo = document.createElement('div');
-                titolo.className = 'section-title';
-                titolo.innerText = catObj.categoria;
-                groupDiv.appendChild(titolo);
-
-                catObj.prodotti.forEach(prod => {
-                    const isDisp = statoDisp[prod.id] !== undefined ? statoDisp[prod.id] : true;
-                    const catKey = catObj.categoria.toLowerCase();
-                    const haNote = catKey === 'pizze' || catKey === 'focacce';
-
-                    const card = document.createElement('div');
-                    card.className = `card ${isDisp ? '' : 'esaurito'}`;
-                    
-                    card.innerHTML = `
-                        <div class="card-icon">${icone[catObj.icona]}</div>
-                        <div class="card-content">
-                            <div class="card-top">
-                                <div class="card-info">
-                                    <h3>${prod.nome} ${!isDisp ? '<span class="badge-esaurito">Non disponibile</span>' : ''}</h3>
-                                    <p>${prod.desc}</p>
-                                </div>
-                            </div>
-                            <div class="card-bottom">
-                                ${haNote ? `<input type="text" id="nota-${prod.id}" class="input-nota" placeholder="${isDisp ? 'Note...' : 'Non disponibile'}" ${!isDisp ? 'disabled' : ''}>` : ''}
-                                <button class="btn-add" ${!isDisp ? 'disabled' : ''} onclick="${haNote ? `aggiungiConNota('${prod.nome}', 'nota-${prod.id}')` : `aggiungiSemplice('${prod.nome}')`}">Aggiungi</button>
-                            </div>
-                        </div>
-                    `;
-                    groupDiv.appendChild(card);
-                });
-                container.appendChild(groupDiv);
-            });
+        push(ref(db, 'ordini'), {
+            cliente: cliente,
+            prodotti: prodotti,
+            orario: orarioCorrente
         });
 
-        window.aggiungiConNota = (nomeProdotto, idNota) => {
-            const nota = document.getElementById(idNota).value.trim();
-            const descrizioneCompleta = nota ? `${nomeProdotto} (${nota})` : nomeProdotto;
-            carrello.push({ id: Date.now() + Math.random(), testo: descrizioneCompleta });
-            document.getElementById(idNota).value = '';
-            aggiornaBadge();
-        };
+        // Salva il nome nel browser così la prossima volta non deve riscriverlo
+        localStorage.setItem('pizzeria_nome_utente', cliente);
 
-        window.aggiungiSemplice = (nomeProdotto) => {
-            carrello.push({ id: Date.now() + Math.random(), testo: nomeProdotto });
-            aggiornaBadge();
-        };
+        // Pulisci solo i prodotti, mantieni il nome
+        document.getElementById('input-prodotti').value = '';
+        alert("Ordine inviato con successo alla cucina! 🍕🔥");
+    };
 
-        window.rimuoviDalCarrello = (idUnico) => {
-            carrello = carrello.filter(item => item.id !== idUnico);
-            aggiornaBadge();
-            renderizzaLista();
-            if(carrello.length === 0) chiudiModal();
-        };
-
-        function aggiornaBadge() {
-            const badge = document.getElementById('badge');
-            const fab = document.getElementById('cart-fab');
-            badge.innerText = carrello.length;
-            fab.style.display = carrello.length > 0 ? 'flex' : 'none';
+    // Riempi automaticamente il nome se l'utente lo aveva già inserito in precedenza
+    window.addEventListener('DOMContentLoaded', () => {
+        const salvato = localStorage.getItem('pizzeria_nome_utente');
+        if(salvato) {
+            document.getElementById('input-cliente').value = salvato;
         }
+    });
 
-        window.apriModal = () => {
-            renderizzaLista();
-            document.getElementById('modal').style.display = 'flex';
-        };
+    // Ascolta gli ordini attivi per mostrare all'ospite cosa ha in sospeso
+    onValue(ref(db, 'ordini'), (snapshot) => {
+        const ordini = snapshot.val() || {};
+        const container = document.getElementById('miei-ordini-container');
+        const nomeCorrente = document.getElementById('input-cliente').value.trim().toLowerCase();
+        
+        container.innerHTML = '';
+        let mieiOrdiniTrovati = false;
 
-        window.chiudiModal = () => {
-            document.getElementById('modal').style.display = 'none';
-        };
+        Object.entries(ordini).forEach(([id, o]) => {
+            // Mostriamo gli ordini se corrispondono al nome inserito (o mostriamo tutti se il campo è vuoto per comodità)
+            container.innerHTML += `
+                <div class="order-status-card">
+                    <div>
+                        <strong style="font-size: 16px; color: #111;">👤 ${o.cliente}</strong><br>
+                        <span style="font-size: 14px; color: #444; font-weight: 500;">🍕 ${o.prodotti}</span><br>
+                        <small style="color: var(--gray);">${o.orario}</small>
+                    </div>
+                    <span class="badge-attivo">In preparazione</span>
+                </div>`;
+            mieiOrdiniTrovati = true;
+        });
 
-        function renderizzaLista() {
-            const listaDiv = document.getElementById('lista-carrello');
-            if (carrello.length === 0) {
-                listaDiv.innerHTML = '<p style="color:var(--gray); text-align:center;">Carrello vuoto</p>';
-                return;
-            }
-            listaDiv.innerHTML = carrello.map(item => `
-                <div class="modal-item">
-                    <span>${item.testo}</span>
-                    <button class="btn-rimuovi" onclick="rimuoviDalCarrello(${item.id})">&times;</button>
-                </div>
-            `).join('');
+        if (!mieiOrdiniTrovati) {
+            container.innerHTML = '<div class="empty-state">Nessun ordine attivo al momento. Fai il tuo primo ordine!</div>';
         }
+    });
+</script>
 
-        window.inviaOrdine = () => {
-            const nome = document.getElementById('nome').value.trim();
-            if(!nome) {
-                alert("Inserisci prima il nome o per chi è l'ordine!");
-                document.getElementById('nome').focus();
-                return;
-            }
-            if(carrello.length === 0) return;
-
-            const prodottiStringa = carrello.map(i => i.testo).join(' + ');
-
-            push(ref(db, 'ordini'), { 
-                cliente: nome, 
-                prodotti: prodottiStringa,
-                orario: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            }).then(() => {
-                alert("Ordine inviato in cucina!");
-                carrello = [];
-                aggiornaBadge();
-                chiudiModal();
-            });
-        };
-
-        window.filtra = (cat, btn) => {
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            document.querySelectorAll('.categoria-group').forEach(g => {
-                g.style.display = (cat === 'tutte' || g.getAttribute('data-cat') === cat) ? 'block' : 'none';
-            });
-        };
-    </script>
 </body>
 </html>
