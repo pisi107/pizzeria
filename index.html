@@ -158,7 +158,7 @@
         .btn-menu-item.non-disponibile {
             background: #f1ede4 !important;
             border-color: #dcd6cb !important;
-            opacity: 0.6;
+            opacity: 0.65;
             cursor: not-allowed !important;
         }
         .btn-menu-item.non-disponibile .menu-title {
@@ -294,56 +294,55 @@
     
     const db = getDatabase(initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" }));
 
-    // Definizione completa del Menu con ingredienti e chiave univoca per lo stato di disponibilità
+    // Definizione completa del Menu con le chiavi esatte salvate nella gestione cucina
     const menuCompleto = {
         classiche: [
-            { id: "margherita", nome: "Margherita", ingredienti: "Pomodoro, fior di latte, basilico", icona: "🍅" },
-            { id: "marinara", nome: "Marinara", ingredienti: "Pomodoro, aglio, origano, olio d'oliva", icona: "🧄" },
-            { id: "napoli", nome: "Napoli", ingredienti: "Pomodoro, fior di latte, acciughe, origano", icona: "🐟" },
-            { id: "capricciosa", nome: "Capricciosa", ingredienti: "Pomodoro, fior di latte, prosciutto, funghi, carciofi, olive", icona: "🍄" },
-            { id: "quattro_stagioni", nome: "Quattro Stagioni", ingredienti: "Pomodoro, fior di latte, funghi, carciofi, prosciutto cotto, olive", icona: "🌿" },
-            { id: "diavola", nome: "Diavola", ingredienti: "Pomodoro, fior di latte, salame piccante", icona: "🌶️" },
-            { id: "wudy_patatine", nome: "Wudy e Patatine", ingredienti: "Pomodoro, fior di latte, würstel, patatine fritte", icona: "🍟" },
-            { id: "romana", nome: "Romana", ingredienti: "Pomodoro, fior di latte, acciughe, capperi, origano", icona: "🍅" },
-            { id: "siciliana", nome: "Siciliana", ingredienti: "Pomodoro, capperi, acciughe, olive nere, origano", icona: "🍅" },
-            { id: "ortolana", nome: "Ortolana / Vegetariana", ingredienti: "Pomodoro, fior di latte, verdure miste di stagione", icona: "🍆" }
+            { id: "Margherita", nome: "Margherita", ingredienti: "Pomodoro, fior di latte, basilico", icona: "🍅" },
+            { id: "Marinara", nome: "Marinara", ingredienti: "Pomodoro, aglio, origano, olio d'oliva", icona: "🧄" },
+            { id: "Napoli", nome: "Napoli", ingredienti: "Pomodoro, fior di latte, acciughe, origano", icona: "🐟" },
+            { id: "Capricciosa", nome: "Capricciosa", ingredienti: "Pomodoro, fior di latte, prosciutto, funghi, carciofi, olive", icona: "🍄" },
+            { id: "Quattro Stagioni", nome: "Quattro Stagioni", ingredienti: "Pomodoro, fior di latte, funghi, carciofi, prosciutto cotto, olive", icona: "🌿" },
+            { id: "Diavola", nome: "Diavola", ingredienti: "Pomodoro, fior di latte, salame piccante", icona: "🌶️" },
+            { id: "Wudy e Patatine", nome: "Wudy e Patatine", ingredienti: "Pomodoro, fior di latte, würstel, patatine fritte", icona: "🍟" },
+            { id: "Romana", nome: "Romana", ingredienti: "Pomodoro, fior di latte, acciughe, capperi, origano", icona: "🍅" },
+            { id: "Siciliana", nome: "Siciliana", ingredienti: "Pomodoro, capperi, acciughe, olive nere, origano", icona: "🍅" },
+            { id: "Ortolana / Vegetariana", nome: "Ortolana / Vegetariana", ingredienti: "Pomodoro, fior di latte, verdure miste di stagione", icona: "🍆" }
         ],
         speciali: [
-            { id: "quattro_formaggi", nome: "Quattro Formaggi", ingredienti: "Fior di latte, gorgonzola, fontina, provola affumicata", icona: "🧀" },
-            { id: "calzone", nome: "Calzone Normale o Fritto", ingredienti: "Fior di latte, prosciutto cotto, ricotta, pomodoro", icona: "🥟" },
-            { id: "bufalina", nome: "Bufalina", ingredienti: "Pomodoro, mozzarella di bufala campana, basilico fresco", icona: "🥛" },
-            { id: "boscaiola", nome: "Boscaiola", ingredienti: "Fior di latte, funghi freschi, salsiccia fresca", icona: "🌲" },
-            { id: "saporita", nome: "Saporita / Parmigiana", ingredienti: "Pomodoro, fior di latte, melanzane fritte, parmigiano", icona: "🧀" },
-            { id: "tonno_cipolla", nome: "Tonno e Cipolla", ingredienti: "Pomodoro, fior di latte, tonno sott'olio, cipolla rossa", icona: "🧅" },
-            { id: "salsiccia_friarielli", nome: "Salsiccia e Friarielli", ingredienti: "Fior di latte, salsiccia, friarielli saltati all'aglio", icona: "🥬" },
-            { id: "tirolese", nome: "Tirolese (Speck e Brie)", ingredienti: "Fior di latte, speck dell'Alto Adige, formaggio brie", icona: "🏔️" },
-            { id: "carbonara", nome: "Carbonara", ingredienti: "Fior di latte, uovo, pancetta croccante, pecorino romano", icona: "🍳" },
-            { id: "porcini", nome: "Ai Funghi Porcini", ingredienti: "Fior di latte, funghi porcini trifolati, prezzemolo", icona: "🍄" }
+            { id: "Quattro Formaggi", nome: "Quattro Formaggi", ingredienti: "Fior di latte, gorgonzola, fontina, provola affumicata", icona: "🧀" },
+            { id: "Calzone Normale o Fritto", nome: "Calzone Normale o Fritto", ingredienti: "Fior di latte, prosciutto cotto, ricotta, pomodoro", icona: "🥟" },
+            { id: "Bufalina", nome: "Bufalina", ingredienti: "Pomodoro, mozzarella di bufala campana, basilico fresco", icona: "🥛" },
+            { id: "Boscaiola", nome: "Boscaiola", ingredienti: "Fior di latte, funghi freschi, salsiccia fresca", icona: "🌲" },
+            { id: "Saporita / Parmigiana", nome: "Saporita / Parmigiana", ingredienti: "Pomodoro, fior di latte, melanzane fritte, parmigiano", icona: "🧀" },
+            { id: "Tonno e Cipolla", nome: "Tonno e Cipolla", ingredienti: "Pomodoro, fior di latte, tonno sott'olio, cipolla rossa", icona: "🧅" },
+            { id: "Salsiccia e Friarielli", nome: "Salsiccia e Friarielli", ingredienti: "Fior di latte, salsiccia, friarielli saltati all'aglio", icona: "🥬" },
+            { id: "TIROLESE (Speck e Brie)", nome: "Tirolese (Speck e Brie)", ingredienti: "Fior di latte, speck dell'Alto Adige, formaggio brie", icona: "🏔️" },
+            { id: "CARBONARA (Uovo e Pancetta)", nome: "Carbonara", ingredienti: "Fior di latte, uovo, pancetta croccante, pecorino romano", icona: "🍳" },
+            { id: "AI FUNGHI PORCINI", nome: "Ai Funghi Porcini", ingredienti: "Fior di latte, funghi porcini trifolati, prezzemolo", icona: "🍄" }
         ],
         focacce: [
-            { id: "focaccia_liscia", nome: "Focaccia Liscia", ingredienti: "Olio extravergine d'oliva, sale, rosmarino", icona: "🫓" },
-            { id: "focaccia_rosmarino", nome: "Rosmarino / Olio", ingredienti: "Olio d'oliva, fiocchi di sale marino, abbondante rosmarino", icona: "🌿" },
-            { id: "speciale_chef", nome: "Speciale dello Chef", ingredienti: "Creazione a sorpresa dello chef con ingredienti del giorno", icona: "⭐" }
+            { id: "Focaccia Liscia", nome: "Focaccia Liscia", ingredienti: "Olio extravergine d'oliva, sale, rosmarino", icona: "🫓" },
+            { id: "Focaccia Rosmarino", nome: "Rosmarino / Olio", ingredienti: "Olio d'oliva, fiocchi di sale marino, abbondante rosmarino", icona: "🌿" },
+            { id: "Pizza Speciale dello Chef", nome: "Speciale dello Chef", ingredienti: "Creazione a sorpresa dello chef con ingredienti del giorno", icona: "⭐" }
         ],
         bibite: [
-            { id: "coca_cola", nome: "Coca Cola", ingredienti: "Bottiglia o lattina da 33cl", icona: "🥤" },
-            { id: "acqua_naturale", nome: "Acqua Naturale", ingredienti: "Bottiglia da 0.75l", icona: "💧" },
-            { id: "acqua_frizzante", nome: "Acqua Frizzante", ingredienti: "Bottiglia da 0.75l", icona: "🫧" },
-            { id: "birra", nome: "Birra artigianale", ingredienti: "Birra bionda o ambrata artigianale 33cl", icona: "🍺" }
+            { id: "Coca Cola", nome: "Coca Cola", ingredienti: "Bottiglia o lattina da 33cl", icona: "🥤" },
+            { id: "Acqua Naturale", nome: "Acqua Naturale", ingredienti: "Bottiglia da 0.75l", icona: "💧" },
+            { id: "Acqua Frizzante", nome: "Acqua Frizzante", ingredienti: "Bottiglia da 0.75l", icona: "🫧" },
+            { id: "Birra", nome: "Birra artigianale", ingredienti: "Birra bionda o ambrata artigianale 33cl", icona: "🍺" }
         ]
     };
 
-    // Renderizza il menu a schermo unendo la disponibilità da Firebase
-    function renderizzaMenu(disponibilita) {
-        disponibilita = disponibilita || {};
+    let datiDisponibilita = {};
 
+    function renderizzaMenu() {
         const renderGruppo = (lista, containerId) => {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
             
             lista.forEach(item => {
-                // Se in Firebase l'elemento è impostato esplicitamente su false, non è disponibile
-                const disponibile = disponibilita[item.id] !== false;
+                // In Firebase, se l'elemento è impostato a false, è disattivato. Se non esiste o è true, è disponibile.
+                const disponibile = datiDisponibilita[item.id] !== false;
                 
                 const btn = document.createElement('button');
                 btn.type = 'button';
@@ -357,10 +356,10 @@
 
                 btn.innerHTML = `
                     <div class="menu-info">
-                        <span class="menu-title">${item.icona} ${item.nome} ${!disponibile ? '(Non disponibile)' : ''}</span>
-                        <span class="menu-ingredients">${item.ingredienti}</span>
+                        <span class="menu-title">${item.icona} ${item.nome}</span>
+                        <span class="menu-ingredients">${disponibile ? item.ingredienti : '❌ Prodotto esaurito per stasera'}</span>
                     </div>
-                    <span style="font-size: 18px;">${disponibile ? '➕' : '❌'}</span>
+                    <span style="font-size: 16px;">${disponibile ? '➕' : '🔴'}</span>
                 `;
                 container.appendChild(btn);
             });
@@ -372,9 +371,10 @@
         renderGruppo(menuCompleto.bibite, 'grid-bibite');
     }
 
-    // Ascolta in tempo reale lo stato di disponibilità salvato in cucina
+    // Ascolta la disponibilità da Firebase in tempo reale
     onValue(ref(db, 'infoSerata/disponibilita'), (snapshot) => {
-        renderizzaMenu(snapshot.val());
+        datiDisponibilita = snapshot.val() || {};
+        renderizzaMenu();
     });
 
     window.cambiaPagina = (nomePagina) => {
