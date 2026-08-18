@@ -9,7 +9,6 @@
         body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: var(--bg); margin: 0; padding: 20px; color: var(--text); }
         .container { max-width: 700px; margin: 0 auto; }
         
-        /* Barra Audio */
         .audio-box { background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; border: 2px solid var(--blue); }
         .btn-audio { background: var(--blue); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
@@ -24,6 +23,9 @@
         
         .history-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
         .btn-elimina { background: #ffebeb; color: var(--primary); border: none; padding: 8px; border-radius: 8px; cursor: pointer; }
+        
+        /* Divisore Serata */
+        .serata-divider { margin-top: 30px; margin-bottom: 10px; padding: 5px; font-size: 19px; font-weight: 800; border-bottom: 2px solid #000; color: #000; }
     </style>
 </head>
 <body>
@@ -32,7 +34,7 @@
     <h2>🔔 Monitor Cucina</h2>
     
     <div class="audio-box" id="audio-ui">
-        <p>Per sentire le notifiche quando arriva un ordine:</p>
+        <p>Attiva l'audio per sentire gli ordini:</p>
         <button class="btn-audio" onclick="initAudio()">Attiva Audio</button>
     </div>
 
@@ -56,11 +58,9 @@
     const db = getDatabase(initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" }));
     let audioCtx = null;
 
-    // --- LOGICA AUDIO ---
     window.initAudio = () => {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         document.getElementById('audio-ui').innerHTML = "<p style='color:green; font-weight:bold;'>🔊 Audio Attivo!</p>";
-        suona(); // Test
     };
 
     function suona() {
@@ -73,13 +73,11 @@
         osc.start(); osc.stop(audioCtx.currentTime + 0.5);
     }
 
-    // --- LOGICA OSPITI ---
     window.salvaSerata = () => {
         const nome = document.getElementById('input-serata').value;
         if(nome) set(ref(db, 'infoSerata/ospiteCorrente'), nome);
     };
 
-    // --- LOGICA ORDINI ---
     let primoCaricamento = true;
     onValue(ref(db, 'ordini'), (snapshot) => {
         const ordini = snapshot.val() || {};
@@ -98,17 +96,16 @@
     });
 
     window.spostaInStorico = (id) => {
-        const o = document.querySelector(`[onclick="spostaInStorico('${id}')"]`).parentElement;
-        const ospite = document.getElementById('input-serata').value || "Senza nome";
-        push(ref(db, 'storicoSerate'), { 
-            serata: ospite, 
-            data: new Date().toLocaleDateString(), 
-            dettagli: o.innerText.replace('Fatto ✓', '') 
-        });
-        remove(ref(db, 'ordini/' + id));
+        const ospite = document.getElementById('input-serata').value || "Serata Generica";
+        onValue(ref(db, 'ordini/' + id), (snap) => {
+            const o = snap.val();
+            if(o) {
+                push(ref(db, 'storicoSerate'), { serata: ospite, data: new Date().toLocaleDateString(), dettagli: `${o.cliente} - ${o.prodotti}` });
+                remove(ref(db, 'ordini/' + id));
+            }
+        }, { onlyOnce: true });
     };
 
-    // --- LOGICA STORICO ---
     onValue(ref(db, 'storicoSerate'), (snapshot) => {
         const storico = snapshot.val() || {};
         const container = document.getElementById('storico-container');
@@ -116,8 +113,9 @@
         let ultimoOspite = "";
 
         Object.entries(storico).reverse().forEach(([id, s]) => {
+            // SE IL NOME OSPITE CAMBIA, CREA IL DIVISORE
             if(s.serata !== ultimoOspite) {
-                container.innerHTML += `<div style="margin-top:20px; font-weight:bold; border-bottom:1px solid #ccc;">🌟 ${s.serata}</div>`;
+                container.innerHTML += `<div class="serata-divider">🌟 ${s.serata}</div>`;
                 ultimoOspite = s.serata;
             }
             container.innerHTML += `
