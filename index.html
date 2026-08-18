@@ -3,513 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu & Carrello - Pizzeria Master</title>
+    <title>Pizzeria di Famiglia - Menu & Ordini</title>
     <style>
-        :root {
-            --primary: #ff3b30;
-            --success: #34c759;
-            --bg: #f2f2f7;
-            --card-bg: #ffffff;
-            --text: #1d1d1f;
-            --text-secondary: #86868b;
-            --gray-btn: #e5e5ea;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            margin: 0;
-            padding: 20px;
-            padding-bottom: 120px;
-            color: var(--text);
-            -webkit-font-smoothing: antialiased;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-        .header h2 {
-            margin: 0 0 4px 0;
-            font-size: 24px;
-            font-weight: 700;
-        }
-        .header p {
-            color: var(--text-secondary);
-            font-size: 14px;
-            margin: 0;
-        }
-        .input-group {
-            background: var(--card-bg);
-            padding: 16px 20px;
-            border-radius: 16px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-        }
-        .input-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 13px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .input-group input {
-            width: 100%;
-            padding: 14px;
-            box-sizing: border-box;
-            border: 1px solid #d2d2d7;
-            border-radius: 12px;
-            font-size: 16px;
-            outline: none;
-            background: #fafafa;
-            transition: border-color 0.2s, background 0.2s;
-        }
-        .input-group input:focus {
-            border-color: var(--primary);
-            background: #ffffff;
-        }
-        .categories {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 15px;
-            margin-bottom: 10px;
-            scrollbar-width: none;
-        }
-        .categories::-webkit-scrollbar { display: none; }
-        .cat-btn {
-            background: var(--card-bg);
-            border: none;
-            padding: 10px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 14px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            white-space: nowrap;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-            transition: all 0.2s;
-        }
-        .cat-btn.active {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 12px rgba(255,59,48,0.3);
-        }
-        .section-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin: 25px 0 12px 5px;
-            color: var(--text);
-        }
-        .card {
-            background: var(--card-bg);
-            padding: 16px;
-            border-radius: 16px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .card-img {
-            width: 75px;
-            height: 75px;
-            border-radius: 12px;
-            object-fit: cover;
-            background: #f2f2f7;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            flex-shrink: 0;
-        }
-        .card-img img {
-            width: 100%;
-            height: 100%;
-            border-radius: 12px;
-            object-fit: cover;
-        }
-        .card-info {
-            flex-grow: 1;
-        }
-        .card-info h3 {
-            margin: 0 0 4px 0;
-            font-size: 17px;
-            font-weight: 600;
-        }
-        .card-info p {
-            color: var(--text-secondary);
-            font-size: 13px;
-            margin: 0 0 10px 0;
-            line-height: 1.3;
-        }
-        .card button {
-            width: 100%;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-        }
-        .card button:active { transform: scale(0.98); }
-        .card button:disabled {
-            background-color: var(--gray-btn) !important;
-            color: #8e8e93;
-            cursor: not-allowed;
-        }
-
-        .cart-bar {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid #e5e5ea;
-            padding: 15px 20px;
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.08);
-            display: none;
-            flex-direction: column;
-            gap: 12px;
-            z-index: 1000;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .cart-top-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            font-size: 15px;
-        }
-        .btn-modifica {
-            background: none;
-            border: none;
-            color: var(--primary);
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        .btn-invia-carrello {
-            width: 100%;
-            background-color: var(--success);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(4px);
-            display: none;
-            justify-content: center;
-            align-items: flex-end;
-            z-index: 2000;
-        }
-        .modal-content {
-            background: white;
-            width: 100%;
-            max-width: 600px;
-            max-height: 80vh;
-            border-top-left-radius: 24px;
-            border-top-right-radius: 24px;
-            padding: 24px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 18px;
-            font-weight: 700;
-        }
-        .modal-close {
-            background: var(--bg);
-            border: none;
-            width: 32px; height: 32px;
-            border-radius: 50%;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .modal-list {
-            overflow-y: auto;
-            max-height: 40vh;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .modal-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--bg);
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 500;
-        }
-        .btn-rimuovi-item {
-            background: #ff3b3015;
-            color: var(--primary);
-            border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-        }
+        :root { --primary: #ff3b30; --success: #34c759; --bg: #f2f2f7; --card-bg: #ffffff; --text: #1d1d1f; }
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: var(--bg); margin: 0; padding: 20px; padding-bottom: 120px; color: var(--text); }
+        .container { max-width: 600px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h2 { margin: 0 0 5px 0; }
+        .header p { color: #86868b; font-size: 14px; margin: 0; }
+        .input-group { background: var(--card-bg); padding: 15px; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .input-group label { display: block; font-size: 12px; font-weight: 600; color: #86868b; margin-bottom: 5px; text-transform: uppercase; }
+        input { width: 100%; padding: 12px; border: 1px solid #d2d2d7; border-radius: 12px; box-sizing: border-box; font-size: 15px; outline: none; }
+        
+        .cat-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 10px; scrollbar-width: none; }
+        .cat-scroll::-webkit-scrollbar { display: none; }
+        .cat-btn { background: var(--card-bg); border: none; padding: 8px 16px; border-radius: 20px; font-weight: 600; color: #86868b; cursor: pointer; white-space: nowrap; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+        .cat-btn.active { background: var(--primary); color: white; }
+        
+        .section-title { font-size: 18px; font-weight: 700; margin: 20px 0 10px 5px; }
+        .card { background: var(--card-bg); padding: 15px; border-radius: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+        .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+        .card-info h3 { margin: 0 0 3px 0; font-size: 16px; }
+        .card-info p { color: #86868b; font-size: 12px; margin: 0; }
+        
+        .card-bottom { display: flex; gap: 8px; align-items: center; }
+        .input-nota { flex-grow: 1; padding: 8px 10px; font-size: 13px; border: 1px solid #e5e5ea; border-radius: 8px; background: #fafafa; }
+        .btn-add { background: var(--primary); color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 600; cursor: pointer; white-space: nowrap; font-size: 13px; }
+        
+        #cart-fab { position: fixed; bottom: 25px; right: 25px; background: var(--success); color: white; width: 60px; height: 60px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 4px 15px rgba(52, 199, 89, 0.4); z-index: 1000; border: none; cursor: pointer; }
+        #badge { position: absolute; top: -5px; right: -5px; background: var(--primary); color: white; font-size: 12px; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        
+        .modal { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.5); display: none; align-items: flex-end; z-index: 2000; }
+        .modal-content { background: white; width: 100%; max-width: 600px; border-radius: 24px 24px 0 0; padding: 25px; max-height: 75vh; overflow-y: auto; box-sizing: border-box; }
+        .modal-item { display: flex; justify-content: space-between; align-items: center; background: #f2f2f7; padding: 10px 14px; border-radius: 10px; margin-bottom: 8px; font-size: 14px; }
+        .btn-rimuovi { background: none; border: none; color: var(--primary); font-weight: bold; cursor: pointer; font-size: 16px; }
+        .btn-send { width: 100%; background: var(--success); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; font-size: 16px; margin-top: 15px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <div class="header">
-            <h2>🍕 Pizzeria Master</h2>
-            <p>Componi il tuo ordine</p>
+            <h2>🍕 Pizzeria di Famiglia</h2>
+            <p>Scegli la pizza e scrivi eventuali modifiche</p>
         </div>
         
         <div class="input-group">
-            <label for="nome">Il tuo nome / Tavolo</label>
-            <input type="text" id="nome" placeholder="es. Mario o Tavolo 4">
+            <label for="nome">Per chi è l'ordine?</label>
+            <input type="text" id="nome" placeholder="es. Marco, Mamma, Divano...">
         </div>
 
-        <div class="categories">
-            <button class="cat-btn active" onclick="filtraCategoria('tutte', this)">Tutto</button>
-            <button class="cat-btn" onclick="filtraCategoria('pizze', this)">Pizze</button>
-            <button class="cat-btn" onclick="filtraCategoria('focacce', this)">Focacce</button>
-            <button class="cat-btn" onclick="filtraCategoria('bibite', this)">Bibite</button>
-            <button class="cat-btn" onclick="filtraCategoria('birre', this)">Birre</button>
-            <button class="cat-btn" onclick="filtraCategoria('vini', this)">Vini</button>
+        <div class="cat-scroll">
+            <button class="cat-btn active" onclick="filtra('tutte', this)">Tutto</button>
+            <button class="cat-btn" onclick="filtra('pizze', this)">Pizze</button>
+            <button class="cat-btn" onclick="filtra('focacce', this)">Focacce</button>
+            <button class="cat-btn" onclick="filtra('bibite', this)">Bibite & Altro</button>
         </div>
 
-        <!-- SEZIONE PIZZE -->
-        <div class="categoria-group" data-cat="pizze">
-            <div class="section-title">🍕 Pizze</div>
-            <div class="card"><div class="card-img"><img src="immagini/margherita.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Margherita</h3><p>Pomodoro, Mozzarella, Basilico</p><button id="btn-margherita" onclick="aggiungiAlCarrello('Margherita', 'margherita')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img"><img src="immagini/diavola.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Diavola</h3><p>Pomodoro, Mozzarella, Salame piccante</p><button id="btn-diavola" onclick="aggiungiAlCarrello('Diavola', 'diavola')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img"><img src="immagini/4formaggi.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>4 Formaggi</h3><p>Mozzarella, Gorgonzola, Fontina, Parmigiano</p><button id="btn-4formaggi" onclick="aggiungiAlCarrello('4 Formaggi', '4formaggi')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img"><img src="immagini/capricciosa.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Capricciosa</h3><p>Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi</p><button id="btn-capricciosa" onclick="aggiungiAlCarrello('Capricciosa', 'capricciosa')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img"><img src="immagini/marinara.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Marinara</h3><p>Pomodoro, Aglio, Origano, Olio EVO</p><button id="btn-marinara" onclick="aggiungiAlCarrello('Marinara', 'marinara')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img"><img src="immagini/vegetariana.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Vegetariana</h3><p>Pomodoro, Mozzarella, Zucchine, Melanzane, Peperoni</p><button id="btn-vegetariana" onclick="aggiungiAlCarrello('Vegetariana', 'vegetariana')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img"><img src="immagini/prosciuttoefunghi.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Prosciutto e Funghi</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Funghi</p><button id="btn-prosciuttoefunghi" onclick="aggiungiAlCarrello('Prosciutto e Funghi', 'prosciuttoefunghi')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img"><img src="immagini/quattrostagioni.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Quattro Stagioni</h3><p>Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi, Olive</p><button id="btn-quattrostagioni" onclick="aggiungiAlCarrello('Quattro Stagioni', 'quattrostagioni')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img"><img src="immagini/bufalina.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Bufalina</h3><p>Pomodoro, Mozzarella di Bufala Campana DOP, Basilico</p><button id="btn-bufalina" onclick="aggiungiAlCarrello('Bufalina', 'bufalina')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img"><img src="immagini/boscaiola.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Boscaiola</h3><p>Mozzarella, Salsiccia, Funghi pioppini, Panna</p><button id="btn-boscaiola" onclick="aggiungiAlCarrello('Boscaiola', 'boscaiola')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img"><img src="immagini/bresaolaerucola.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Bresaola e Rucola</h3><p>Mozzarella, Bresaola, Rucola, Grana</p><button id="btn-bresaolaerucola" onclick="aggiungiAlCarrello('Bresaola e Rucola', 'bresaolaerucola')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img"><img src="immagini/americana.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Americana</h3><p>Pomodoro, Mozzarella, Wurstel, Patatine fritte</p><button id="btn-americana" onclick="aggiungiAlCarrello('Americana', 'americana')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img"><img src="immagini/calzoneclassico.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Calzone Classico</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Salame</p><button id="btn-calzoneclassico" onclick="aggiungiAlCarrello('Calzone Classico', 'calzoneclassico')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img"><img src="immagini/napoli.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Napoli</h3><p>Pomodoro, Mozzarella, Acciughe, Origano</p><button id="btn-napoli" onclick="aggiungiAlCarrello('Napoli', 'napoli')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img"><img src="immagini/romana.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Romana</h3><p>Pomodoro, Mozzarella, Acciughe, Capperi, Origano</p><button id="btn-romana" onclick="aggiungiAlCarrello('Romana', 'romana')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img"><img src="immagini/pugliese.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Pugliese</h3><p>Pomodoro, Mozzarella, Cipolla rossa, Origano</p><button id="btn-pugliese" onclick="aggiungiAlCarrello('Pugliese', 'pugliese')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img"><img src="immagini/salsicciaefriarelli.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Salsiccia e Friarelli</h3><p>Mozzarella, Salsiccia, Friarelli napoletani</p><button id="btn-salsicciaefriarelli" onclick="aggiungiAlCarrello('Salsiccia e Friarelli', 'salsicciaefriarelli')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img"><img src="immagini/tonnoecipolla.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Tonno e Cipolla</h3><p>Pomodoro, Mozzarella, Tonno, Cipolla rossa</p><button id="btn-tonnoecipolla" onclick="aggiungiAlCarrello('Tonno e Cipolla', 'tonnoecipolla')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img"><img src="immagini/siciliana.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Siciliana</h3><p>Pomodoro, Mozzarella, Melanzane, Ricotta salata</p><button id="btn-siciliana" onclick="aggiungiAlCarrello('Siciliana', 'siciliana')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img"><img src="immagini/tirolese.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Tirolese</h3><p>Pomodoro, Mozzarella, Speck, Gorgonzola</p><button id="btn-tirolese" onclick="aggiungiAlCarrello('Tirolese', 'tirolese')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img"><img src="immagini/pistacchiosa.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Pistacchiosa</h3><p>Mozzarella, Mortadella, Pistacchio, Burrata</p><button id="btn-pistacchiosa" onclick="aggiungiAlCarrello('Pistacchiosa', 'pistacchiosa')">Aggiungi</button></div></div>
-        </div>
-
-        <!-- SEZIONE FOCACCE -->
-        <div class="categoria-group" data-cat="focacce">
-            <div class="section-title">🫓 Focacce</div>
-            <div class="card"><div class="card-img">🫓</div><div class="card-info"><h3>Focaccia Classica</h3><p>Olio EVO, Sale, Rosmarino</p><button id="btn-focacciaclassica" onclick="aggiungiAlCarrello('Focaccia Classica', 'focacciaclassica')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img">🫓</div><div class="card-info"><h3>Focaccia con Crudo</h3><p>Olio EVO, Prosciutto Crudo di Parma</p><button id="btn-focacciacrudo" onclick="aggiungiAlCarrello('Focaccia con Crudo', 'focacciacrudo')">Aggiungi</button></div></div>
-        </div>
-
-        <!-- SEZIONE BIBITE -->
-        <div class="categoria-group" data-cat="bibite">
-            <div class="section-title">🥤 Bibite</div>
-            <div class="card"><div class="card-img">🥤</div><div class="card-info"><h3>Coca Cola 33cl</h3><p>Bottiglia in vetro</p><button id="btn-cocacola" onclick="aggiungiAlCarrello('Coca Cola 33cl', 'cocacola')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img">🥤</div><div class="card-info"><h3>Fanta 33cl</h3><p>Bottiglia in vetro</p><button id="btn-fanta" onclick="aggiungiAlCarrello('Fanta 33cl', 'fanta')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img">💧</div><div class="card-info"><h3>Acqua Naturale 0.75l</h3><p>Bottiglia di vetro</p><button id="btn-acquanaturale" onclick="aggiungiAlCarrello('Acqua Naturale 0.75l', 'acquanaturale')">Aggiungi</button></div></div>
-        </div>
-
-        <!-- SEZIONE BIRRE -->
-        <div class="categoria-group" data-cat="birre">
-            <div class="section-title">🍺 Birre</div>
-            <div class="card"><div class="card-img">🍺</div><div class="card-info"><h3>Birra Artigianale Bionda 33cl</h3><p>Stile IPA, 5.5%</p><button id="btn-birrabionda" onclick="aggiungiAlCarrello('Birra Bionda 33cl', 'birrabionda')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img">🍻</div><div class="card-info"><h3>Birra Rossa 33cl</h3><p>Doppio malto, 6.5%</p><button id="btn-birrarossa" onclick="aggiungiAlCarrello('Birra Rossa 33cl', 'birrarossa')">Aggiungi</button></div></div>
-        </div>
-
-        <!-- SEZIONE VINI -->
-        <div class="categoria-group" data-cat="vini">
-            <div class="section-title">🍷 Vini</div>
-            <div class="card"><div class="card-img">🍷</div><div class="card-info"><h3>Calice di Chianti DOCG</h3><p>Vino rosso fermo</p><button id="btn-chianti" onclick="aggiungiAlCarrello('Calice Chianti', 'chianti')">Aggiungi</button></div></div>
-            <div class="card"><div class="card-img">🥂</div><div class="card-info"><h3>Calice di Prosecco</h3><p>Valdobbiadene Superiore DOCG</p><button id="btn-prosecco" onclick="aggiungiAlCarrello('Calice Prosecco', 'prosecco')">Aggiungi</button></div></div>
-        </div>
-    </div>
-
-    <!-- BARRA CARRELLO IN BASSO -->
-    <div id="cart-bar" class="cart-bar">
-        <div class="cart-top-row">
-            <span id="cart-count-text">🛒 0 articoli nel carrello</span>
-            <button class="btn-modifica" onclick="apriModaleCarrello()">Modifica</button>
-        </div>
-        <button class="btn-invia-carrello" onclick="inviaCarrelloInCucina()">Invia Ordine in Cucina</button>
-    </div>
-
-    <!-- SCHERMATA MODALE PER MODIFICARE IL CARRELLO -->
-    <div id="cart-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span>Modifica Carrello</span>
-                <button class="modal-close" onclick="chiudiModaleCarrello()">✕</button>
+        <div id="menu">
+            <!-- PIZZE -->
+            <div class="categoria-group" data-cat="pizze">
+                <div class="section-title">Pizze</div>
+                
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Margherita</h3><p>Pomodoro, Mozzarella, Basilico</p></div></div><div class="card-bottom"><input type="text" id="nota-margherita" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Margherita', 'nota-margherita')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Diavola</h3><p>Pomodoro, Mozzarella, Salame piccante</p></div></div><div class="card-bottom"><input type="text" id="nota-diavola" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Diavola', 'nota-diavola')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>4 Formaggi</h3><p>Mozzarella, Gorgonzola, Fontina, Parmigiano</p></div></div><div class="card-bottom"><input type="text" id="nota-4formaggi" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('4 Formaggi', 'nota-4formaggi')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Capricciosa</h3><p>Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi</p></div></div><div class="card-bottom"><input type="text" id="nota-capricciosa" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Capricciosa', 'nota-capricciosa')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Marinara</h3><p>Pomodoro, Aglio, Origano, Olio EVO</p></div></div><div class="card-bottom"><input type="text" id="nota-marinara" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Marinara', 'nota-marinara')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Vegetariana</h3><p>Pomodoro, Mozzarella, Zucchine, Melanzane, Peperoni</p></div></div><div class="card-bottom"><input type="text" id="nota-vegetariana" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Vegetariana', 'nota-vegetariana')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Prosciutto e Funghi</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Funghi</p></div></div><div class="card-bottom"><input type="text" id="nota-prosciuttoefunghi" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Prosciutto e Funghi', 'nota-prosciuttoefunghi')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Quattro Stagioni</h3><p>Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi, Olive</p></div></div><div class="card-bottom"><input type="text" id="nota-quattrostagioni" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Quattro Stagioni', 'nota-quattrostagioni')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Bufalina</h3><p>Pomodoro, Mozzarella di Bufala Campana DOP</p></div></div><div class="card-bottom"><input type="text" id="nota-bufalina" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Bufalina', 'nota-bufalina')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Boscaiola</h3><p>Mozzarella, Salsiccia, Funghi pioppini, Panna</p></div></div><div class="card-bottom"><input type="text" id="nota-boscaiola" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Boscaiola', 'nota-boscaiola')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Bresaola e Rucola</h3><p>Mozzarella, Bresaola, Rucola, Grana</p></div></div><div class="card-bottom"><input type="text" id="nota-bresaolaerucola" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Bresaola e Rucola', 'nota-bresaolaerucola')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Americana</h3><p>Pomodoro, Mozzarella, Wurstel, Patatine fritte</p></div></div><div class="card-bottom"><input type="text" id="nota-americana" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Americana', 'nota-americana')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Calzone Classico</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Salame</p></div></div><div class="card-bottom"><input type="text" id="nota-calzoneclassico" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Calzone Classico', 'nota-calzoneclassico')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Napoli</h3><p>Pomodoro, Mozzarella, Acciughe, Origano</p></div></div><div class="card-bottom"><input type="text" id="nota-napoli" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Napoli', 'nota-napoli')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Romana</h3><p>Pomodoro, Mozzarella, Acciughe, Capperi</p></div></div><div class="card-bottom"><input type="text" id="nota-romana" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Romana', 'nota-romana')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Pugliese</h3><p>Pomodoro, Mozzarella, Cipolla rossa</p></div></div><div class="card-bottom"><input type="text" id="nota-pugliese" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Pugliese', 'nota-pugliese')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Salsiccia e Friarelli</h3><p>Mozzarella, Salsiccia, Friarelli napoletani</p></div></div><div class="card-bottom"><input type="text" id="nota-salsicciaefriarelli" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Salsiccia e Friarelli', 'nota-salsicciaefriarelli')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Tonno e Cipolla</h3><p>Pomodoro, Mozzarella, Tonno, Cipolla rossa</p></div></div><div class="card-bottom"><input type="text" id="nota-tonnoecipolla" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Tonno e Cipolla', 'nota-tonnoecipolla')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Siciliana</h3><p>Pomodoro, Mozzarella, Melanzane, Ricotta salata</p></div></div><div class="card-bottom"><input type="text" id="nota-siciliana" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Siciliana', 'nota-siciliana')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Tirolese</h3><p>Pomodoro, Mozzarella, Speck, Gorgonzola</p></div></div><div class="card-bottom"><input type="text" id="nota-tirolese" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Tirolese', 'nota-tirolese')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Pistacchiosa</h3><p>Mozzarella, Mortadella, Pistacchio, Burrata</p></div></div><div class="card-bottom"><input type="text" id="nota-pistacchiosa" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Pistacchiosa', 'nota-pistacchiosa')">Aggiungi</button></div></div>
             </div>
-            <div id="modal-items-list" class="modal-list"></div>
-            <button class="btn-invia-carrello" onclick="chiudiModaleCarrello()">Fatto</button>
+
+            <!-- FOCACCE -->
+            <div class="categoria-group" data-cat="focacce">
+                <div class="section-title">Focacce</div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Focaccia Classica</h3><p>Olio, Sale, Rosmarino</p></div></div><div class="card-bottom"><input type="text" id="nota-focacciaclassica" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Focaccia Classica', 'nota-focacciaclassica')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Focaccia con Crudo</h3><p>Olio, Prosciutto Crudo</p></div></div><div class="card-bottom"><input type="text" id="nota-focacciacrudo" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Focaccia con Crudo', 'nota-focacciacrudo')">Aggiungi</button></div></div>
+            </div>
+
+            <!-- BIBITE -->
+            <div class="categoria-group" data-cat="bibite">
+                <div class="section-title">Bibite & Altro</div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Coca Cola 33cl</h3></div></div><div class="card-bottom"><input type="text" id="nota-cocacola" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Coca Cola 33cl', 'nota-cocacola')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Fanta 33cl</h3></div></div><div class="card-bottom"><input type="text" id="nota-fanta" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Fanta 33cl', 'nota-fanta')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Acqua Naturale 0.75l</h3></div></div><div class="card-bottom"><input type="text" id="nota-acqua" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Acqua Naturale 0.75l', 'nota-acqua')">Aggiungi</button></div></div>
+                <div class="card"><div class="card-top"><div class="card-info"><h3>Birra Artigianale 33cl</h3></div></div><div class="card-bottom"><input type="text" id="nota-birra" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Birra Artigianale 33cl', 'nota-birra')">Aggiungi</button></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pulsante Fluttuante -->
+    <button id="cart-fab" onclick="apriModal()">🛒<span id="badge">0</span></button>
+
+    <!-- Modale Carrello -->
+    <div id="modal" class="modal" onclick="chiudiModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h3>Il tuo ordine</h3>
+            <div id="lista-carrello" style="margin: 15px 0;"></div>
+            <button class="btn-send" onclick="inviaOrdine()">Invia in Cucina</button>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-        const app = initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" });
-        const db = getDatabase(app);
-
+        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        
+        const db = getDatabase(initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" }));
         let carrello = [];
 
-        window.filtraCategoria = function(categoria, btn) {
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            document.querySelectorAll('.categoria-group').forEach(group => {
-                if (categoria === 'tutte' || group.getAttribute('data-cat') === categoria) {
-                    group.style.display = 'block';
-                } else {
-                    group.style.display = 'none';
-                }
-            });
-        };
-
-        window.aggiungiAlCarrello = function(nomeProdotto, idProdotto) {
-            carrello.push({ id: Date.now() + Math.random(), nome: nomeProdotto });
-            aggiornaBarraCarrello();
+        window.aggiungi = (nomeProdotto, idNota) => {
+            const nota = document.getElementById(idNota).value.trim();
+            const descrizioneCompleta = nota ? `${nomeProdotto} (${nota})` : nomeProdotto;
             
-            const btn = document.getElementById('btn-' + idProdotto);
-            if(btn) {
-                const vecchioTesto = btn.innerText;
-                btn.innerText = "+1 Aggiunto";
-                btn.style.backgroundColor = "#34c759";
-                setTimeout(() => {
-                    btn.innerText = vecchioTesto;
-                    btn.style.backgroundColor = "";
-                }, 800);
-            }
+            carrello.push({ id: Date.now() + Math.random(), testo: descrizioneCompleta });
+            document.getElementById(idNota).value = '';
+            aggiornaBadge();
         };
 
-        window.rimuoviDalCarrello = function(uniqueId) {
-            carrello = carrello.filter(item => item.id !== uniqueId);
-            aggiornaBarraCarrello();
-            renderizzaModaleCarrello();
-            if (carrello.length === 0) {
-                chiudiModaleCarrello();
-            }
+        window.rimuoviDalCarrello = (idUnico) => {
+            carrello = carrello.filter(item => item.id !== idUnico);
+            aggiornaBadge();
+            renderizzaLista();
+            if(carrello.length === 0) chiudiModal();
         };
 
-        function aggiornaBarraCarrello() {
-            const cartBar = document.getElementById('cart-bar');
-            const cartCountText = document.getElementById('cart-count-text');
-
-            if (carrello.length > 0) {
-                cartBar.style.display = 'flex';
-                cartCountText.innerText = `🛒 ${carrello.length} ${carrello.length === 1 ? 'articolo' : 'articoli'} nel carrello`;
-            } else {
-                cartBar.style.display = 'none';
-            }
+        function aggiornaBadge() {
+            const badge = document.getElementById('badge');
+            const fab = document.getElementById('cart-fab');
+            badge.innerText = carrello.length;
+            fab.style.display = carrello.length > 0 ? 'flex' : 'none';
         }
 
-        window.apriModaleCarrello = function() {
-            renderizzaModaleCarrello();
-            document.getElementById('cart-modal').style.display = 'flex';
+        window.apriModal = () => {
+            renderizzaLista();
+            document.getElementById('modal').style.display = 'flex';
         };
 
-        window.chiudiModaleCarrello = function() {
-            document.getElementById('cart-modal').style.display = 'none';
+        window.chiudiModal = () => {
+            document.getElementById('modal').style.display = 'none';
         };
 
-        function renderizzaModaleCarrello() {
-            const listContainer = document.getElementById('modal-items-list');
-            listContainer.innerHTML = '';
-
+        function renderizzaLista() {
+            const listaDiv = document.getElementById('lista-carrello');
             if (carrello.length === 0) {
-                listContainer.innerHTML = '<p style="text-align:center; color: #86868b;">Il carrello è vuoto</p>';
+                listaDiv.innerHTML = '<p style="color:#86868b; text-align:center;">Carrello vuoto</p>';
                 return;
             }
-
-            carrello.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'modal-item';
-                div.innerHTML = `
-                    <span>${item.nome}</span>
-                    <button class="btn-rimuovi-item" onclick="rimuoviDalCarrello(${item.id})">Rimuovi</button>
-                `;
-                listContainer.appendChild(div);
-            });
+            listaDiv.innerHTML = carrello.map(item => `
+                <div class="modal-item">
+                    <span>${item.testo}</span>
+                    <button class="btn-rimuovi" onclick="rimuoviDalCarrello(${item.id})">&times;</button>
+                </div>
+            `).join('');
         }
 
-        window.inviaCarrelloInCucina = function() {
-            const nomeCliente = document.getElementById('nome').value.trim();
-            if (!nomeCliente) {
-                alert("Per favore, inserisci prima il tuo nome o tavolo!");
+        window.inviaOrdine = () => {
+            const nome = document.getElementById('nome').value.trim();
+            if(!nome) {
+                alert("Inserisci prima il nome o per chi è l'ordine!");
                 document.getElementById('nome').focus();
                 return;
             }
+            if(carrello.length === 0) return;
 
-            if (carrello.length === 0) return;
+            const prodottiStringa = carrello.map(i => i.testo).join(' + ');
 
-            const prodottiNomi = carrello.map(i => i.nome);
-            const riepilogoProdotti = prodottiNomi.join(' + ');
-
-            push(ref(db, 'ordini'), {
-                cliente: nomeCliente,
-                pizza: riepilogoProdotti,
+            push(ref(db, 'ordini'), { 
+                cliente: nome, 
+                prodotti: prodottiStringa,
                 orario: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             }).then(() => {
-                alert("Ordine inviato con successo in cucina!");
+                alert("Ordine inviato in cucina!");
                 carrello = [];
-                aggiornaBarraCarrello();
+                aggiornaBadge();
+                chiudiModal();
             });
         };
 
-        const prodottiIds = [
-            'margherita', 'diavola', '4formaggi', 'capricciosa', 'marinara', 
-            'vegetariana', 'prosciuttoefunghi', 'quattrostagioni', 'bufalina', 
-            'boscaiola', 'bresaolaerucola', 'americana', 'calzoneclassico', 
-            'napoli', 'romana', 'pugliese', 'salsicciaefriarelli', 
-            'tonnoecipolla', 'siciliana', 'tirolese', 'pistacchiosa',
-            'focacciaclassica', 'focacciacrudo', 'cocacola', 'fanta', 
-            'acquanaturale', 'birrabionda', 'birrarossa', 'chianti', 'prosecco'
-        ];
-
-        onValue(ref(db, 'disponibilita'), (snapshot) => {
-            const data = snapshot.val() || {};
-            prodottiIds.forEach(id => {
-                const btn = document.getElementById('btn-' + id);
-                if (btn) {
-                    if (data[id] === false) {
-                        btn.disabled = true;
-                        btn.innerText = "Non disponibile";
-                    } else {
-                        btn.disabled = false;
-                        btn.innerText = "Aggiungi";
-                    }
-                }
+        window.filtra = (cat, btn) => {
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.categoria-group').forEach(g => {
+                g.style.display = (cat === 'tutte' || g.getAttribute('data-cat') === cat) ? 'block' : 'none';
             });
-        });
+        };
     </script>
 </body>
 </html>
