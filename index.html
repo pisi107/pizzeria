@@ -166,12 +166,9 @@
             cursor: not-allowed;
         }
 
-        /* Barra del Carrello fissa in basso */
         .cart-bar {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            bottom: 0; left: 0; right: 0;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-top: 1px solid #e5e5ea;
@@ -211,7 +208,6 @@
             cursor: pointer;
         }
 
-        /* Modale di Gestione Carrello */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -307,6 +303,23 @@
             <div class="card"><div class="card-img"><img src="immagini/diavola.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Diavola</h3><p>Pomodoro, Mozzarella, Salame piccante</p><button id="btn-diavola" onclick="aggiungiAlCarrello('Diavola', 'diavola')">Aggiungi</button></div></div>
             <div class="card"><div class="card-img"><img src="immagini/4formaggi.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>4 Formaggi</h3><p>Mozzarella, Gorgonzola, Fontina, Parmigiano</p><button id="btn-4formaggi" onclick="aggiungiAlCarrello('4 Formaggi', '4formaggi')">Aggiungi</button></div></div>
             <div class="card"><div class="card-img"><img src="immagini/capricciosa.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Capricciosa</h3><p>Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi</p><button id="btn-capricciosa" onclick="aggiungiAlCarrello('Capricciosa', 'capricciosa')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/marinara.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Marinara</h3><p>Pomodoro, Aglio, Origano, Olio EVO</p><button id="btn-marinara" onclick="aggiungiAlCarrello('Marinara', 'marinara')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/vegetariana.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Vegetariana</h3><p>Pomodoro, Mozzarella, Zucchine, Melanzane, Peperoni</p><button id="btn-vegetariana" onclick="aggiungiAlCarrello('Vegetariana', 'vegetariana')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/prosciuttoefunghi.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Prosciutto e Funghi</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Funghi</p><button id="btn-prosciuttoefunghi" onclick="aggiungiAlCarrello('Prosciutto e Funghi', 'prosciuttoefunghi')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/quattrostagioni.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Quattro Stagioni</h3><p>Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi, Olive</p><button id="btn-quattrostagioni" onclick="aggiungiAlCarrello('Quattro Stagioni', 'quattrostagioni')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/bufalina.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Bufalina</h3><p>Pomodoro, Mozzarella di Bufala Campana DOP, Basilico</p><button id="btn-bufalina" onclick="aggiungiAlCarrello('Bufalina', 'bufalina')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/boscaiola.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Boscaiola</h3><p>Mozzarella, Salsiccia, Funghi pioppini, Panna</p><button id="btn-boscaiola" onclick="aggiungiAlCarrello('Boscaiola', 'boscaiola')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/bresaolaerucola.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Bresaola e Rucola</h3><p>Mozzarella, Bresaola, Rucola, Grana</p><button id="btn-bresaolaerucola" onclick="aggiungiAlCarrello('Bresaola e Rucola', 'bresaolaerucola')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/americana.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Americana</h3><p>Pomodoro, Mozzarella, Wurstel, Patatine fritte</p><button id="btn-americana" onclick="aggiungiAlCarrello('Americana', 'americana')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/calzoneclassico.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Calzone Classico</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Salame</p><button id="btn-calzoneclassico" onclick="aggiungiAlCarrello('Calzone Classico', 'calzoneclassico')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/napoli.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Napoli</h3><p>Pomodoro, Mozzarella, Acciughe, Origano</p><button id="btn-napoli" onclick="aggiungiAlCarrello('Napoli', 'napoli')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/romana.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Romana</h3><p>Pomodoro, Mozzarella, Acciughe, Capperi, Origano</p><button id="btn-romana" onclick="aggiungiAlCarrello('Romana', 'romana')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/pugliese.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Pugliese</h3><p>Pomodoro, Mozzarella, Cipolla rossa, Origano</p><button id="btn-pugliese" onclick="aggiungiAlCarrello('Pugliese', 'pugliese')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/salsicciaefriarelli.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Salsiccia e Friarelli</h3><p>Mozzarella, Salsiccia, Friarelli napoletani</p><button id="btn-salsicciaefriarelli" onclick="aggiungiAlCarrello('Salsiccia e Friarelli', 'salsicciaefriarelli')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/tonnoecipolla.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Tonno e Cipolla</h3><p>Pomodoro, Mozzarella, Tonno, Cipolla rossa</p><button id="btn-tonnoecipolla" onclick="aggiungiAlCarrello('Tonno e Cipolla', 'tonnoecipolla')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/siciliana.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Siciliana</h3><p>Pomodoro, Mozzarella, Melanzane, Ricotta salata</p><button id="btn-siciliana" onclick="aggiungiAlCarrello('Siciliana', 'siciliana')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/tirolese.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Tirolese</h3><p>Pomodoro, Mozzarella, Speck, Gorgonzola</p><button id="btn-tirolese" onclick="aggiungiAlCarrello('Tirolese', 'tirolese')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/pistacchiosa.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Pistacchiosa</h3><p>Mozzarella, Mortadella, Pistacchio, Burrata</p><button id="btn-pistacchiosa" onclick="aggiungiAlCarrello('Pistacchiosa', 'pistacchiosa')">Aggiungi</button></div></div>
         </div>
 
         <!-- SEZIONE FOCACCE -->
@@ -355,9 +368,7 @@
                 <span>Modifica Carrello</span>
                 <button class="modal-close" onclick="chiudiModaleCarrello()">✕</button>
             </div>
-            <div id="modal-items-list" class="modal-list">
-                <!-- Gli elementi verranno inseriti qui via JS -->
-            </div>
+            <div id="modal-items-list" class="modal-list"></div>
             <button class="btn-invia-carrello" onclick="chiudiModaleCarrello()">Fatto</button>
         </div>
     </div>
@@ -475,7 +486,11 @@
         };
 
         const prodottiIds = [
-            'margherita', 'diavola', '4formaggi', 'capricciosa', 
+            'margherita', 'diavola', '4formaggi', 'capricciosa', 'marinara', 
+            'vegetariana', 'prosciuttoefunghi', 'quattrostagioni', 'bufalina', 
+            'boscaiola', 'bresaolaerucola', 'americana', 'calzoneclassico', 
+            'napoli', 'romana', 'pugliese', 'salsicciaefriarelli', 
+            'tonnoecipolla', 'siciliana', 'tirolese', 'pistacchiosa',
             'focacciaclassica', 'focacciacrudo', 'cocacola', 'fanta', 
             'acquanaturale', 'birrabionda', 'birrarossa', 'chianti', 'prosecco'
         ];
