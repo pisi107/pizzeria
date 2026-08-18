@@ -3,137 +3,331 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pizzeria di Famiglia - Gestione Menu</title>
+    <title>Gestione Cucina - Pizzeria di Famiglia 👨‍🍳</title>
     <style>
-        :root { --primary: #ff3b30; --success: #34c759; --bg: #f2f2f7; --card-bg: #ffffff; --text: #1d1d1f; }
-        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: var(--bg); margin: 0; padding: 20px; padding-bottom: 60px; color: var(--text); }
-        .container { max-width: 600px; margin: 0 auto; }
-        .header { text-align: center; margin-bottom: 25px; }
-        .header h2 { margin: 0 0 5px 0; }
-        .header p { color: #86868b; font-size: 14px; margin: 0; }
-        
-        .section-title { font-size: 18px; font-weight: 700; margin: 25px 0 10px 5px; }
-        .card { background: var(--card-bg); padding: 12px 15px; border-radius: 14px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); display: flex; justify-content: space-between; align-items: center; }
-        .card-info h3 { margin: 0 0 2px 0; font-size: 15px; }
-        .card-info p { color: #86868b; font-size: 12px; margin: 0; }
+        :root { 
+            --primary: #8b0000; 
+            --success: #2e7d32; 
+            --bg: #f7f3e8; 
+            --card-bg: #fffdf9; 
+            --text: #2c221e; 
+            --gray: #7d7065; 
+            --accent: #d4a373; 
+        }
 
-        /* Stile Toggle Switch (Interruttore) */
-        .switch { position: relative; display: inline-block; width: 50px; height: 28px; flex-shrink: 0; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .3s; border-radius: 28px; }
-        .slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
-        input:checked + .slider { background-color: var(--success); }
-        input:checked + .slider:before { transform: translateX(22px); }
+        body { 
+            font-family: "Georgia", serif; 
+            background-color: var(--bg); 
+            margin: 0; 
+            padding: 20px; 
+            padding-bottom: 100px; 
+            color: var(--text); 
+        }
+
+        .container { max-width: 650px; margin: 0 auto; }
+
+        .header { 
+            background: var(--card-bg); 
+            color: var(--text); 
+            padding: 25px 20px; 
+            border-radius: 12px; 
+            text-align: center; 
+            margin-bottom: 25px; 
+            border: 3px double var(--accent);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+        .header h1 { margin: 0 0 8px 0; font-size: 26px; font-weight: normal; font-style: italic; color: var(--primary); }
+        .header p { margin: 0; font-size: 14px; font-style: italic; color: var(--gray); }
+
+        .section-title { 
+            font-size: 19px; 
+            font-style: italic; 
+            font-weight: normal; 
+            margin: 25px 0 15px 5px; 
+            color: var(--primary);
+            border-bottom: 1px dashed var(--accent);
+            padding-bottom: 5px;
+        }
+
+        .card-box { 
+            background: var(--card-bg); 
+            padding: 22px; 
+            border-radius: 12px; 
+            border: 1px solid var(--accent); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
+            margin-bottom: 25px; 
+        }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 14px; font-style: italic; font-weight: bold; margin-bottom: 6px; color: var(--gray); }
         
-        .status-label { font-size: 12px; font-weight: 600; margin-right: 10px; color: #86868b; }
-        .right-side { display: flex; align-items: center; }
+        .input-group input { 
+            width: 100%; 
+            padding: 12px 16px; 
+            border: 1px solid var(--accent); 
+            border-radius: 8px; 
+            font-size: 15px; 
+            font-family: "Georgia", serif;
+            outline: none; 
+            box-sizing: border-box; 
+            background: #fff;
+            color: var(--text);
+        }
+
+        .btn-salva { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            width: 100%; 
+            padding: 14px; 
+            border-radius: 8px; 
+            font-size: 15px; 
+            font-style: italic; 
+            font-weight: bold; 
+            cursor: pointer; 
+            box-shadow: 0 4px 10px rgba(139, 0, 0, 0.2);
+        }
+        .btn-salva:active { transform: scale(0.98); }
+
+        /* Lista checkbox gestione disponibilità */
+        .category-subtitle { font-size: 15px; font-style: italic; font-weight: bold; color: var(--primary); margin: 20px 0 10px 2px; }
+        
+        .disponibilita-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .disp-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fdfbf7;
+            padding: 10px 12px;
+            border: 1px solid #e8dfd1;
+            border-radius: 8px;
+            font-style: italic;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .disp-item input {
+            accent-color: var(--primary);
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* Gestione Ordini Arrivati */
+        .order-card { 
+            background: var(--card-bg); 
+            padding: 16px 20px; 
+            border-radius: 10px; 
+            margin-bottom: 12px; 
+            border: 1px solid var(--accent); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+        }
+        .btn-elimina { 
+            background: #d32f2f; 
+            color: white; 
+            border: none; 
+            padding: 8px 14px; 
+            border-radius: 6px; 
+            font-size: 13px; 
+            font-style: italic; 
+            cursor: pointer; 
+        }
+        .btn-elimina:hover { background: #b71c1c; }
+
+        .empty-state { 
+            text-align: center; 
+            color: var(--gray); 
+            font-style: italic; 
+            background: var(--card-bg); 
+            padding: 25px; 
+            border-radius: 10px; 
+            border: 1px solid var(--accent); 
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="header">
-            <h2>⚙️ Gestione Disponibilità Menu</h2>
-            <p>Attiva o disattiva i prodotti in tempo reale per i clienti</p>
-        </div>
-
-        <div id="gestione-menu">
-            <!-- Verrà popolato dinamicamente con tutti gli articoli -->
-        </div>
+<div class="container">
+    
+    <!-- HEADER -->
+    <div class="header">
+        <h1>~ Pannello di Gestione Cucina ~</h1>
+        <p>Controlla gli ordini e gestisci la disponibilità del menu</p>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-        
-        const db = getDatabase(initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" }));
+    <!-- IMPOSTA SERATA -->
+    <div class="section-title">Impostazioni Serata</div>
+    <div class="card-box">
+        <div class="input-group">
+            <label for="input-serata">Nome della Serata / Ospite</label>
+            <input type="text" id="input-serata" placeholder="es. Pizza di Famiglia, Compleanno...">
+        </div>
+        <button class="btn-salva" onclick="salvaSerata()">Aggiorna Serata ✨</button>
+    </div>
 
-        // Struttura completa di tutti gli articoli divisi per categoria
-        const menuStruttura = [
-            { categoria: "Pizze", prodotti: [
-                { id: "margherita", nome: "Margherita", desc: "Pomodoro, Mozzarella, Basilico" },
-                { id: "diavola", nome: "Diavola", desc: "Pomodoro, Mozzarella, Salame piccante" },
-                { id: "4formaggi", nome: "4 Formaggi", desc: "Mozzarella, Gorgonzola, Fontina, Parmigiano" },
-                { id: "capricciosa", nome: "Capricciosa", desc: "Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi" },
-                { id: "marinara", nome: "Marinara", desc: "Pomodoro, Aglio, Origano, Olio EVO" },
-                { id: "vegetariana", nome: "Vegetariana", desc: "Pomodoro, Mozzarella, Zucchine, Melanzane, Peperoni" },
-                { id: "prosciuttoefunghi", nome: "Prosciutto e Funghi", desc: "Pomodoro, Mozzarella, Prosciutto cotto, Funghi" },
-                { id: "quattrostagioni", nome: "Quattro Stagioni", desc: "Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi, Olive" },
-                { id: "bufalina", nome: "Bufalina", desc: "Pomodoro, Mozzarella di Bufala Campana DOP" },
-                { id: "boscaiola", nome: "Boscaiola", desc: "Mozzarella, Salsiccia, Funghi pioppini, Panna" },
-                { id: "bresaolaerucola", nome: "Bresaola e Rucola", desc: "Mozzarella, Bresaola, Rucola, Grana" },
-                { id: "americana", nome: "Americana", desc: "Pomodoro, Mozzarella, Wurstel, Patatine fritte" },
-                { id: "calzoneclassico", nome: "Calzone Classico", desc: "Pomodoro, Mozzarella, Prosciutto cotto, Salame" },
-                { id: "napoli", nome: "Napoli", desc: "Pomodoro, Mozzarella, Acciughe, Origano" },
-                { id: "romana", nome: "Romana", desc: "Pomodoro, Mozzarella, Acciughe, Capperi" },
-                { id: "pugliese", nome: "Pugliese", desc: "Pomodoro, Mozzarella, Cipolla rossa" },
-                { id: "salsicciaefriarelli", nome: "Salsiccia e Friarelli", desc: "Mozzarella, Salsiccia, Friarelli napoletani" },
-                { id: "tonnoecipolla", nome: "Tonno e Cipolla", desc: "Pomodoro, Mozzarella, Tonno, Cipolla rossa" },
-                { id: "siciliana", nome: "Siciliana", desc: "Pomodoro, Mozzarella, Melanzane, Ricotta salata" },
-                { id: "tirolese", nome: "Tirolese", desc: "Pomodoro, Mozzarella, Speck, Gorgonzola" },
-                { id: "pistacchiosa", nome: "Pistacchiosa", desc: "Mozzarella, Mortadella, Pistacchio, Burrata" }
-            ]},
-            { categoria: "Focacce", prodotti: [
-                { id: "focacciaclassica", nome: "Focaccia Classica", desc: "Olio, Sale, Rosmarino" },
-                { id: "focacciacrudo", nome: "Focaccia con Crudo", desc: "Olio, Prosciutto Crudo" }
-            ]},
-            { categoria: "Bibite", prodotti: [
-                { id: "cocacola", nome: "Coca Cola 33cl", desc: "Lattina" },
-                { id: "fanta", nome: "Fanta 33cl", desc: "Lattina" },
-                { id: "acquanaturale", nome: "Acqua Naturale 0.75l", desc: "Bottiglia" },
-                { id: "acquafrizzante", nome: "Acqua Frizzante 0.75l", desc: "Bottiglia" }
-            ]},
-            { categoria: "Birre", prodotti: [
-                { id: "birraartigianale", nome: "Birra Artigianale 33cl", desc: "Bottiglia" },
-                { id: "birrachiara", nome: "Birra Chiara 66cl", desc: "Bottiglia" },
-                { id: "birrarossa", nome: "Birra Rossa 33cl", desc: "Bottiglia" }
-            ]},
-            { categoria: "Vini", prodotti: [
-                { id: "vinorosso", nome: "Calice di Vino Rosso", desc: "Calice" },
-                { id: "vinobianco", nome: "Calice di Vino Bianco", desc: "Calice" },
-                { id: "chianti", nome: "Bottiglia di Chianti", desc: "Bottiglia" }
-            ]}
-        ];
-
-        const container = document.getElementById('gestione-menu');
-        const dispRef = ref(db, 'disponibilita');
+    <!-- GESTIONE DISPONIBILITÀ MENU -->
+    <div class="section-title">Disponibilità Menu (Togli la spunta per spegnere)</div>
+    <div class="card-box">
         
-        onValue(dispRef, (snapshot) => {
-            const statoSalvataggio = snapshot.val() || {};
+        <div class="category-subtitle">~ Pizze Tradizionali & Classiche ~</div>
+        <div class="disponibilita-grid" id="gest-classiche"></div>
+
+        <div class="category-subtitle">~ Pizze Speciali & Ricche ~</div>
+        <div class="disponibilita-grid" id="gest-speciali"></div>
+
+        <div class="category-subtitle">~ Focacce & Speciali dello Chef ~</div>
+        <div class="disponibilita-grid" id="gest-focacce"></div>
+
+        <div class="category-subtitle">~ Bibite & Cantina ~</div>
+        <div class="disponibilita-grid" id="gest-bibite"></div>
+
+    </div>
+
+    <!-- LISTA ORDINI RICEVUTI -->
+    <div class="section-title">Ordini in Arrivo dagli Ospiti 🛎️</div>
+    <div id="ordini-cucina-container">
+        <div class="empty-state">Nessun ordine ricevuto al momento.</div>
+    </div>
+
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, onValue, set, remove, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    
+    const db = getDatabase(initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" }));
+
+    // Stessa lista precisa degli articoli con le chiavi ID usate nel menu
+    const menuCompleto = {
+        classiche: [
+            { id: "Margherita", nome: "Margherita" },
+            { id: "Marinara", nome: "Marinara" },
+            { id: "Napoli", nome: "Napoli" },
+            { id: "Capricciosa", nome: "Capricciosa" },
+            { id: "Quattro Stagioni", nome: "Quattro Stagioni" },
+            { id: "Diavola", nome: "Diavola" },
+            { id: "Wudy e Patatine", nome: "Wudy e Patatine" },
+            { id: "Romana", nome: "Romana" },
+            { id: "Siciliana", nome: "Siciliana" },
+            { id: "Ortolana / Vegetariana", nome: "Ortolana / Vegetariana" }
+        ],
+        speciali: [
+            { id: "Quattro Formaggi", nome: "Quattro Formaggi" },
+            { id: "Calzone Normale o Fritto", nome: "Calzone Normale o Fritto" },
+            { id: "Bufalina", nome: "Bufalina" },
+            { id: "Boscaiola", nome: "Boscaiola" },
+            { id: "Saporita / Parmigiana", nome: "Saporita / Parmigiana" },
+            { id: "Tonno e Cipolla", nome: "Tonno e Cipolla" },
+            { id: "Salsiccia e Friarielli", nome: "Salsiccia e Friarielli" },
+            { id: "TIROLESE (Speck e Brie)", nome: "Tirolese (Speck e Brie)" },
+            { id: "CARBONARA (Uovo e Pancetta)", nome: "Carbonara" },
+            { id: "AI FUNGHI PORCINI", nome: "Ai Funghi Porcini" }
+        ],
+        focacce: [
+            { id: "Focaccia Liscia", nome: "Focaccia Liscia" },
+            { id: "Focaccia Rosmarino", nome: "Rosmarino / Olio" },
+            { id: "Pizza Speciale dello Chef", nome: "Speciale dello Chef" }
+        ],
+        bibite: [
+            { id: "Coca Cola", nome: "Coca Cola" },
+            { id: "Acqua Naturale", nome: "Acqua Naturale" },
+            { id: "Acqua Frizzante", nome: "Acqua Frizzante" },
+            { id: "Birra", nome: "Birra artigianale" }
+        ]
+    };
+
+    // Costruisce i box con le checkbox nel pannello di gestione
+    function creaInterfacciaDisponibilita(disponibilita) {
+        disponibilita = disponibilita || {};
+
+        const renderGruppoGestione = (lista, containerId) => {
+            const container = document.getElementById(containerId);
             container.innerHTML = '';
+            
+            lista.forEach(item => {
+                // Di default è true se non specificato altrimenti
+                const attivo = disponibilita[item.id] !== false;
 
-            menuStruttura.forEach(catObj => {
-                const titolo = document.createElement('div');
-                titolo.className = 'section-title';
-                titolo.innerText = catObj.categoria;
-                container.appendChild(titolo);
-
-                catObj.prodotti.forEach(prod => {
-                    const isDisponibile = statoSalvataggio[prod.id] !== undefined ? statoSalvataggio[prod.id] : true;
-
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <div class="card-info">
-                            <h3>${prod.nome}</h3>
-                            <p>${prod.desc}</p>
-                        </div>
-                        <div class="right-side">
-                            <span class="status-label">${isDisponibile ? 'Disponibile' : 'Esaurito'}</span>
-                            <label class="switch">
-                                <input type="checkbox" ${isDisponibile ? 'checked' : ''} onchange="aggiornaStato('${prod.id}', this.checked)">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
+                const label = document.createElement('label');
+                label.className = 'disp-item';
+                label.innerHTML = `
+                    <input type="checkbox" ${attivo ? 'checked' : ''} onchange="aggiornaStatoProdotto('${item.id}', this.checked)">
+                    <span>${item.nome}</span>
+                `;
+                container.appendChild(label);
             });
+        };
+
+        renderGruppoGestione(menuCompleto.classiche, 'gest-classiche');
+        renderGruppoGestione(menuCompleto.speciali, 'gest-speciali');
+        renderGruppoGestione(menuCompleto.focacce, 'gest-focacce');
+        renderGruppoGestione(menuCompleto.bibite, 'gest-bibite');
+    }
+
+    // Funzione globale richiamata al cambio della checkbox
+    window.aggiornaStatoProdotto = (idProdotto, isChecked) => {
+        set(ref(db, `infoSerata/disponibilita/${idProdotto}`), isChecked);
+    };
+
+    // Ascolta la disponibilità corrente da Firebase
+    onValue(ref(db, 'infoSerata/disponibilita'), (snapshot) => {
+        creaInterfacciaDisponibilita(snapshot.val());
+    });
+
+    // Salva il nome della serata
+    window.salvaSerata = () => {
+        const nome = document.getElementById('input-serata').value.trim();
+        set(ref(db, 'infoSerata/ospiteCorrente'), nome);
+        alert("Serata aggiornata con successo! ✨");
+    };
+
+    // Riempi input nome serata all'avvio se già presente
+    onValue(ref(db, 'infoSerata/ospiteCorrente'), (snapshot) => {
+        const ospite = snapshot.val();
+        if(ospite) {
+            document.getElementById('input-serata').value = ospite;
+        }
+    });
+
+    // Gestione eliminazione ordini arrivati
+    window.eliminaOrdine = (idOrdine) => {
+        if(confirm("Vuoi segnare questo ordine come completato/eliminato?")) {
+            remove(ref(db, 'ordini/' + idOrdine));
+        }
+    };
+
+    // Ascolta gli ordini in arrivo in tempo reale
+    onValue(ref(db, 'ordini'), (snapshot) => {
+        const ordini = snapshot.val() || {};
+        const container = document.getElementById('ordini-cucina-container');
+        
+        container.innerHTML = '';
+        let trovati = false;
+
+        Object.entries(ordini).forEach(([id, o]) => {
+            container.innerHTML += `
+                <div class="order-card">
+                    <div>
+                        <strong style="font-size: 16px; font-style: italic; color: var(--text);">👤 ${o.cliente}</strong><br>
+                        <span style="font-size: 14px; font-style: italic; color: var(--gray);">🍕 ${o.prodotti}</span><br>
+                        <small style="color: var(--gray); font-style: italic;">Orario: ${o.orario}</small>
+                    </div>
+                    <button class="btn-elimina" onclick="eliminaOrdine('${id}')">Completato ✓</button>
+                </div>`;
+            trovati = true;
         });
 
-        window.aggiornaStato = (idProdotto, stato) => {
-            set(ref(db, `disponibilita/${idProdotto}`), stato);
-        };
-    </script>
+        if (!trovati) {
+            container.innerHTML = '<div class="empty-state">Nessun ordine ricevuto al momento.</div>';
+        }
+    });
+</script>
+
 </body>
 </html>
