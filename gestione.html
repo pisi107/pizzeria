@@ -38,7 +38,7 @@
         </div>
 
         <div id="gestione-menu">
-            <!-- Verrà popolato dinamicamente o controllato tramite Firebase -->
+            <!-- Verrà popolato dinamicamente con tutti gli articoli -->
         </div>
     </div>
 
@@ -48,7 +48,7 @@
         
         const db = getDatabase(initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" }));
 
-        // Lista completa di tutti i prodotti divisi per categoria
+        // Struttura completa di tutti gli articoli divisi per categoria
         const menuStruttura = [
             { categoria: "Pizze", prodotti: [
                 { id: "margherita", nome: "Margherita", desc: "Pomodoro, Mozzarella, Basilico" },
@@ -96,24 +96,19 @@
         ];
 
         const container = document.getElementById('gestione-menu');
-
-        // Ascolta lo stato di disponibilità dal database in tempo reale
         const dispRef = ref(db, 'disponibilita');
         
         onValue(dispRef, (snapshot) => {
             const statoSalvataggio = snapshot.val() || {};
-            
             container.innerHTML = '';
 
-            menuStrutturaforEach(catObj => {
-                // Titolo Categoria
+            menuStruttura.forEach(catObj => {
                 const titolo = document.createElement('div');
                 titolo.className = 'section-title';
                 titolo.innerText = catObj.categoria;
                 container.appendChild(titolo);
 
                 catObj.prodotti.forEach(prod => {
-                    // Se non è specificato nel DB, di default è disponibile (true)
                     const isDisponibile = statoSalvataggio[prod.id] !== undefined ? statoSalvataggio[prod.id] : true;
 
                     const card = document.createElement('div');
@@ -136,7 +131,6 @@
             });
         });
 
-        // Funzione globale per cambiare lo stato su Firebase quando tocchi l'interruttore
         window.aggiornaStato = (idProdotto, stato) => {
             set(ref(db, `disponibilita/${idProdotto}`), stato);
         };
