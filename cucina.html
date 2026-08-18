@@ -13,7 +13,7 @@
             color: #1d1d1f;
         }
         .container { max-width: 600px; margin: 0 auto; }
-        h2 { text-align: center; margin-bottom: 24px; }
+        h2 { text-align: center; margin-bottom: 24px; font-weight: 700; }
         .ordine-card {
             background: #ffffff;
             padding: 20px;
@@ -28,10 +28,28 @@
         .ordine-details h3 { margin: 0 0 6px 0; font-size: 18px; }
         .ordine-details p { margin: 0; color: #86868b; font-size: 14px; }
         .ordine-details strong { color: #1d1d1f; }
-        .orario {
-            font-weight: 600; font-size: 14px; background: #f2f2f7;
-            padding: 8px 12px; border-radius: 10px; color: #3a3a3c;
+        .destra {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
         }
+        .orario {
+            font-weight: 600; font-size: 13px; background: #f2f2f7;
+            padding: 6px 10px; border-radius: 8px; color: #3a3a3c;
+        }
+        .btn-fatto {
+            background-color: #34c759;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .btn-fatto:active { transform: scale(0.96); }
         .vuoto {
             text-align: center; color: #86868b; background: #ffffff;
             padding: 30px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);
@@ -46,7 +64,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
         const app = initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" });
         const db = getDatabase(app);
@@ -58,7 +76,8 @@
             listaOrdini.innerHTML = '';
 
             if (data) {
-                Object.values(data).reverse().forEach(ordine => {
+                // Mostra gli ordini con il loro ID univoco di Firebase
+                Object.entries(data).reverse().forEach(([id, ordine]) => {
                     const div = document.createElement('div');
                     div.className = 'ordine-card';
                     div.innerHTML = `
@@ -66,7 +85,10 @@
                             <h3>🍕 ${ordine.pizza}</h3>
                             <p>Cliente: <strong>${ordine.cliente}</strong></p>
                         </div>
-                        <div class="orario">⏰ ${ordine.orario}</div>
+                        <div class="destra">
+                            <div class="orario">⏰ ${ordine.orario}</div>
+                            <button class="btn-fatto" onclick="completaOrdine('${id}')">Fatto</button>
+                        </div>
                     `;
                     listaOrdini.appendChild(div);
                 });
@@ -74,6 +96,11 @@
                 listaOrdini.innerHTML = '<div class="vuoto">Nessun ordine attivo al momento.</div>';
             }
         });
+
+        // Funzione per eliminare l'ordine dal database quando si clicca "Fatto"
+        window.completaOrdine = function(id) {
+            remove(ref(db, 'ordini/' + id));
+        };
     </script>
 </body>
 </html>
