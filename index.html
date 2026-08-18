@@ -29,6 +29,7 @@
         .card-bottom { display: flex; gap: 8px; align-items: center; }
         .input-nota { flex-grow: 1; padding: 8px 10px; font-size: 13px; border: 1px solid #e5e5ea; border-radius: 8px; background: #fafafa; }
         .btn-add { background: var(--primary); color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 600; cursor: pointer; white-space: nowrap; font-size: 13px; }
+        .btn-add-full { width: 100%; background: var(--primary); color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 13px; }
         
         #cart-fab { position: fixed; bottom: 25px; right: 25px; background: var(--success); color: white; width: 60px; height: 60px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 4px 15px rgba(52, 199, 89, 0.4); z-index: 1000; border: none; cursor: pointer; }
         #badge { position: absolute; top: -5px; right: -5px; background: var(--primary); color: white; font-size: 12px; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
@@ -65,43 +66,146 @@
             <div class="categoria-group" data-cat="pizze">
                 <div class="section-title">Pizze</div>
                 
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Margherita</h3><p>Pomodoro, Mozzarella, Basilico</p></div></div><div class="card-bottom"><input type="text" id="nota-margherita" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Margherita', 'nota-margherita')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Diavola</h3><p>Pomodoro, Mozzarella, Salame piccante</p></div></div><div class="card-bottom"><input type="text" id="nota-diavola" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Diavola', 'nota-diavola')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>4 Formaggi</h3><p>Mozzarella, Gorgonzola, Fontina, Parmigiano</p></div></div><div class="card-bottom"><input type="text" id="nota-4formaggi" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('4 Formaggi', 'nota-4formaggi')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Capricciosa</h3><p>Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi</p></div></div><div class="card-bottom"><input type="text" id="nota-capricciosa" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Capricciosa', 'nota-capricciosa')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Marinara</h3><p>Pomodoro, Aglio, Origano, Olio EVO</p></div></div><div class="card-bottom"><input type="text" id="nota-marinara" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Marinara', 'nota-marinara')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Vegetariana</h3><p>Pomodoro, Mozzarella, Zucchine, Melanzane, Peperoni</p></div></div><div class="card-bottom"><input type="text" id="nota-vegetariana" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Vegetariana', 'nota-vegetariana')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Prosciutto e Funghi</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Funghi</p></div></div><div class="card-bottom"><input type="text" id="nota-prosciuttoefunghi" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Prosciutto e Funghi', 'nota-prosciuttoefunghi')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Quattro Stagioni</h3><p>Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi, Olive</p></div></div><div class="card-bottom"><input type="text" id="nota-quattrostagioni" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Quattro Stagioni', 'nota-quattrostagioni')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Bufalina</h3><p>Pomodoro, Mozzarella di Bufala Campana DOP</p></div></div><div class="card-bottom"><input type="text" id="nota-bufalina" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Bufalina', 'nota-bufalina')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Boscaiola</h3><p>Mozzarella, Salsiccia, Funghi pioppini, Panna</p></div></div><div class="card-bottom"><input type="text" id="nota-boscaiola" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Boscaiola', 'nota-boscaiola')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Bresaola e Rucola</h3><p>Mozzarella, Bresaola, Rucola, Grana</p></div></div><div class="card-bottom"><input type="text" id="nota-bresaolaerucola" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Bresaola e Rucola', 'nota-bresaolaerucola')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Americana</h3><p>Pomodoro, Mozzarella, Wurstel, Patatine fritte</p></div></div><div class="card-bottom"><input type="text" id="nota-americana" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Americana', 'nota-americana')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Calzone Classico</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Salame</p></div></div><div class="card-bottom"><input type="text" id="nota-calzoneclassico" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Calzone Classico', 'nota-calzoneclassico')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Napoli</h3><p>Pomodoro, Mozzarella, Acciughe, Origano</p></div></div><div class="card-bottom"><input type="text" id="nota-napoli" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Napoli', 'nota-napoli')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Romana</h3><p>Pomodoro, Mozzarella, Acciughe, Capperi</p></div></div><div class="card-bottom"><input type="text" id="nota-romana" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Romana', 'nota-romana')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Pugliese</h3><p>Pomodoro, Mozzarella, Cipolla rossa</p></div></div><div class="card-bottom"><input type="text" id="nota-pugliese" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Pugliese', 'nota-pugliese')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Salsiccia e Friarelli</h3><p>Mozzarella, Salsiccia, Friarelli napoletani</p></div></div><div class="card-bottom"><input type="text" id="nota-salsicciaefriarelli" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Salsiccia e Friarelli', 'nota-salsicciaefriarelli')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Tonno e Cipolla</h3><p>Pomodoro, Mozzarella, Tonno, Cipolla rossa</p></div></div><div class="card-bottom"><input type="text" id="nota-tonnoecipolla" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Tonno e Cipolla', 'nota-tonnoecipolla')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Siciliana</h3><p>Pomodoro, Mozzarella, Melanzane, Ricotta salata</p></div></div><div class="card-bottom"><input type="text" id="nota-siciliana" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Siciliana', 'nota-siciliana')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Tirolese</h3><p>Pomodoro, Mozzarella, Speck, Gorgonzola</p></div></div><div class="card-bottom"><input type="text" id="nota-tirolese" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Tirolese', 'nota-tirolese')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Pistacchiosa</h3><p>Mozzarella, Mortadella, Pistacchio, Burrata</p></div></div><div class="card-bottom"><input type="text" id="nota-pistacchiosa" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Pistacchiosa', 'nota-pistacchiosa')">Aggiungi</button></div></div>
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Margherita</h3><p>Pomodoro, Mozzarella, Basilico</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-margherita" class="input-nota" placeholder="Note (es. senza basilico)"><button class="btn-add" onclick="aggiungi('Margherita', 'nota-margherita')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Diavola</h3><p>Pomodoro, Mozzarella, Salame piccante</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-diavola" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Diavola', 'nota-diavola')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>4 Formaggi</h3><p>Mozzarella, Gorgonzola, Fontina, Parmigiano</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-4formaggi" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('4 Formaggi', 'nota-4formaggi')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Capricciosa</h3><p>Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-capricciosa" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Capricciosa', 'nota-capricciosa')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Marinara</h3><p>Pomodoro, Aglio, Origano, Olio EVO</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-marinara" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Marinara', 'nota-marinara')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Vegetariana</h3><p>Pomodoro, Mozzarella, Zucchine, Melanzane, Peperoni</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-vegetariana" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Vegetariana', 'nota-vegetariana')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Prosciutto e Funghi</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Funghi</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-prosciuttoefunghi" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Prosciutto e Funghi', 'nota-prosciuttoefunghi')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Quattro Stagioni</h3><p>Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi, Olive</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-quattrostagioni" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Quattro Stagioni', 'nota-quattrostagioni')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Bufalina</h3><p>Pomodoro, Mozzarella di Bufala Campana DOP</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-bufalina" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Bufalina', 'nota-bufalina')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Boscaiola</h3><p>Mozzarella, Salsiccia, Funghi pioppini, Panna</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-boscaiola" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Boscaiola', 'nota-boscaiola')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Bresaola e Rucola</h3><p>Mozzarella, Bresaola, Rucola, Grana</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-bresaolaerucola" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Bresaola e Rucola', 'nota-bresaolaerucola')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Americana</h3><p>Pomodoro, Mozzarella, Wurstel, Patatine fritte</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-americana" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Americana', 'nota-americana')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Calzone Classico</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Salame</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-calzoneclassico" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Calzone Classico', 'nota-calzoneclassico')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Napoli</h3><p>Pomodoro, Mozzarella, Acciughe, Origano</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-napoli" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Napoli', 'nota-napoli')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Romana</h3><p>Pomodoro, Mozzarella, Acciughe, Capperi</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-romana" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Romana', 'nota-romana')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Pugliese</h3><p>Pomodoro, Mozzarella, Cipolla rossa</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-pugliese" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Pugliese', 'nota-pugliese')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Salsiccia e Friarelli</h3><p>Mozzarella, Salsiccia, Friarelli napoletani</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-salsicciaefriarelli" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Salsiccia e Friarelli', 'nota-salsicciaefriarelli')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Tonno e Cipolla</h3><p>Pomodoro, Mozzarella, Tonno, Cipolla rossa</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-tonnoecipolla" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Tonno e Cipolla', 'nota-tonnoecipolla')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Siciliana</h3><p>Pomodoro, Mozzarella, Melanzane, Ricotta salata</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-siciliana" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Siciliana', 'nota-siciliana')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Tirolese</h3><p>Pomodoro, Mozzarella, Speck, Gorgonzola</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-tirolese" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Tirolese', 'nota-tirolese')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Pistacchiosa</h3><p>Mozzarella, Mortadella, Pistacchio, Burrata</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-pistacchiosa" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Pistacchiosa', 'nota-pistacchiosa')">Aggiungi</button></div>
+                </div>
             </div>
 
             <!-- FOCACCE -->
             <div class="categoria-group" data-cat="focacce">
                 <div class="section-title">Focacce</div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Focaccia Classica</h3><p>Olio, Sale, Rosmarino</p></div></div><div class="card-bottom"><input type="text" id="nota-focacciaclassica" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Focaccia Classica', 'nota-focacciaclassica')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Focaccia con Crudo</h3><p>Olio, Prosciutto Crudo</p></div></div><div class="card-bottom"><input type="text" id="nota-focacciacrudo" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Focaccia con Crudo', 'nota-focacciacrudo')">Aggiungi</button></div></div>
+                
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Focaccia Classica</h3><p>Olio, Sale, Rosmarino</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-focacciaclassica" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Focaccia Classica', 'nota-focacciaclassica')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top"><div class="card-info"><h3>Focaccia con Crudo</h3><p>Olio, Prosciutto Crudo</p></div></div>
+                    <div class="card-bottom"><input type="text" id="nota-focacciacrudo" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Focaccia con Crudo', 'nota-focacciacrudo')">Aggiungi</button></div>
+                </div>
             </div>
 
             <!-- BIBITE -->
             <div class="categoria-group" data-cat="bibite">
                 <div class="section-title">Bibite & Altro</div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Coca Cola 33cl</h3></div></div><div class="card-bottom"><input type="text" id="nota-cocacola" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Coca Cola 33cl', 'nota-cocacola')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Fanta 33cl</h3></div></div><div class="card-bottom"><input type="text" id="nota-fanta" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Fanta 33cl', 'nota-fanta')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Acqua Naturale 0.75l</h3></div></div><div class="card-bottom"><input type="text" id="nota-acqua" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Acqua Naturale 0.75l', 'nota-acqua')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-top"><div class="card-info"><h3>Birra Artigianale 33cl</h3></div></div><div class="card-bottom"><input type="text" id="nota-birra" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Birra Artigianale 33cl', 'nota-birra')">Aggiungi</button></div></div>
+                
+                <div class="card">
+                    <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Coca Cola 33cl</h3></div><button class="btn-add" onclick="aggiungiSemplice('Coca Cola 33cl')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Fanta 33cl</h3></div><button class="btn-add" onclick="aggiungiSemplice('Fanta 33cl')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Acqua Naturale 0.75l</h3></div><button class="btn-add" onclick="aggiungiSemplice('Acqua Naturale 0.75l')">Aggiungi</button></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Birra Artigianale 33cl</h3></div><button class="btn-add" onclick="aggiungiSemplice('Birra Artigianale 33cl')">Aggiungi</button></div>
+                </div>
             </div>
         </div>
     </div>
@@ -125,12 +229,19 @@
         const db = getDatabase(initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" }));
         let carrello = [];
 
+        // Per pizze e focacce (con note)
         window.aggiungi = (nomeProdotto, idNota) => {
             const nota = document.getElementById(idNota).value.trim();
             const descrizioneCompleta = nota ? `${nomeProdotto} (${nota})` : nomeProdotto;
             
             carrello.push({ id: Date.now() + Math.random(), testo: descrizioneCompleta });
             document.getElementById(idNota).value = '';
+            aggiornaBadge();
+        };
+
+        // Per bibite e birre (senza note)
+        window.aggiungiSemplice = (nomeProdotto) => {
+            carrello.push({ id: Date.now() + Math.random(), testo: nomeProdotto });
             aggiornaBadge();
         };
 
