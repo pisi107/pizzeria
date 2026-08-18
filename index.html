@@ -53,12 +53,13 @@
             border-radius: 8px;
             font-family: "Georgia", serif;
             font-style: italic;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
             color: var(--gray);
             cursor: pointer;
             text-align: center;
             transition: all 0.2s;
+            position: relative;
         }
         .tab-btn.active {
             background: var(--primary);
@@ -67,14 +68,22 @@
             box-shadow: 0 4px 10px rgba(139, 0, 0, 0.2);
         }
 
-        /* Pagine */
-        .page {
+        /* Badge contatore carrello */
+        .cart-badge {
+            background: #d32f2f;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 11px;
+            position: absolute;
+            top: 6px;
+            right: 6px;
             display: none;
         }
-        .page.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
+
+        /* Pagine */
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .serata-banner { 
@@ -126,13 +135,8 @@
         .input-group input:focus { border-color: var(--primary); }
 
         .category-subtitle { font-size: 16px; font-style: italic; font-weight: bold; color: var(--primary); margin: 20px 0 10px 2px; }
-        .menu-grid { 
-            display: grid; 
-            grid-template-columns: repeat(1, 1fr); 
-            gap: 10px; 
-        }
+        .menu-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 10px; }
         
-        /* Stile elemento menu con ingredienti */
         .btn-menu-item { 
             background: #fdfbf7; 
             border: 1px solid #e8dfd1; 
@@ -165,6 +169,36 @@
             text-decoration: line-through;
             color: #8c857b;
         }
+
+        /* Stile elementi nel carrello */
+        .cart-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fdfbf7;
+            padding: 12px 14px;
+            border: 1px solid #e8dfd1;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .qty-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .qty-btn:active { transform: scale(0.9); }
 
         .btn-invia { 
             background: var(--primary); 
@@ -221,7 +255,7 @@
     <!-- HEADER -->
     <div class="header">
         <h1>~ Pizzeria di Famiglia ~</h1>
-        <p>Sfoglia il menu completo e invia la tua ordinazione</p>
+        <p>Sfoglia il menu e crea il tuo ordine</p>
     </div>
 
     <!-- BANNER SERATA -->
@@ -232,16 +266,16 @@
 
     <!-- TAB DI NAVIGAZIONE A PAGINE -->
     <div class="nav-tabs">
-        <button class="tab-btn active" onclick="cambiaPagina('menu')">📖 Sfoglia Menu</button>
-        <button class="tab-btn" onclick="cambiaPagina('ordine')">📝 Il Mio Ordine</button>
+        <button class="tab-btn active" onclick="cambiaPagina('menu')">📖 Menu</button>
+        <button class="tab-btn" onclick="cambiaPagina('ordine')">🛒 Carrello <span id="cart-badge" class="cart-badge">0</span></button>
         <button class="tab-btn" onclick="cambiaPagina('stato')">📋 In Corso</button>
     </div>
 
-    <!-- PAGINA 1: MENU COMPLETO CON INGREDIENTI E DISPONIBILITÀ -->
+    <!-- PAGINA 1: MENU -->
     <div id="page-menu" class="page active">
         <div class="card-form">
             <div class="section-title">Le Nostre Proposte</div>
-            <p style="font-style: italic; color: var(--gray); font-size: 14px; margin-top: 0;">Tocca un prodotto per aggiungerlo al tuo ordine.</p>
+            <p style="font-style: italic; color: var(--gray); font-size: 14px; margin-top: 0;">Tocca un prodotto per aggiungerlo al carrello.</p>
             
             <div class="category-subtitle">~ Pizze Tradizionali & Classiche ~</div>
             <div class="menu-grid" id="grid-pizze-classiche"></div>
@@ -255,23 +289,22 @@
             <div class="category-subtitle">~ Bibite & Cantina ~</div>
             <div class="menu-grid" id="grid-bibite"></div>
             
-            <button class="btn-invia" style="margin-top: 25px;" onclick="cambiaPagina('ordine')">Procedi all'Ordine ➔</button>
+            <button class="btn-invia" style="margin-top: 25px;" onclick="cambiaPagina('ordine')">Vai al Carrello ➔</button>
         </div>
     </div>
 
-    <!-- PAGINA 2: COMPILAZIONE ORDINE -->
+    <!-- PAGINA 2: CARRELLO E INVIO -->
     <div id="page-ordine" class="page">
         <div class="card-form">
-            <div class="section-title">Conferma Ordinazione</div>
+            <div class="section-title">Il Tuo Carrello</div>
             
             <div class="input-group">
                 <label for="input-cliente">Il Vostro Nome</label>
                 <input type="text" id="input-cliente" placeholder="es. Marco, Sara, Nonno...">
             </div>
 
-            <div class="input-group">
-                <label for="input-prodotti">Il vostro carrello</label>
-                <input type="text" id="input-prodotti" placeholder="Seleziona dal menu o scrivi qui...">
+            <div id="carrello-lista-container" style="margin-bottom: 20px;">
+                <div class="empty-state">Il carrello è vuoto. Scegli qualcosa dal menu!</div>
             </div>
 
             <button class="btn-invia" onclick="inviaOrdine()">Invia l'Ordine alla Cucina 🍷</button>
@@ -294,46 +327,46 @@
     
     const db = getDatabase(initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" }));
 
-    // Definizione completa del Menu con le chiavi esatte salvate nella gestione cucina
     const menuCompleto = {
         classiche: [
-            { id: "Margherita", nome: "Margherita", ingredienti: "Pomodoro, fior di latte, basilico", icona: "🍅" },
-            { id: "Marinara", nome: "Marinara", ingredienti: "Pomodoro, aglio, origano, olio d'oliva", icona: "🧄" },
-            { id: "Napoli", nome: "Napoli", ingredienti: "Pomodoro, fior di latte, acciughe, origano", icona: "🐟" },
-            { id: "Capricciosa", nome: "Capricciosa", ingredienti: "Pomodoro, fior di latte, prosciutto, funghi, carciofi, olive", icona: "🍄" },
-            { id: "Quattro Stagioni", nome: "Quattro Stagioni", ingredienti: "Pomodoro, fior di latte, funghi, carciofi, prosciutto cotto, olive", icona: "🌿" },
-            { id: "Diavola", nome: "Diavola", ingredienti: "Pomodoro, fior di latte, salame piccante", icona: "🌶️" },
-            { id: "Wudy e Patatine", nome: "Wudy e Patatine", ingredienti: "Pomodoro, fior di latte, würstel, patatine fritte", icona: "🍟" },
-            { id: "Romana", nome: "Romana", ingredienti: "Pomodoro, fior di latte, acciughe, capperi, origano", icona: "🍅" },
-            { id: "Siciliana", nome: "Siciliana", ingredienti: "Pomodoro, capperi, acciughe, olive nere, origano", icona: "🍅" },
-            { id: "Ortolana / Vegetariana", nome: "Ortolana / Vegetariana", ingredienti: "Pomodoro, fior di latte, verdure miste di stagione", icona: "🍆" }
+            { id: "margherita", nome: "Margherita", ingredienti: "Pomodoro, fior di latte, basilico", icona: "🍅" },
+            { id: "marinara", nome: "Marinara", ingredienti: "Pomodoro, aglio, origano, olio d'oliva", icona: "🧄" },
+            { id: "napoli", nome: "Napoli", ingredienti: "Pomodoro, fior di latte, acciughe, origano", icona: "🐟" },
+            { id: "capricciosa", nome: "Capricciosa", ingredienti: "Pomodoro, fior di latte, prosciutto, funghi, carciofi, olive", icona: "🍄" },
+            { id: "quattro_stagioni", nome: "Quattro Stagioni", ingredienti: "Pomodoro, fior di latte, funghi, carciofi, prosciutto cotto, olive", icona: "🌿" },
+            { id: "diavola", nome: "Diavola", ingredienti: "Pomodoro, fior di latte, salame piccante", icona: "🌶️" },
+            { id: "wudy_patatine", nome: "Wudy e Patatine", ingredienti: "Pomodoro, fior di latte, würstel, patatine fritte", icona: "🍟" },
+            { id: "romana", nome: "Romana", ingredienti: "Pomodoro, fior di latte, acciughe, capperi, origano", icona: "🍅" },
+            { id: "siciliana", nome: "Siciliana", ingredienti: "Pomodoro, capperi, acciughe, olive nere, origano", icona: "🍅" },
+            { id: "ortolana", nome: "Ortolana / Vegetariana", ingredienti: "Pomodoro, fior di latte, verdure miste di stagione", icona: "🍆" }
         ],
         speciali: [
-            { id: "Quattro Formaggi", nome: "Quattro Formaggi", ingredienti: "Fior di latte, gorgonzola, fontina, provola affumicata", icona: "🧀" },
-            { id: "Calzone Normale o Fritto", nome: "Calzone Normale o Fritto", ingredienti: "Fior di latte, prosciutto cotto, ricotta, pomodoro", icona: "🥟" },
-            { id: "Bufalina", nome: "Bufalina", ingredienti: "Pomodoro, mozzarella di bufala campana, basilico fresco", icona: "🥛" },
-            { id: "Boscaiola", nome: "Boscaiola", ingredienti: "Fior di latte, funghi freschi, salsiccia fresca", icona: "🌲" },
-            { id: "Saporita / Parmigiana", nome: "Saporita / Parmigiana", ingredienti: "Pomodoro, fior di latte, melanzane fritte, parmigiano", icona: "🧀" },
-            { id: "Tonno e Cipolla", nome: "Tonno e Cipolla", ingredienti: "Pomodoro, fior di latte, tonno sott'olio, cipolla rossa", icona: "🧅" },
-            { id: "Salsiccia e Friarielli", nome: "Salsiccia e Friarielli", ingredienti: "Fior di latte, salsiccia, friarielli saltati all'aglio", icona: "🥬" },
-            { id: "TIROLESE (Speck e Brie)", nome: "Tirolese (Speck e Brie)", ingredienti: "Fior di latte, speck dell'Alto Adige, formaggio brie", icona: "🏔️" },
-            { id: "CARBONARA (Uovo e Pancetta)", nome: "Carbonara", ingredienti: "Fior di latte, uovo, pancetta croccante, pecorino romano", icona: "🍳" },
-            { id: "AI FUNGHI PORCINI", nome: "Ai Funghi Porcini", ingredienti: "Fior di latte, funghi porcini trifolati, prezzemolo", icona: "🍄" }
+            { id: "quattro_formaggi", nome: "Quattro Formaggi", ingredienti: "Fior di latte, gorgonzola, fontina, provola affumicata", icona: "🧀" },
+            { id: "calzone", nome: "Calzone Normale o Fritto", ingredienti: "Fior di latte, prosciutto cotto, ricotta, pomodoro", icona: "🥟" },
+            { id: "bufalina", nome: "Bufalina", ingredienti: "Pomodoro, mozzarella di bufala campana, basilico fresco", icona: "🥛" },
+            { id: "boscaiola", nome: "Boscaiola", ingredienti: "Fior di latte, funghi freschi, salsiccia fresca", icona: "🌲" },
+            { id: "saporita", nome: "Saporita / Parmigiana", ingredienti: "Pomodoro, fior di latte, melanzane fritte, parmigiano", icona: "🧀" },
+            { id: "tonno_cipolla", nome: "Tonno e Cipolla", ingredienti: "Pomodoro, fior di latte, tonno sott'olio, cipolla rossa", icona: "🧅" },
+            { id: "salsiccia_friarielli", nome: "Salsiccia e Friarielli", ingredienti: "Fior di latte, salsiccia, friarielli saltati all'aglio", icona: "🥬" },
+            { id: "tirolese", nome: "Tirolese (Speck e Brie)", ingredienti: "Fior di latte, speck dell'Alto Adige, formaggio brie", icona: "🏔️" },
+            { id: "carbonara", nome: "Carbonara", ingredienti: "Fior di latte, uovo, pancetta croccante, pecorino romano", icona: "🍳" },
+            { id: "porcini", nome: "Ai Funghi Porcini", ingredienti: "Fior di latte, funghi porcini trifolati, prezzemolo", icona: "🍄" }
         ],
         focacce: [
-            { id: "Focaccia Liscia", nome: "Focaccia Liscia", ingredienti: "Olio extravergine d'oliva, sale, rosmarino", icona: "🫓" },
-            { id: "Focaccia Rosmarino", nome: "Rosmarino / Olio", ingredienti: "Olio d'oliva, fiocchi di sale marino, abbondante rosmarino", icona: "🌿" },
-            { id: "Pizza Speciale dello Chef", nome: "Speciale dello Chef", ingredienti: "Creazione a sorpresa dello chef con ingredienti del giorno", icona: "⭐" }
+            { id: "focaccia_liscia", nome: "Focaccia Liscia", ingredienti: "Olio extravergine d'oliva, sale, rosmarino", icona: "🫓" },
+            { id: "focaccia_rosmarino", nome: "Rosmarino / Olio", ingredienti: "Olio d'oliva, fiocchi di sale marino, abbondante rosmarino", icona: "🌿" },
+            { id: "speciale_chef", nome: "Speciale dello Chef", ingredienti: "Creazione a sorpresa dello chef con ingredienti del giorno", icona: "⭐" }
         ],
         bibite: [
-            { id: "Coca Cola", nome: "Coca Cola", ingredienti: "Bottiglia o lattina da 33cl", icona: "🥤" },
-            { id: "Acqua Naturale", nome: "Acqua Naturale", ingredienti: "Bottiglia da 0.75l", icona: "💧" },
-            { id: "Acqua Frizzante", nome: "Acqua Frizzante", ingredienti: "Bottiglia da 0.75l", icona: "🫧" },
-            { id: "Birra", nome: "Birra artigianale", ingredienti: "Birra bionda o ambrata artigianale 33cl", icona: "🍺" }
+            { id: "coca_cola", nome: "Coca Cola", ingredienti: "Bottiglia o lattina da 33cl", icona: "🥤" },
+            { id: "acqua_naturale", nome: "Acqua Naturale", ingredienti: "Bottiglia da 0.75l", icona: "💧" },
+            { id: "acqua_frizzante", nome: "Acqua Frizzante", ingredienti: "Bottiglia da 0.75l", icona: "🫧" },
+            { id: "birra", nome: "Birra artigianale", ingredienti: "Birra bionda o ambrata artigianale 33cl", icona: "🍺" }
         ]
     };
 
     let datiDisponibilita = {};
+    let carrello = []; // Array per memorizzare gli oggetti aggiunti { nome, quantita, icona }
 
     function renderizzaMenu() {
         const renderGruppo = (lista, containerId) => {
@@ -341,7 +374,6 @@
             container.innerHTML = '';
             
             lista.forEach(item => {
-                // In Firebase, se l'elemento è impostato a false, è disattivato. Se non esiste o è true, è disponibile.
                 const disponibile = datiDisponibilita[item.id] !== false;
                 
                 const btn = document.createElement('button');
@@ -349,7 +381,7 @@
                 btn.className = `btn-menu-item ${disponibile ? '' : 'non-disponibile'}`;
                 
                 if (disponibile) {
-                    btn.onclick = () => aggiungiVoceDaMenu(item.nome);
+                    btn.onclick = () => aggiungiAlCarrello(item.nome, item.icona);
                 } else {
                     btn.onclick = () => alert("Spiacenti, questo articolo al momento non è disponibile.");
                 }
@@ -371,7 +403,63 @@
         renderGruppo(menuCompleto.bibite, 'grid-bibite');
     }
 
-    // Ascolta la disponibilità da Firebase in tempo reale
+    // Gestione Carrello
+    window.aggiungiAlCarrello = (nome, icona) => {
+        const trovato = carrello.find(i => i.nome === nome);
+        if (trovato) {
+            trovato.quantita += 1;
+        } else {
+            carrello.push({ nome: nome, icona: icona, quantita: 1 });
+        }
+        aggiornaVistaCarrello();
+    };
+
+    window.cambiaQuantita = (nome, delta) => {
+        const index = carrello.findIndex(i => i.nome === nome);
+        if (index !== -1) {
+            carrello[index].quantita += delta;
+            if (carrello[index].quantita <= 0) {
+                carrello.splice(index, 1);
+            }
+        }
+        aggiornaVistaCarrello();
+    };
+
+    function aggiornaVistaCarrello() {
+        const container = document.getElementById('carrello-lista-container');
+        const badge = document.getElementById('cart-badge');
+        
+        let totaleOggetti = carrello.reduce((sum, item) => sum + item.quantita, 0);
+        
+        if (totaleOggetti > 0) {
+            badge.style.display = 'inline-block';
+            badge.innerText = totaleOggetti;
+        } else {
+            badge.style.display = 'none';
+        }
+
+        if (carrello.length === 0) {
+            container.innerHTML = '<div class="empty-state">Il carrello è vuoto. Scegli qualcosa dal menu!</div>';
+            return;
+        }
+
+        container.innerHTML = '';
+        carrello.forEach(item => {
+            container.innerHTML += `
+                <div class="cart-item-row">
+                    <div>
+                        <strong>${item.icona} ${item.nome}</strong>
+                    </div>
+                    <div class="cart-item-controls">
+                        <button type="button" class="qty-btn" onclick="cambiaQuantita('${item.nome}', -1)">-</button>
+                        <span style="font-weight: bold; min-width: 20px; text-align: center;">${item.quantita}</span>
+                        <button type="button" class="qty-btn" onclick="cambiaQuantita('${item.nome}', 1)">+</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
     onValue(ref(db, 'infoSerata/disponibilita'), (snapshot) => {
         datiDisponibilita = snapshot.val() || {};
         renderizzaMenu();
@@ -390,16 +478,6 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    window.aggiungiVoceDaMenu = (voce) => {
-        const inputProdotti = document.getElementById('input-prodotti');
-        if (inputProdotti.value.trim() === "") {
-            inputProdotti.value = voce;
-        } else {
-            inputProdotti.value += " + " + voce;
-        }
-        cambiaPagina('ordine');
-    };
-
     onValue(ref(db, 'infoSerata/ospiteCorrente'), (snapshot) => {
         const ospite = snapshot.val();
         const display = document.getElementById('display-serata');
@@ -412,7 +490,6 @@
 
     window.inviaOrdine = () => {
         const cliente = document.getElementById('input-cliente').value.trim();
-        const prodotti = document.getElementById('input-prodotti').value.trim();
         
         if(!cliente) {
             alert("Per favore, inserite il vostro nome.");
@@ -420,22 +497,27 @@
             document.getElementById('input-cliente').focus();
             return;
         }
-        if(!prodotti) {
+        if(carrello.length === 0) {
             alert("Il carrello è vuoto. Scegliete qualcosa dal menu!");
             cambiaPagina('menu');
             return;
         }
 
+        // Unisce gli elementi del carrello in una stringa leggibile (es. "2x Margherita + 1x Coca Cola")
+        const prodottiStringa = carrello.map(i => `${i.quantita}x ${i.nome}`).join(" + ");
         const orarioCorrente = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
         push(ref(db, 'ordini'), {
             cliente: cliente,
-            prodotti: prodotti,
+            prodotti: prodottiStringa,
             orario: orarioCorrente
         });
 
         localStorage.setItem('pizzeria_nome_utente', cliente);
-        document.getElementById('input-prodotti').value = '';
+        
+        // Svuota il carrello dopo l'invio
+        carrello = [];
+        aggiornaVistaCarrello();
         
         alert("Ordine trasmesso con successo alla cucina! 🍕");
         cambiaPagina('stato');
