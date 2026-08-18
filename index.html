@@ -21,12 +21,14 @@
         .cat-btn.active { background: var(--primary); color: white; }
         
         .section-title { font-size: 18px; font-weight: 700; margin: 20px 0 10px 5px; }
-        .card { background: var(--card-bg); padding: 15px; border-radius: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
-        .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-        .card-info h3 { margin: 0 0 3px 0; font-size: 16px; }
+        .card { background: var(--card-bg); padding: 15px; border-radius: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); display: flex; gap: 15px; align-items: center; }
+        .card-img { width: 75px; height: 75px; border-radius: 12px; object-fit: cover; flex-shrink: 0; background-color: #e5e5ea; }
+        .card-content { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
+        .card-top { margin-bottom: 8px; }
+        .card-info h3 { margin: 0 0 2px 0; font-size: 16px; }
         .card-info p { color: #86868b; font-size: 12px; margin: 0; }
         
-        .card-bottom { display: flex; gap: 8px; align-items: center; }
+        .card-bottom { display: flex; gap: 8px; align-items: center; width: 100%; }
         .input-nota { flex-grow: 1; padding: 8px 10px; font-size: 13px; border: 1px solid #e5e5ea; border-radius: 8px; background: #fafafa; }
         .btn-add { background: var(--primary); color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 600; cursor: pointer; white-space: nowrap; font-size: 13px; }
         
@@ -68,108 +70,171 @@
                 <div class="section-title">Pizze</div>
                 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Margherita</h3><p>Pomodoro, Mozzarella, Basilico</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-margherita" class="input-nota" placeholder="Note (es. senza basilico)"><button class="btn-add" onclick="aggiungi('Margherita', 'nota-margherita')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=150" class="card-img" alt="Margherita">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Margherita</h3><p>Pomodoro, Mozzarella, Basilico</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-margherita" class="input-nota" placeholder="Note (es. senza basilico)"><button class="btn-add" onclick="aggiungi('Margherita', 'nota-margherita')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Diavola</h3><p>Pomodoro, Mozzarella, Salame piccante</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-diavola" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Diavola', 'nota-diavola')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?w=150" class="card-img" alt="Diavola">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Diavola</h3><p>Pomodoro, Mozzarella, Salame piccante</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-diavola" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Diavola', 'nota-diavola')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>4 Formaggi</h3><p>Mozzarella, Gorgonzola, Fontina, Parmigiano</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-4formaggi" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('4 Formaggi', 'nota-4formaggi')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=150" class="card-img" alt="4 Formaggi">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>4 Formaggi</h3><p>Mozzarella, Gorgonzola, Fontina, Parmigiano</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-4formaggi" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('4 Formaggi', 'nota-4formaggi')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Capricciosa</h3><p>Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-capricciosa" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Capricciosa', 'nota-capricciosa')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=150" class="card-img" alt="Capricciosa">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Capricciosa</h3><p>Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-capricciosa" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Capricciosa', 'nota-capricciosa')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Marinara</h3><p>Pomodoro, Aglio, Origano, Olio EVO</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-marinara" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Marinara', 'nota-marinara')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?w=150" class="card-img" alt="Marinara">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Marinara</h3><p>Pomodoro, Aglio, Origano, Olio EVO</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-marinara" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Marinara', 'nota-marinara')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Vegetariana</h3><p>Pomodoro, Mozzarella, Zucchine, Melanzane, Peperoni</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-vegetariana" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Vegetariana', 'nota-vegetariana')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=150" class="card-img" alt="Vegetariana">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Vegetariana</h3><p>Pomodoro, Mozzarella, Zucchine, Melanzane, Peperoni</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-vegetariana" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Vegetariana', 'nota-vegetariana')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Prosciutto e Funghi</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Funghi</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-prosciuttoefunghi" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Prosciutto e Funghi', 'nota-prosciuttoefunghi')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=150" class="card-img" alt="Prosciutto e Funghi">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Prosciutto e Funghi</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Funghi</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-prosciuttoefunghi" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Prosciutto e Funghi', 'nota-prosciuttoefunghi')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Quattro Stagioni</h3><p>Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi, Olive</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-quattrostagioni" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Quattro Stagioni', 'nota-quattrostagioni')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=150" class="card-img" alt="Quattro Stagioni">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Quattro Stagioni</h3><p>Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi, Olive</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-quattrostagioni" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Quattro Stagioni', 'nota-quattrostagioni')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Bufalina</h3><p>Pomodoro, Mozzarella di Bufala Campana DOP</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-bufalina" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Bufalina', 'nota-bufalina')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=150" class="card-img" alt="Bufalina">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Bufalina</h3><p>Pomodoro, Mozzarella di Bufala Campana DOP</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-bufalina" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Bufalina', 'nota-bufalina')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Boscaiola</h3><p>Mozzarella, Salsiccia, Funghi pioppini, Panna</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-boscaiola" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Boscaiola', 'nota-boscaiola')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=150" class="card-img" alt="Boscaiola">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Boscaiola</h3><p>Mozzarella, Salsiccia, Funghi pioppini, Panna</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-boscaiola" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Boscaiola', 'nota-boscaiola')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Bresaola e Rucola</h3><p>Mozzarella, Bresaola, Rucola, Grana</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-bresaolaerucola" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Bresaola e Rucola', 'nota-bresaolaerucola')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1595854341625-f33ee10dbf94?w=150" class="card-img" alt="Bresaola e Rucola">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Bresaola e Rucola</h3><p>Mozzarella, Bresaola, Rucola, Grana</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-bresaolaerucola" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Bresaola e Rucola', 'nota-bresaolaerucola')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Americana</h3><p>Pomodoro, Mozzarella, Wurstel, Patatine fritte</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-americana" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Americana', 'nota-americana')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=150" class="card-img" alt="Americana">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Americana</h3><p>Pomodoro, Mozzarella, Wurstel, Patatine fritte</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-americana" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Americana', 'nota-americana')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Calzone Classico</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Salame</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-calzoneclassico" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Calzone Classico', 'nota-calzoneclassico')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=150" class="card-img" alt="Calzone Classico">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Calzone Classico</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Salame</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-calzoneclassico" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Calzone Classico', 'nota-calzoneclassico')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Napoli</h3><p>Pomodoro, Mozzarella, Acciughe, Origano</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-napoli" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Napoli', 'nota-napoli')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?w=150" class="card-img" alt="Napoli">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Napoli</h3><p>Pomodoro, Mozzarella, Acciughe, Origano</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-napoli" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Napoli', 'nota-napoli')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Romana</h3><p>Pomodoro, Mozzarella, Acciughe, Capperi</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-romana" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Romana', 'nota-romana')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?w=150" class="card-img" alt="Romana">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Romana</h3><p>Pomodoro, Mozzarella, Acciughe, Capperi</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-romana" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Romana', 'nota-romana')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Pugliese</h3><p>Pomodoro, Mozzarella, Cipolla rossa</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-pugliese" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Pugliese', 'nota-pugliese')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=150" class="card-img" alt="Pugliese">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Pugliese</h3><p>Pomodoro, Mozzarella, Cipolla rossa</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-pugliese" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Pugliese', 'nota-pugliese')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Salsiccia e Friarelli</h3><p>Mozzarella, Salsiccia, Friarelli napoletani</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-salsicciaefriarelli" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Salsiccia e Friarelli', 'nota-salsicciaefriarelli')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=150" class="card-img" alt="Salsiccia e Friarelli">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Salsiccia e Friarelli</h3><p>Mozzarella, Salsiccia, Friarelli napoletani</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-salsicciaefriarelli" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Salsiccia e Friarelli', 'nota-salsicciaefriarelli')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Tonno e Cipolla</h3><p>Pomodoro, Mozzarella, Tonno, Cipolla rossa</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-tonnoecipolla" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Tonno e Cipolla', 'nota-tonnoecipolla')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=150" class="card-img" alt="Tonno e Cipolla">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Tonno e Cipolla</h3><p>Pomodoro, Mozzarella, Tonno, Cipolla rossa</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-tonnoecipolla" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Tonno e Cipolla', 'nota-tonnoecipolla')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Siciliana</h3><p>Pomodoro, Mozzarella, Melanzane, Ricotta salata</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-siciliana" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Siciliana', 'nota-siciliana')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=150" class="card-img" alt="Siciliana">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Siciliana</h3><p>Pomodoro, Mozzarella, Melanzane, Ricotta salata</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-siciliana" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Siciliana', 'nota-siciliana')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Tirolese</h3><p>Pomodoro, Mozzarella, Speck, Gorgonzola</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-tirolese" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Tirolese', 'nota-tirolese')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=150" class="card-img" alt="Tirolese">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Tirolese</h3><p>Pomodoro, Mozzarella, Speck, Gorgonzola</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-tirolese" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Tirolese', 'nota-tirolese')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Pistacchiosa</h3><p>Mozzarella, Mortadella, Pistacchio, Burrata</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-pistacchiosa" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Pistacchiosa', 'nota-pistacchiosa')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1595854341625-f33ee10dbf94?w=150" class="card-img" alt="Pistacchiosa">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Pistacchiosa</h3><p>Mozzarella, Mortadella, Pistacchio, Burrata</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-pistacchiosa" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Pistacchiosa', 'nota-pistacchiosa')">Aggiungi</button></div>
+                    </div>
                 </div>
             </div>
 
@@ -178,13 +243,19 @@
                 <div class="section-title">Focacce</div>
                 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Focaccia Classica</h3><p>Olio, Sale, Rosmarino</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-focacciaclassica" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Focaccia Classica', 'nota-focacciaclassica')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=150" class="card-img" alt="Focaccia Classica">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Focaccia Classica</h3><p>Olio, Sale, Rosmarino</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-focacciaclassica" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Focaccia Classica', 'nota-focacciaclassica')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top"><div class="card-info"><h3>Focaccia con Crudo</h3><p>Olio, Prosciutto Crudo</p></div></div>
-                    <div class="card-bottom"><input type="text" id="nota-focacciacrudo" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Focaccia con Crudo', 'nota-focacciacrudo')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=150" class="card-img" alt="Focaccia con Crudo">
+                    <div class="card-content">
+                        <div class="card-top"><div class="card-info"><h3>Focaccia con Crudo</h3><p>Olio, Prosciutto Crudo</p></div></div>
+                        <div class="card-bottom"><input type="text" id="nota-focacciacrudo" class="input-nota" placeholder="Note..."><button class="btn-add" onclick="aggiungi('Focaccia con Crudo', 'nota-focacciacrudo')">Aggiungi</button></div>
+                    </div>
                 </div>
             </div>
 
@@ -193,19 +264,31 @@
                 <div class="section-title">Bibite</div>
                 
                 <div class="card">
-                    <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Coca Cola 33cl</h3></div><button class="btn-add" onclick="aggiungiSemplice('Coca Cola 33cl')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=150" class="card-img" alt="Coca Cola">
+                    <div class="card-content">
+                        <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Coca Cola 33cl</h3></div><button class="btn-add" onclick="aggiungiSemplice('Coca Cola 33cl')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Fanta 33cl</h3></div><button class="btn-add" onclick="aggiungiSemplice('Fanta 33cl')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?w=150" class="card-img" alt="Fanta">
+                    <div class="card-content">
+                        <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Fanta 33cl</h3></div><button class="btn-add" onclick="aggiungiSemplice('Fanta 33cl')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Acqua Naturale 0.75l</h3></div><button class="btn-add" onclick="aggiungiSemplice('Acqua Naturale 0.75l')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1548839140-29a749e1cf4c?w=150" class="card-img" alt="Acqua Naturale">
+                    <div class="card-content">
+                        <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Acqua Naturale 0.75l</h3></div><button class="btn-add" onclick="aggiungiSemplice('Acqua Naturale 0.75l')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Acqua Frizzante 0.75l</h3></div><button class="btn-add" onclick="aggiungiSemplice('Acqua Frizzante 0.75l')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1560023549-3e246db419c2?w=150" class="card-img" alt="Acqua Frizzante">
+                    <div class="card-content">
+                        <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Acqua Frizzante 0.75l</h3></div><button class="btn-add" onclick="aggiungiSemplice('Acqua Frizzante 0.75l')">Aggiungi</button></div>
+                    </div>
                 </div>
             </div>
 
@@ -214,15 +297,24 @@
                 <div class="section-title">Birre</div>
                 
                 <div class="card">
-                    <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Birra Artigianale 33cl</h3></div><button class="btn-add" onclick="aggiungiSemplice('Birra Artigianale 33cl')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1608270154044-245c364177d6?w=150" class="card-img" alt="Birra Artigianale">
+                    <div class="card-content">
+                        <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Birra Artigianale 33cl</h3></div><button class="btn-add" onclick="aggiungiSemplice('Birra Artigianale 33cl')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Birra Chiara 66cl</h3></div><button class="btn-add" onclick="aggiungiSemplice('Birra Chiara 66cl')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=150" class="card-img" alt="Birra Chiara">
+                    <div class="card-content">
+                        <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Birra Chiara 66cl</h3></div><button class="btn-add" onclick="aggiungiSemplice('Birra Chiara 66cl')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Birra Rossa 33cl</h3></div><button class="btn-add" onclick="aggiungiSemplice('Birra Rossa 33cl')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1566633806327-68e152aaf26d?w=150" class="card-img" alt="Birra Rossa">
+                    <div class="card-content">
+                        <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Birra Rossa 33cl</h3></div><button class="btn-add" onclick="aggiungiSemplice('Birra Rossa 33cl')">Aggiungi</button></div>
+                    </div>
                 </div>
             </div>
 
@@ -231,15 +323,24 @@
                 <div class="section-title">Vini</div>
                 
                 <div class="card">
-                    <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Calice di Vino Rosso</h3></div><button class="btn-add" onclick="aggiungiSemplice('Calice di Vino Rosso')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=150" class="card-img" alt="Vino Rosso">
+                    <div class="card-content">
+                        <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Calice di Vino Rosso</h3></div><button class="btn-add" onclick="aggiungiSemplice('Calice di Vino Rosso')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Calice di Vino Bianco</h3></div><button class="btn-add" onclick="aggiungiSemplice('Calice di Vino Bianco')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1569919659135-46743962b7e5?w=150" class="card-img" alt="Vino Bianco">
+                    <div class="card-content">
+                        <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Calice di Vino Bianco</h3></div><button class="btn-add" onclick="aggiungiSemplice('Calice di Vino Bianco')">Aggiungi</button></div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Bottiglia di Chianti</h3></div><button class="btn-add" onclick="aggiungiSemplice('Bottiglia di Chianti')">Aggiungi</button></div>
+                    <img src="https://images.unsplash.com/photo-1584916201218-f4242ceb4809?w=150" class="card-img" alt="Bottiglia di Chianti">
+                    <div class="card-content">
+                        <div class="card-top" style="margin-bottom:0;"><div class="card-info"><h3>Bottiglia di Chianti</h3></div><button class="btn-add" onclick="aggiungiSemplice('Bottiglia di Chianti')">Aggiungi</button></div>
+                    </div>
                 </div>
             </div>
         </div>
