@@ -3,94 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestione Disponibilità Pizze</title>
+    <title>Pizzeria di Famiglia - Gestione Cucina</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: #f5f5f7;
-            margin: 0;
-            padding: 20px;
-            color: #1d1d1f;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: #ffffff;
-            padding: 20px 24px;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-        }
-        h2 { text-align: center; margin-top: 0; margin-bottom: 24px; }
-        .pizza-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #efeff4;
-        }
-        .pizza-item:last-child { border-bottom: none; }
-        .pizza-name { font-weight: 600; font-size: 15px; text-transform: uppercase; }
-        .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #e5e5ea; transition: .3s; border-radius: 28px;
-        }
-        .slider:before {
-            position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 3px;
-            background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        input:checked + .slider { background-color: #34c759; }
-        input:checked + .slider:before { transform: translateX(22px); }
+        :root { --primary: #ff3b30; --success: #34c759; --bg: #f2f2f7; --card-bg: #ffffff; --text: #1d1d1f; }
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: var(--bg); margin: 0; padding: 20px; color: var(--text); }
+        .container { max-width: 800px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 25px; }
+        .header h2 { margin: 0 0 5px 0; }
+        .header p { color: #86868b; font-size: 14px; margin: 0; }
+        
+        #ordini-container { display: flex; flex-direction: column; gap: 15px; }
+        .ordine-card { background: var(--card-bg); padding: 20px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-left: 6px solid var(--primary); display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; }
+        .ordine-info { flex-grow: 1; }
+        .ordine-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .cliente-nome { font-size: 18px; font-weight: 700; color: var(--text); }
+        .ordine-orario { font-size: 13px; color: #86868b; background: #f2f2f7; padding: 4px 8px; border-radius: 6px; }
+        
+        .prodotti-lista { margin: 12px 0 0 0; padding-left: 20px; font-size: 15px; line-height: 1.5; }
+        .prodotti-lista li { margin-bottom: 4px; }
+        
+        .btn-completato { background: var(--success); color: white; border: none; padding: 10px 16px; border-radius: 10px; font-weight: 600; cursor: pointer; white-space: nowrap; font-size: 14px; box-shadow: 0 2px 5px rgba(52, 199, 89, 0.3); }
+        .btn-completato:hover { opacity: 0.9; }
+        
+        .no-ordini { text-align: center; color: #86868b; font-size: 16px; margin-top: 50px; background: var(--card-bg); padding: 40px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <h2>⚙️ Gestione Disponibilità</h2>
-        <div id="lista-gestione"></div>
+        <div class="header">
+            <h2>👨‍🍳 Monitor Cucina / Cassa</h2>
+            <p>Gli ordini di pizze, focacce, bibite, birre e vini appariranno qui in tempo reale</p>
+        </div>
+
+        <div id="ordini-container">
+            <div class="no-ordini">Nessun ordine in arrivo al momento...</div>
+        </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        
+        const db = getDatabase(initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" }));
+        const ordiniRef = ref(db, 'ordini');
 
-        const app = initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" });
-        const db = getDatabase(app);
+        onValue(ordiniRef, (snapshot) => {
+            const data = snapshot.val();
+            const container = document.getElementById('ordini-container');
 
-        const pizze = [
-            'margherita', 'diavola', '4formaggi', 'capricciosa', 'marinara', 
-            'vegetariana', 'prosciuttoefunghi', 'quattrostagioni', 'bufalina', 
-            'boscaiola', 'bresaolaerucola', 'americana', 'calzoneclassico', 
-            'napoli', 'romana', 'pugliese', 'salsicciaefriarelli', 
-            'tonnoecipolla', 'siciliana', 'tirolese', 'pistacchiosa'
-        ];
+            if (!data) {
+                container.innerHTML = '<div class="no-ordini">Nessun ordine in arrivo al momento...</div>';
+                return;
+            }
 
-        const container = document.getElementById('lista-gestione');
+            container.innerHTML = '';
+            
+            // Ordina gli elementi per chiave/tempo
+            Object.entries(data).reverse().forEach(([id, ordine]) => {
+                // Separa i prodotti uniti dal separatore " + " per mostrarli come elenco puntato pulito
+                const listaProdotti = ordine.prodotti ? ordine.prodotti.split(' + ') : [ordine.prodotti];
+                
+                let htmlProdotti = '<ul class="prodotti-lista">';
+                listaProdotti.forEach(prod => {
+                    htmlProdotti += `<li>${prod}</li>`;
+                });
+                htmlProdotti += '</ul>';
 
-        pizze.forEach(nome => {
-            const div = document.createElement('div');
-            div.className = 'pizza-item';
-            div.innerHTML = `
-                <span class="pizza-name">${nome}</span>
-                <label class="switch">
-                    <input type="checkbox" id="check-${nome}" checked>
-                    <span class="slider"></span>
-                </label>
-            `;
-            container.appendChild(div);
-
-            document.getElementById(`check-${nome}`).addEventListener('change', (e) => {
-                set(ref(db, 'disponibilita/' + nome), e.target.checked);
+                const card = document.createElement('div');
+                card.className = 'ordine-card';
+                card.innerHTML = `
+                    <div class="ordine-info">
+                        <div class="ordine-header">
+                            <span class="cliente-nome">👤 ${ordine.cliente}</span>
+                            <span class="ordine-orario">🕒 ${ordine.orario || 'Orario non specificato'}</span>
+                        </div>
+                        ${htmlProdotti}
+                    </div>
+                    <button class="btn-completato" onclick="completaOrdine('${id}')">Fatto ✓</button>
+                `;
+                container.appendChild(card);
             });
         });
 
-        onValue(ref(db, 'disponibilita'), (snapshot) => {
-            const data = snapshot.val() || {};
-            pizze.forEach(nome => {
-                const checkbox = document.getElementById(`check-${nome}`);
-                if (checkbox) checkbox.checked = data[nome] !== false;
-            });
-        });
+        window.completaOrdine = (id) => {
+            if (confirm("Confermi di voler completare e rimuovere questo ordine?")) {
+                remove(ref(db, `ordini/${id}`));
+            }
+        };
     </script>
 </body>
 </html>
