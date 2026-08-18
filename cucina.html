@@ -3,249 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pizzeria di Famiglia - Monitor Cucina & Storico</title>
+    <title>Pizzeria di Famiglia - Monitor Cucina</title>
     <style>
-        :root { --primary: #ff3b30; --success: #34c759; --bg: #f2f2f7; --card-bg: #ffffff; --text: #1d1d1f; --gray: #86868b; --blue: #007aff; }
-        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: var(--bg); margin: 0; padding: 20px; padding-bottom: 80px; color: var(--text); }
+        :root { --primary: #ff3b30; --success: #34c759; --bg: #f2f2f7; --card-bg: #ffffff; --text: #1d1d1f; --blue: #007aff; }
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: var(--bg); margin: 0; padding: 20px; color: var(--text); }
         .container { max-width: 700px; margin: 0 auto; }
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h2 { margin: 0 0 5px 0; font-size: 24px; }
-        .header p { color: var(--gray); font-size: 14px; margin: 0; }
-        
-        .section-title { font-size: 18px; font-weight: 700; margin: 25px 0 12px 5px; display: flex; align-items: center; justify-content: space-between; }
         
         /* Barra Audio */
-        .audio-bar { background: #e8f4fd; color: #0066cc; padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-weight: 500; border: 1px solid #bce8f8; font-size: 14px; }
-        .btn-audio { background: var(--blue); color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; }
+        .audio-box { background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; border: 2px solid var(--blue); }
+        .btn-audio { background: var(--blue); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-        /* Box Impostazione Ospite Serata */
-        .ospite-box { background: var(--card-bg); padding: 18px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; gap: 12px; align-items: center; }
-        .ospite-box input { flex-grow: 1; padding: 12px; border: 1px solid #d2d2d7; border-radius: 10px; font-size: 16px; outline: none; }
-        .btn-ospite { background: var(--blue); color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 15px; white-space: nowrap; }
+        .section-title { font-size: 18px; font-weight: 700; margin: 25px 0 12px 5px; }
+        
+        .ospite-box { background: var(--card-bg); padding: 18px; border-radius: 16px; margin-bottom: 25px; display: flex; gap: 10px; }
+        .ospite-box input { flex-grow: 1; padding: 12px; border: 1px solid #ddd; border-radius: 10px; }
+        .btn-ospite { background: var(--blue); color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; }
 
-        .order-card { background: var(--card-bg); border-left: 6px solid var(--primary); padding: 20px; border-radius: 16px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); display: flex; justify-content: space-between; align-items: center; }
-        .order-info h4 { margin: 0 0 6px 0; font-size: 20px; color: var(--text); }
-        .order-info .prodotti { font-size: 17px; font-weight: 600; color: #111; margin: 8px 0; line-height: 1.5; }
-        .order-info .orario { font-size: 13px; color: var(--gray); font-weight: 500; }
+        .order-card { background: white; padding: 20px; border-radius: 16px; margin-bottom: 15px; border-left: 6px solid var(--primary); display: flex; justify-content: space-between; align-items: center; }
+        .btn-completato { background: var(--success); color: white; border: none; padding: 12px 20px; border-radius: 12px; cursor: pointer; }
         
-        .btn-completato { background: var(--success); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 15px; white-space: nowrap; margin-left: 15px; box-shadow: 0 2px 8px rgba(52, 199, 89, 0.3); }
-        
-        .no-ordini { text-align: center; color: var(--gray); font-style: italic; background: var(--card-bg); padding: 30px 20px; border-radius: 16px; font-size: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
-        
-        /* Stile Storico */
-        .history-card { background: var(--card-bg); padding: 15px; border-radius: 14px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid #e5e5ea; display: flex; justify-content: space-between; align-items: center; }
-        .history-content { flex-grow: 1; }
-        .history-top { display: flex; justify-content: space-between; font-weight: bold; font-size: 15px; margin-bottom: 5px; color: #333; padding-right: 15px; }
-        .history-prodotti { font-size: 14px; color: var(--gray); }
-        .btn-elimina-storia { background: #ff3b301a; color: var(--primary); border: none; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px; transition: 0.2s; white-space: nowrap; }
-        .btn-elimina-storia:hover { background: var(--primary); color: white; }
+        .history-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .btn-elimina { background: #ffebeb; color: var(--primary); border: none; padding: 8px; border-radius: 8px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="header">
-            <h2>🔔 Monitor Cucina & Storico</h2>
-            <p>Gestisci la serata, ricevi gli ordini e consulta la cronologia</p>
-        </div>
-
-        <!-- Barra di controllo audio sempre visibile per sbloccare il browser -->
-        <div class="audio-bar">
-            <span id="audio-status">🔇 Audio notifiche non attivo</span>
-            <button class="btn-audio" onclick="attivaAudio()">Attiva / Testa Audio</button>
-        </div>
-
-        <!-- SEZIONE IMPOSTA OSPITE / SERATA -->
-        <div class="section-title" style="margin-top:0;">
-            <span>👥 Ospite o Titolo della Serata</span>
-        </div>
-        <div class="ospite-box">
-            <input type="text" id="input-serata" placeholder="es. Cena con i Nonni, Famiglia Rossi...">
-            <button class="btn-ospite" onclick="salvaSerata()">Imposta</button>
-        </div>
-        <div id="display-serata" style="font-size: 15px; font-weight: 600; color: var(--blue); margin: -15px 0 20px 10px;">Serata non impostata</div>
-
-        <!-- SEZIONE ORDINI ATTIVI -->
-        <div class="section-title">
-            <span>📋 Ordini Attivi da Preparare</span>
-        </div>
-        <div id="ordini-container">
-            <div class="no-ordini">Nessun ordine attivo al momento...</div>
-        </div>
-
-        <!-- SEZIONE CRONOLOGIA / STORICO -->
-        <div class="section-title" style="margin-top: 40px;">
-            <span>📜 Cronologia Serate Passate</span>
-        </div>
-        <div id="storico-container">
-            <div class="no-ordini">Nessuna cronologia registrata.</div>
-        </div>
+<div class="container">
+    <h2>🔔 Monitor Cucina</h2>
+    
+    <div class="audio-box" id="audio-ui">
+        <p>Per sentire le notifiche quando arriva un ordine:</p>
+        <button class="btn-audio" onclick="initAudio()">Attiva Audio</button>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, onValue, remove, set, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-        
-        const db = getDatabase(initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" }));
+    <div class="section-title">👥 Ospite della Serata</div>
+    <div class="ospite-box">
+        <input type="text" id="input-serata" placeholder="Nome ospite...">
+        <button class="btn-ospite" onclick="salvaSerata()">Imposta</button>
+    </div>
 
-        let audioCtx = null;
+    <div class="section-title">📋 Ordini Attivi</div>
+    <div id="ordini-container"></div>
 
-        window.attivaAudio = () => {
-            try {
-                // Inizializza o sblocca il contesto audio con un'azione dell'utente
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
-                
-                // Suona un trillo di test
-                suonaNotificaReale();
-                
-                document.getElementById('audio-status').innerText = '🔊 Audio notifiche attivo e funzionante';
-                document.getElementById('audio-status').style.color = '#28a745';
-            } catch (e) {
-                alert("Errore nell'attivazione dell'audio sul browser.");
-            }
-        };
+    <div class="section-title">📜 Cronologia</div>
+    <div id="storico-container"></div>
+</div>
 
-        function suonaNotificaReale() {
-            try {
-                if (!audioCtx) {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, onValue, remove, set, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    
+    const db = getDatabase(initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" }));
+    let audioCtx = null;
 
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
+    // --- LOGICA AUDIO ---
+    window.initAudio = () => {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        document.getElementById('audio-ui').innerHTML = "<p style='color:green; font-weight:bold;'>🔊 Audio Attivo!</p>";
+        suona(); // Test
+    };
 
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // Nota Re5
-                osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.15); // Nota La5
+    function suona() {
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+    }
 
-                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+    // --- LOGICA OSPITI ---
+    window.salvaSerata = () => {
+        const nome = document.getElementById('input-serata').value;
+        if(nome) set(ref(db, 'infoSerata/ospiteCorrente'), nome);
+    };
 
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
+    // --- LOGICA ORDINI ---
+    let primoCaricamento = true;
+    onValue(ref(db, 'ordini'), (snapshot) => {
+        const ordini = snapshot.val() || {};
+        const container = document.getElementById('ordini-container');
+        container.innerHTML = '';
+        if(!primoCaricamento && Object.keys(ordini).length > 0) suona();
+        primoCaricamento = false;
 
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.5);
-            } catch (e) {
-                console.log("Impossibile riprodurre l'audio:", e);
-            }
-        }
-
-        // --- GESTIONE NOME SERATA / OSPITE ---
-        window.salvaSerata = () => {
-            const nomeSerata = document.getElementById('input-serata').value.trim();
-            if(!nomeSerata) {
-                alert("Inserisci un nome per la serata!");
-                return;
-            }
-            set(ref(db, 'infoSerata/ospiteCorrente'), nomeSerata);
-            alert("Serata impostata con successo!");
-        };
-
-        onValue(ref(db, 'infoSerata/ospiteCorrente'), (snapshot) => {
-            const ospite = snapshot.val();
-            const display = document.getElementById('display-serata');
-            if(ospite) {
-                display.innerText = `✨ Serata in corso: "${ospite}"`;
-                document.getElementById('input-serata').value = ospite;
-            } else {
-                display.innerText = `✨ Nessuna serata impostata`;
-            }
+        Object.entries(ordini).forEach(([id, o]) => {
+            container.innerHTML += `
+                <div class="order-card">
+                    <div><strong>${o.cliente}</strong><br>${o.prodotti}</div>
+                    <button class="btn-completato" onclick="spostaInStorico('${id}')">Fatto ✓</button>
+                </div>`;
         });
+    });
 
-        // --- ASCOLTO ORDINI ATTIVI ---
-        let primoCaricamento = true;
-        onValue(ref(db, 'ordini'), (snapshot) => {
-            const ordini = snapshot.val() || {};
-            const container = document.getElementById('ordini-container');
-            container.innerHTML = '';
-
-            const chiavi = Object.keys(ordini);
-
-            if (chiavi.length === 0) {
-                container.innerHTML = '<div class="no-ordini">Nessun ordine attivo al momento...</div>';
-                primoCaricamento = false;
-                return;
-            }
-
-            if (!primoCaricamento) {
-                suonaNotificaReale();
-            }
-            primoCaricamento = false;
-
-            chiavi.forEach(id => {
-                const o = ordini[id];
-                const card = document.createElement('div');
-                card.className = 'order-card';
-                card.innerHTML = `
-                    <div class="order-info">
-                        <h4>👤 ${o.cliente}</h4>
-                        <div class="prodotti">${o.prodotti}</div>
-                        <span class="orario">Orario: ${o.orario}</span>
-                    </div>
-                    <button class="btn-completato" onclick="completaOrdine('${id}', '${o.cliente}', '${o.prodotti}', '${o.orario}')">Fatto ✓</button>
-                `;
-                container.appendChild(card);
-            });
+    window.spostaInStorico = (id) => {
+        const o = document.querySelector(`[onclick="spostaInStorico('${id}')"]`).parentElement;
+        const ospite = document.getElementById('input-serata').value || "Senza nome";
+        push(ref(db, 'storicoSerate'), { 
+            serata: ospite, 
+            data: new Date().toLocaleDateString(), 
+            dettagli: o.innerText.replace('Fatto ✓', '') 
         });
+        remove(ref(db, 'ordini/' + id));
+    };
 
-        window.completaOrdine = (idOrdine, cliente, prodotti, orario) => {
-            const ospiteSerata = document.getElementById('input-serata').value.trim() || "Serata Pizzeria";
-            const dataOdierna = new Date().toLocaleDateString();
+    // --- LOGICA STORICO ---
+    onValue(ref(db, 'storicoSerate'), (snapshot) => {
+        const storico = snapshot.val() || {};
+        const container = document.getElementById('storico-container');
+        container.innerHTML = '';
+        let ultimoOspite = "";
 
-            push(ref(db, 'storicoSerate'), {
-                serata: ospiteSerata,
-                cliente: cliente,
-                prodotti: prodotti,
-                data: dataOdierna,
-                orario: orario
-            });
-
-            remove(ref(db, `ordini/${idOrdine}`));
-        };
-
-        // --- ASCOLTO STORICO SERATE CON PULSANTE ELIMINA ---
-        onValue(ref(db, 'storicoSerate'), (snapshot) => {
-            const storico = snapshot.val() || {};
-            const containerStorico = document.getElementById('storico-container');
-            containerStorico.innerHTML = '';
-
-            const chiaviStorico = Object.keys(storico).reverse();
-
-            if (chiaviStorico.length === 0) {
-                containerStorico.innerHTML = '<div class="no-ordini">Nessuna cronologia registrata.</div>';
-                return;
+        Object.entries(storico).reverse().forEach(([id, s]) => {
+            if(s.serata !== ultimoOspite) {
+                container.innerHTML += `<div style="margin-top:20px; font-weight:bold; border-bottom:1px solid #ccc;">🌟 ${s.serata}</div>`;
+                ultimoOspite = s.serata;
             }
-
-            chiaviStorico.forEach(id => {
-                const s = storico[id];
-                const card = document.createElement('div');
-                card.className = 'history-card';
-                card.innerHTML = `
-                    <div class="history-content">
-                        <div class="history-top">
-                            <span>🏷️ Serata: ${s.serata} (${s.cliente})</span>
-                            <span style="font-size: 12px; color: var(--gray);">${s.data} - ${s.orario}</span>
-                        </div>
-                        <div class="history-prodotti">🍕 ${s.prodotti}</div>
-                    </div>
-                    <button class="btn-elimina-storia" onclick="eliminaDallaStoria('${id}')">🗑️</button>
-                `;
-                containerStorico.appendChild(card);
-            });
+            container.innerHTML += `
+                <div class="history-card">
+                    <div>${s.dettagli} <small>(${s.data})</small></div>
+                    <button class="btn-elimina" onclick="remove(ref(db, 'storicoSerate/${id}'))">🗑️</button>
+                </div>`;
         });
-
-        window.eliminaDallaStoria = (idStoria) => {
-            if(confirm("Vuoi davvero eliminare questo elemento dalla cronologia?")) {
-                remove(ref(db, `storicoSerate/${idStoria}`));
-            }
-        };
-    </script>
+    });
+</script>
 </body>
 </html>
