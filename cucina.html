@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schermo Cucina / Forno</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background-color: #1d3557; color: white; }
+    .ordine { background: #f1faee; color: #1d3557; padding: 15px; margin-bottom: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .info { flex-grow: 1; }
+    .info h3 { margin: 0 0 5px 0; color: #e63946; }
+    .info p { margin: 0; font-size: 14px; }
+    .btn-fatto { background-color: #2a9d8f; color: white; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <h2>🔥 Ordini in Arrivo al Forno</h2>
+  <div id="lista-ordini">Caricamento ordini...</div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+      databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app/"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const ordiniRef = ref(db, 'ordini/');
+    onValue(ordiniRef, (snapshot) => {
+      const data = snapshot.val();
+      const container = document.getElementById("lista-ordini");
+      container.innerHTML = "";
+
+      if (data) {
+        Object.keys(data).forEach((key) => {
+          const ord = data[key];
+          const div = document.createElement("div");
+          div.className = "ordine";
+          div.innerHTML = `
+            <div class="info">
+              <h3>🍕 ${ord.pizza}</h3>
+              <p>Ospite: <strong>${ord.nome}</strong> (${ord.orario})</p>
+            </div>
+            <button class="btn-fatto" onclick="completaOrdine('${key}')">Pronta! ✅</button>
+          `;
+          container.appendChild(div);
+        });
+      } else {
+        container.innerHTML = "<p>Nessun ordine in attesa al momento.</p>";
+      }
+    });
+
+    window.completaOrdine = function(idOrdine) {
+      remove(ref(db, 'ordini/' + idOrdine));
+    };
+  </script>
+</body>
+</html>
