@@ -61,6 +61,7 @@
     window.initAudio = () => {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         document.getElementById('audio-ui').innerHTML = "<p style='color:green; font-weight:bold;'>🔊 Audio Attivo!</p>";
+        suona();
     };
 
     function suona() {
@@ -106,6 +107,13 @@
         }, { onlyOnce: true });
     };
 
+    // Funzione globale per eliminare dallo storico
+    window.eliminaStorico = (id) => {
+        if(confirm("Vuoi eliminare questo elemento dalla cronologia?")) {
+            remove(ref(db, 'storicoSerate/' + id));
+        }
+    };
+
     onValue(ref(db, 'storicoSerate'), (snapshot) => {
         const storico = snapshot.val() || {};
         const container = document.getElementById('storico-container');
@@ -113,16 +121,21 @@
         let ultimoOspite = "";
 
         Object.entries(storico).reverse().forEach(([id, s]) => {
-            // SE IL NOME OSPITE CAMBIA, CREA IL DIVISORE
             if(s.serata !== ultimoOspite) {
-                container.innerHTML += `<div class="serata-divider">🌟 ${s.serata}</div>`;
+                const divider = document.createElement('div');
+                divider.className = 'serata-divider';
+                divider.innerText = `🌟 ${s.serata}`;
+                container.appendChild(divider);
                 ultimoOspite = s.serata;
             }
-            container.innerHTML += `
-                <div class="history-card">
-                    <div>${s.dettagli} <small>(${s.data})</small></div>
-                    <button class="btn-elimina" onclick="remove(ref(db, 'storicoSerate/${id}'))">🗑️</button>
-                </div>`;
+
+            const card = document.createElement('div');
+            card.className = 'history-card';
+            card.innerHTML = `
+                <div>${s.dettagli} <small>(${s.data})</small></div>
+                <button class="btn-elimina" onclick="eliminaStorico('${id}')">🗑️</button>
+            `;
+            container.appendChild(card);
         });
     });
 </script>
