@@ -8,12 +8,16 @@
         :root { --primary: #ff3b30; --success: #34c759; --bg: #f2f2f7; --card-bg: #ffffff; --text: #1d1d1f; --gray: #86868b; --blue: #007aff; }
         body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: var(--bg); margin: 0; padding: 20px; padding-bottom: 80px; color: var(--text); }
         .container { max-width: 700px; margin: 0 auto; }
-        .header { text-align: center; margin-bottom: 25px; }
+        .header { text-align: center; margin-bottom: 20px; }
         .header h2 { margin: 0 0 5px 0; font-size: 24px; }
         .header p { color: var(--gray); font-size: 14px; margin: 0; }
         
         .section-title { font-size: 18px; font-weight: 700; margin: 25px 0 12px 5px; display: flex; align-items: center; justify-content: space-between; }
         
+        /* Barra Audio */
+        .audio-bar { background: #e8f4fd; color: #0066cc; padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-weight: 500; border: 1px solid #bce8f8; font-size: 14px; }
+        .btn-audio { background: var(--blue); color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; }
+
         /* Box Impostazione Ospite Serata */
         .ospite-box { background: var(--card-bg); padding: 18px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; gap: 12px; align-items: center; }
         .ospite-box input { flex-grow: 1; padding: 12px; border: 1px solid #d2d2d7; border-radius: 10px; font-size: 16px; outline: none; }
@@ -35,8 +39,6 @@
         .history-prodotti { font-size: 14px; color: var(--gray); }
         .btn-elimina-storia { background: #ff3b301a; color: var(--primary); border: none; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px; transition: 0.2s; white-space: nowrap; }
         .btn-elimina-storia:hover { background: var(--primary); color: white; }
-
-        .audio-banner { background: #fff3cd; color: #856404; padding: 12px; border-radius: 12px; text-align: center; font-size: 14px; margin-bottom: 20px; font-weight: 500; border: 1px solid #ffeeba; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -47,8 +49,10 @@
             <p>Gestisci la serata, ricevi gli ordini e consulta la cronologia</p>
         </div>
 
-        <div id="audio-banner" class="audio-banner" onclick="attivaAudio()">
-            🔊 Tocca qui per attivare l'audio delle notifiche in cucina
+        <!-- Barra di controllo audio sempre visibile per sbloccare il browser -->
+        <div class="audio-bar">
+            <span id="audio-status">🔇 Audio notifiche non attivo</span>
+            <button class="btn-audio" onclick="attivaAudio()">Attiva / Testa Audio</button>
         </div>
 
         <!-- SEZIONE IMPOSTA OSPITE / SERATA -->
@@ -84,22 +88,41 @@
         
         const db = getDatabase(initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" }));
 
-        let audioAbilitato = false;
+        let audioCtx = null;
+
         window.attivaAudio = () => {
-            audioAbilitato = true;
-            document.getElementById('audio-banner').style.display = 'none';
-            suonaNotifica();
+            try {
+                // Inizializza o sblocca il contesto audio con un'azione dell'utente
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                
+                // Suona un trillo di test
+                suonaNotificaReale();
+                
+                document.getElementById('audio-status').innerText = '🔊 Audio notifiche attivo e funzionante';
+                document.getElementById('audio-status').style.color = '#28a745';
+            } catch (e) {
+                alert("Errore nell'attivazione dell'audio sul browser.");
+            }
         };
 
-        function suonaNotifica() {
+        function suonaNotificaReale() {
             try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
 
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
-                osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.15);
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // Nota Re5
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.15); // Nota La5
 
                 gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
@@ -110,7 +133,7 @@
                 osc.start();
                 osc.stop(audioCtx.currentTime + 0.5);
             } catch (e) {
-                console.log("Audio non riproducibile.");
+                console.log("Impossibile riprodurre l'audio:", e);
             }
         }
 
@@ -152,7 +175,7 @@
             }
 
             if (!primoCaricamento) {
-                suonaNotifica();
+                suonaNotificaReale();
             }
             primoCaricamento = false;
 
@@ -218,7 +241,6 @@
             });
         });
 
-        // Funzione per eliminare una singola voce dallo storico
         window.eliminaDallaStoria = (idStoria) => {
             if(confirm("Vuoi davvero eliminare questo elemento dalla cronologia?")) {
                 remove(ref(db, `storicoSerate/${idStoria}`));
