@@ -11,146 +11,505 @@
             --bg: #f2f2f7;
             --card-bg: #ffffff;
             --text: #1d1d1f;
+            --text-secondary: #86868b;
+            --gray-btn: #e5e5ea;
         }
-        body { font-family: -apple-system, sans-serif; background-color: var(--bg); margin: 0; padding: 20px; padding-bottom: 100px; color: var(--text); }
-        .container { max-width: 600px; margin: 0 auto; }
-        .header { text-align: center; margin-bottom: 24px; }
-        .input-group { background: var(--card-bg); padding: 16px; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        input { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #d2d2d7; border-radius: 12px; }
-        
-        .categories { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 10px; }
-        .cat-btn { background: var(--card-bg); border: none; padding: 8px 16px; border-radius: 20px; font-weight: 600; color: #86868b; cursor: pointer; white-space: nowrap; }
-        .cat-btn.active { background: var(--primary); color: white; }
-
-        .section-title { font-size: 18px; font-weight: 700; margin: 20px 0 10px 5px; }
-        .card { background: var(--card-bg); padding: 16px; border-radius: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
-        .card-info { flex-grow: 1; }
-        .card h3 { margin: 0; font-size: 16px; }
-        .card p { color: #86868b; font-size: 12px; margin: 2px 0 8px 0; }
-        button.btn-add { background: var(--primary); color: white; border: none; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
-
-        /* PULSANTE CARRELLO FLUTTUANTE */
-        #cart-fab {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: var(--success);
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: none;
-            align-items: center;
-            justify-content: center;
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 20px;
+            padding-bottom: 120px;
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .header h2 {
+            margin: 0 0 4px 0;
             font-size: 24px;
-            box-shadow: 0 4px 15px rgba(52, 199, 89, 0.4);
-            cursor: pointer;
-            z-index: 1000;
-            border: none;
+            font-weight: 700;
         }
-        #cart-count-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
+        .header p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin: 0;
+        }
+        .input-group {
+            background: var(--card-bg);
+            padding: 16px 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            box-sizing: border-box;
+            border: 1px solid #d2d2d7;
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+            background: #fafafa;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .input-group input:focus {
+            border-color: var(--primary);
+            background: #ffffff;
+        }
+        .categories {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 15px;
+            margin-bottom: 10px;
+            scrollbar-width: none;
+        }
+        .categories::-webkit-scrollbar { display: none; }
+        .cat-btn {
+            background: var(--card-bg);
+            border: none;
+            padding: 10px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            transition: all 0.2s;
+        }
+        .cat-btn.active {
             background: var(--primary);
             color: white;
-            font-size: 12px;
-            font-weight: bold;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(255,59,48,0.3);
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 25px 0 12px 5px;
+            color: var(--text);
+        }
+        .card {
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .card-img {
+            width: 75px;
+            height: 75px;
+            border-radius: 12px;
+            object-fit: cover;
+            background: #f2f2f7;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 30px;
+            flex-shrink: 0;
+        }
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+        .card-info {
+            flex-grow: 1;
+        }
+        .card-info h3 {
+            margin: 0 0 4px 0;
+            font-size: 17px;
+            font-weight: 600;
+        }
+        .card-info p {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin: 0 0 10px 0;
+            line-height: 1.3;
+        }
+        .card button {
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .card button:active { transform: scale(0.98); }
+        .card button:disabled {
+            background-color: var(--gray-btn) !important;
+            color: #8e8e93;
+            cursor: not-allowed;
         }
 
-        /* MODALE */
-        .modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.5); display: none; align-items: flex-end; z-index: 2000; }
-        .modal-content { background: white; width: 100%; max-width: 600px; border-radius: 24px 24px 0 0; padding: 20px; max-height: 80vh; overflow-y: auto; }
-        .btn-send { width: 100%; background: var(--success); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; margin-top: 10px; }
+        .cart-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid #e5e5ea;
+            padding: 15px 20px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.08);
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 1000;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .cart-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .btn-modifica {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .btn-invia-carrello {
+            width: 100%;
+            background-color: var(--success);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 2000;
+        }
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 600px;
+            max-height: 80vh;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            padding: 24px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .modal-close {
+            background: var(--bg);
+            border: none;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-list {
+            overflow-y: auto;
+            max-height: 40vh;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .modal-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg);
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .btn-rimuovi-item {
+            background: #ff3b3015;
+            color: var(--primary);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="header"><h2>🍕 Pizzeria Master</h2></div>
+        <div class="header">
+            <h2>🍕 Pizzeria Master</h2>
+            <p>Componi il tuo ordine</p>
+        </div>
+        
         <div class="input-group">
-            <input type="text" id="nome" placeholder="Il tuo Nome o Tavolo...">
+            <label for="nome">Il tuo nome / Tavolo</label>
+            <input type="text" id="nome" placeholder="es. Mario o Tavolo 4">
         </div>
 
         <div class="categories">
-            <button class="cat-btn active" onclick="filtra('tutte', this)">Tutto</button>
-            <button class="cat-btn" onclick="filtra('pizze', this)">Pizze</button>
-            <button class="cat-btn" onclick="filtra('bibite', this)">Bibite</button>
+            <button class="cat-btn active" onclick="filtraCategoria('tutte', this)">Tutto</button>
+            <button class="cat-btn" onclick="filtraCategoria('pizze', this)">Pizze</button>
+            <button class="cat-btn" onclick="filtraCategoria('focacce', this)">Focacce</button>
+            <button class="cat-btn" onclick="filtraCategoria('bibite', this)">Bibite</button>
+            <button class="cat-btn" onclick="filtraCategoria('birre', this)">Birre</button>
+            <button class="cat-btn" onclick="filtraCategoria('vini', this)">Vini</button>
         </div>
 
-        <div id="menu-container">
-            <div class="categoria-group" data-cat="pizze">
-                <div class="section-title">Pizze</div>
-                <div class="card"><div class="card-info"><h3>Margherita</h3><p>Pomodoro, Mozzarella</p><button class="btn-add" onclick="aggiungi('Margherita')">Aggiungi</button></div></div>
-                <div class="card"><div class="card-info"><h3>Diavola</h3><p>Salame piccante</p><button class="btn-add" onclick="aggiungi('Diavola')">Aggiungi</button></div></div>
-            </div>
-            <div class="categoria-group" data-cat="bibite">
-                <div class="section-title">Bibite</div>
-                <div class="card"><div class="card-info"><h3>Coca Cola</h3><button class="btn-add" onclick="aggiungi('Coca Cola')">Aggiungi</button></div></div>
-            </div>
+        <!-- SEZIONE PIZZE -->
+        <div class="categoria-group" data-cat="pizze">
+            <div class="section-title">🍕 Pizze</div>
+            <div class="card"><div class="card-img"><img src="immagini/margherita.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Margherita</h3><p>Pomodoro, Mozzarella, Basilico</p><button id="btn-margherita" onclick="aggiungiAlCarrello('Margherita', 'margherita')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/diavola.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Diavola</h3><p>Pomodoro, Mozzarella, Salame piccante</p><button id="btn-diavola" onclick="aggiungiAlCarrello('Diavola', 'diavola')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/4formaggi.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>4 Formaggi</h3><p>Mozzarella, Gorgonzola, Fontina, Parmigiano</p><button id="btn-4formaggi" onclick="aggiungiAlCarrello('4 Formaggi', '4formaggi')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/capricciosa.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Capricciosa</h3><p>Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi</p><button id="btn-capricciosa" onclick="aggiungiAlCarrello('Capricciosa', 'capricciosa')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/marinara.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Marinara</h3><p>Pomodoro, Aglio, Origano, Olio EVO</p><button id="btn-marinara" onclick="aggiungiAlCarrello('Marinara', 'marinara')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/vegetariana.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Vegetariana</h3><p>Pomodoro, Mozzarella, Zucchine, Melanzane, Peperoni</p><button id="btn-vegetariana" onclick="aggiungiAlCarrello('Vegetariana', 'vegetariana')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/prosciuttoefunghi.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Prosciutto e Funghi</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Funghi</p><button id="btn-prosciuttoefunghi" onclick="aggiungiAlCarrello('Prosciutto e Funghi', 'prosciuttoefunghi')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/quattrostagioni.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Quattro Stagioni</h3><p>Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi, Olive</p><button id="btn-quattrostagioni" onclick="aggiungiAlCarrello('Quattro Stagioni', 'quattrostagioni')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/bufalina.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Bufalina</h3><p>Pomodoro, Mozzarella di Bufala Campana DOP, Basilico</p><button id="btn-bufalina" onclick="aggiungiAlCarrello('Bufalina', 'bufalina')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/boscaiola.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Boscaiola</h3><p>Mozzarella, Salsiccia, Funghi pioppini, Panna</p><button id="btn-boscaiola" onclick="aggiungiAlCarrello('Boscaiola', 'boscaiola')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/bresaolaerucola.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Bresaola e Rucola</h3><p>Mozzarella, Bresaola, Rucola, Grana</p><button id="btn-bresaolaerucola" onclick="aggiungiAlCarrello('Bresaola e Rucola', 'bresaolaerucola')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/americana.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Americana</h3><p>Pomodoro, Mozzarella, Wurstel, Patatine fritte</p><button id="btn-americana" onclick="aggiungiAlCarrello('Americana', 'americana')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/calzoneclassico.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Calzone Classico</h3><p>Pomodoro, Mozzarella, Prosciutto cotto, Salame</p><button id="btn-calzoneclassico" onclick="aggiungiAlCarrello('Calzone Classico', 'calzoneclassico')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/napoli.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Napoli</h3><p>Pomodoro, Mozzarella, Acciughe, Origano</p><button id="btn-napoli" onclick="aggiungiAlCarrello('Napoli', 'napoli')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/romana.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Romana</h3><p>Pomodoro, Mozzarella, Acciughe, Capperi, Origano</p><button id="btn-romana" onclick="aggiungiAlCarrello('Romana', 'romana')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/pugliese.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Pugliese</h3><p>Pomodoro, Mozzarella, Cipolla rossa, Origano</p><button id="btn-pugliese" onclick="aggiungiAlCarrello('Pugliese', 'pugliese')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/salsicciaefriarelli.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Salsiccia e Friarelli</h3><p>Mozzarella, Salsiccia, Friarelli napoletani</p><button id="btn-salsicciaefriarelli" onclick="aggiungiAlCarrello('Salsiccia e Friarelli', 'salsicciaefriarelli')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/tonnoecipolla.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Tonno e Cipolla</h3><p>Pomodoro, Mozzarella, Tonno, Cipolla rossa</p><button id="btn-tonnoecipolla" onclick="aggiungiAlCarrello('Tonno e Cipolla', 'tonnoecipolla')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/siciliana.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Siciliana</h3><p>Pomodoro, Mozzarella, Melanzane, Ricotta salata</p><button id="btn-siciliana" onclick="aggiungiAlCarrello('Siciliana', 'siciliana')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/tirolese.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Tirolese</h3><p>Pomodoro, Mozzarella, Speck, Gorgonzola</p><button id="btn-tirolese" onclick="aggiungiAlCarrello('Tirolese', 'tirolese')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img"><img src="immagini/pistacchiosa.jpg" onerror="this.parentElement.innerHTML='🍕'"></div><div class="card-info"><h3>Pistacchiosa</h3><p>Mozzarella, Mortadella, Pistacchio, Burrata</p><button id="btn-pistacchiosa" onclick="aggiungiAlCarrello('Pistacchiosa', 'pistacchiosa')">Aggiungi</button></div></div>
+        </div>
+
+        <!-- SEZIONE FOCACCE -->
+        <div class="categoria-group" data-cat="focacce">
+            <div class="section-title">🫓 Focacce</div>
+            <div class="card"><div class="card-img">🫓</div><div class="card-info"><h3>Focaccia Classica</h3><p>Olio EVO, Sale, Rosmarino</p><button id="btn-focacciaclassica" onclick="aggiungiAlCarrello('Focaccia Classica', 'focacciaclassica')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img">🫓</div><div class="card-info"><h3>Focaccia con Crudo</h3><p>Olio EVO, Prosciutto Crudo di Parma</p><button id="btn-focacciacrudo" onclick="aggiungiAlCarrello('Focaccia con Crudo', 'focacciacrudo')">Aggiungi</button></div></div>
+        </div>
+
+        <!-- SEZIONE BIBITE -->
+        <div class="categoria-group" data-cat="bibite">
+            <div class="section-title">🥤 Bibite</div>
+            <div class="card"><div class="card-img">🥤</div><div class="card-info"><h3>Coca Cola 33cl</h3><p>Bottiglia in vetro</p><button id="btn-cocacola" onclick="aggiungiAlCarrello('Coca Cola 33cl', 'cocacola')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img">🥤</div><div class="card-info"><h3>Fanta 33cl</h3><p>Bottiglia in vetro</p><button id="btn-fanta" onclick="aggiungiAlCarrello('Fanta 33cl', 'fanta')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img">💧</div><div class="card-info"><h3>Acqua Naturale 0.75l</h3><p>Bottiglia di vetro</p><button id="btn-acquanaturale" onclick="aggiungiAlCarrello('Acqua Naturale 0.75l', 'acquanaturale')">Aggiungi</button></div></div>
+        </div>
+
+        <!-- SEZIONE BIRRE -->
+        <div class="categoria-group" data-cat="birre">
+            <div class="section-title">🍺 Birre</div>
+            <div class="card"><div class="card-img">🍺</div><div class="card-info"><h3>Birra Artigianale Bionda 33cl</h3><p>Stile IPA, 5.5%</p><button id="btn-birrabionda" onclick="aggiungiAlCarrello('Birra Bionda 33cl', 'birrabionda')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img">🍻</div><div class="card-info"><h3>Birra Rossa 33cl</h3><p>Doppio malto, 6.5%</p><button id="btn-birrarossa" onclick="aggiungiAlCarrello('Birra Rossa 33cl', 'birrarossa')">Aggiungi</button></div></div>
+        </div>
+
+        <!-- SEZIONE VINI -->
+        <div class="categoria-group" data-cat="vini">
+            <div class="section-title">🍷 Vini</div>
+            <div class="card"><div class="card-img">🍷</div><div class="card-info"><h3>Calice di Chianti DOCG</h3><p>Vino rosso fermo</p><button id="btn-chianti" onclick="aggiungiAlCarrello('Calice Chianti', 'chianti')">Aggiungi</button></div></div>
+            <div class="card"><div class="card-img">🥂</div><div class="card-info"><h3>Calice di Prosecco</h3><p>Valdobbiadene Superiore DOCG</p><button id="btn-prosecco" onclick="aggiungiAlCarrello('Calice Prosecco', 'prosecco')">Aggiungi</button></div></div>
         </div>
     </div>
 
-    <!-- Pulsante Fluttuante -->
-    <button id="cart-fab" onclick="apriModal()">
-        🛒
-        <span id="cart-count-badge">0</span>
-    </button>
+    <!-- BARRA CARRELLO IN BASSO -->
+    <div id="cart-bar" class="cart-bar">
+        <div class="cart-top-row">
+            <span id="cart-count-text">🛒 0 articoli nel carrello</span>
+            <button class="btn-modifica" onclick="apriModaleCarrello()">Modifica</button>
+        </div>
+        <button class="btn-invia-carrello" onclick="inviaCarrelloInCucina()">Invia Ordine in Cucina</button>
+    </div>
 
-    <!-- Modale Carrello -->
-    <div id="modal" class="modal-overlay" onclick="chiudiModal(event)">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <h3>Il tuo ordine</h3>
-            <div id="lista-carrello"></div>
-            <button class="btn-send" onclick="invia()">Invia Ordine</button>
+    <!-- SCHERMATA MODALE PER MODIFICARE IL CARRELLO -->
+    <div id="cart-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Modifica Carrello</span>
+                <button class="modal-close" onclick="chiudiModaleCarrello()">✕</button>
+            </div>
+            <div id="modal-items-list" class="modal-list"></div>
+            <button class="btn-invia-carrello" onclick="chiudiModaleCarrello()">Fatto</button>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-        
-        const db = getDatabase(initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" }));
+        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const app = initializeApp({ databaseURL: "https://pizzeria-251a1-default-rtdb.europe-west1.firebasedatabase.app" });
+        const db = getDatabase(app);
+
         let carrello = [];
 
-        window.aggiungi = (nome) => {
-            carrello.push(nome);
-            document.getElementById('cart-count-badge').innerText = carrello.length;
-            document.getElementById('cart-fab').style.display = 'flex';
-        };
-
-        window.apriModal = () => {
-            const lista = document.getElementById('lista-carrello');
-            lista.innerHTML = carrello.map((item, index) => `<p>${index+1}. ${item}</p>`).join('');
-            document.getElementById('modal').style.display = 'flex';
-        };
-
-        window.chiudiModal = () => document.getElementById('modal').style.display = 'none';
-
-        window.invia = () => {
-            const nome = document.getElementById('nome').value;
-            if(!nome) return alert("Inserisci il nome!");
-            push(ref(db, 'ordini'), { cliente: nome, prodotti: carrello.join(', ') });
-            alert("Ordine inviato!");
-            carrello = [];
-            document.getElementById('cart-count-badge').innerText = '0';
-            document.getElementById('cart-fab').style.display = 'none';
-            chiudiModal();
-        };
-
-        window.filtra = (cat, btn) => {
+        window.filtraCategoria = function(categoria, btn) {
             document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            document.querySelectorAll('.categoria-group').forEach(g => {
-                g.style.display = (cat === 'tutte' || g.getAttribute('data-cat') === cat) ? 'block' : 'none';
+
+            document.querySelectorAll('.categoria-group').forEach(group => {
+                if (categoria === 'tutte' || group.getAttribute('data-cat') === categoria) {
+                    group.style.display = 'block';
+                } else {
+                    group.style.display = 'none';
+                }
             });
         };
+
+        window.aggiungiAlCarrello = function(nomeProdotto, idProdotto) {
+            carrello.push({ id: Date.now() + Math.random(), nome: nomeProdotto });
+            aggiornaBarraCarrello();
+            
+            const btn = document.getElementById('btn-' + idProdotto);
+            if(btn) {
+                const vecchioTesto = btn.innerText;
+                btn.innerText = "+1 Aggiunto";
+                btn.style.backgroundColor = "#34c759";
+                setTimeout(() => {
+                    btn.innerText = vecchioTesto;
+                    btn.style.backgroundColor = "";
+                }, 800);
+            }
+        };
+
+        window.rimuoviDalCarrello = function(uniqueId) {
+            carrello = carrello.filter(item => item.id !== uniqueId);
+            aggiornaBarraCarrello();
+            renderizzaModaleCarrello();
+            if (carrello.length === 0) {
+                chiudiModaleCarrello();
+            }
+        };
+
+        function aggiornaBarraCarrello() {
+            const cartBar = document.getElementById('cart-bar');
+            const cartCountText = document.getElementById('cart-count-text');
+
+            if (carrello.length > 0) {
+                cartBar.style.display = 'flex';
+                cartCountText.innerText = `🛒 ${carrello.length} ${carrello.length === 1 ? 'articolo' : 'articoli'} nel carrello`;
+            } else {
+                cartBar.style.display = 'none';
+            }
+        }
+
+        window.apriModaleCarrello = function() {
+            renderizzaModaleCarrello();
+            document.getElementById('cart-modal').style.display = 'flex';
+        };
+
+        window.chiudiModaleCarrello = function() {
+            document.getElementById('cart-modal').style.display = 'none';
+        };
+
+        function renderizzaModaleCarrello() {
+            const listContainer = document.getElementById('modal-items-list');
+            listContainer.innerHTML = '';
+
+            if (carrello.length === 0) {
+                listContainer.innerHTML = '<p style="text-align:center; color: #86868b;">Il carrello è vuoto</p>';
+                return;
+            }
+
+            carrello.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'modal-item';
+                div.innerHTML = `
+                    <span>${item.nome}</span>
+                    <button class="btn-rimuovi-item" onclick="rimuoviDalCarrello(${item.id})">Rimuovi</button>
+                `;
+                listContainer.appendChild(div);
+            });
+        }
+
+        window.inviaCarrelloInCucina = function() {
+            const nomeCliente = document.getElementById('nome').value.trim();
+            if (!nomeCliente) {
+                alert("Per favore, inserisci prima il tuo nome o tavolo!");
+                document.getElementById('nome').focus();
+                return;
+            }
+
+            if (carrello.length === 0) return;
+
+            const prodottiNomi = carrello.map(i => i.nome);
+            const riepilogoProdotti = prodottiNomi.join(' + ');
+
+            push(ref(db, 'ordini'), {
+                cliente: nomeCliente,
+                pizza: riepilogoProdotti,
+                orario: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            }).then(() => {
+                alert("Ordine inviato con successo in cucina!");
+                carrello = [];
+                aggiornaBarraCarrello();
+            });
+        };
+
+        const prodottiIds = [
+            'margherita', 'diavola', '4formaggi', 'capricciosa', 'marinara', 
+            'vegetariana', 'prosciuttoefunghi', 'quattrostagioni', 'bufalina', 
+            'boscaiola', 'bresaolaerucola', 'americana', 'calzoneclassico', 
+            'napoli', 'romana', 'pugliese', 'salsicciaefriarelli', 
+            'tonnoecipolla', 'siciliana', 'tirolese', 'pistacchiosa',
+            'focacciaclassica', 'focacciacrudo', 'cocacola', 'fanta', 
+            'acquanaturale', 'birrabionda', 'birrarossa', 'chianti', 'prosecco'
+        ];
+
+        onValue(ref(db, 'disponibilita'), (snapshot) => {
+            const data = snapshot.val() || {};
+            prodottiIds.forEach(id => {
+                const btn = document.getElementById('btn-' + id);
+                if (btn) {
+                    if (data[id] === false) {
+                        btn.disabled = true;
+                        btn.innerText = "Non disponibile";
+                    } else {
+                        btn.disabled = false;
+                        btn.innerText = "Aggiungi";
+                    }
+                }
+            });
+        });
     </script>
 </body>
 </html>
