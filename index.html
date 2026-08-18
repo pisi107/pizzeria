@@ -134,14 +134,11 @@
                 alert("Per favore, inserisci il tuo nome!");
                 return;
             }
+            // Invia l'ordine in silenzio senza mostrare pop-up di conferma fastidiosi
             push(ref(db, 'ordini'), {
                 cliente: nomeCliente,
                 pizza: pizza,
                 orario: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            }).then(() => {
-                alert("Ordine inviato con successo!");
-            }).catch((error) => {
-                alert("Errore: " + error.message);
             });
         };
 
@@ -160,7 +157,7 @@
                 if (btn) {
                     if (data[nome] === false) {
                         btn.disabled = true;
-                        btn.innerText = "Esaurito";
+                        btn.innerText = "Non disponibile";
                     } else {
                         btn.disabled = false;
                         const match = btn.getAttribute('onclick').match(/'([^']+)'/);
