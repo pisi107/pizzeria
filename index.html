@@ -330,7 +330,7 @@
     const menuCompleto = {
         classiche: [
             { id: "margherita", nome: "Margherita", ingredienti: "Pomodoro, fior di latte, basilico", icona: "🍅" },
-            { id: "marinara", nome: "Marinara", ingredienti: "Pomodoro, aglio, origano, olio d'oliva", icona: "🧄" },
+            { id: "marinara", nome: "Marinara", ingredienti: "Pomodoro, origano, olio d'oliva", icona: "🍅" }, // Aglio rimosso qui
             { id: "napoli", nome: "Napoli", ingredienti: "Pomodoro, fior di latte, acciughe, origano", icona: "🐟" },
             { id: "capricciosa", nome: "Capricciosa", ingredienti: "Pomodoro, fior di latte, prosciutto, funghi, carciofi, olive", icona: "🍄" },
             { id: "quattro_stagioni", nome: "Quattro Stagioni", ingredienti: "Pomodoro, fior di latte, funghi, carciofi, prosciutto cotto, olive", icona: "🌿" },
@@ -366,7 +366,7 @@
     };
 
     let datiDisponibilita = {};
-    let carrello = []; // Array per memorizzare gli oggetti aggiunti { nome, quantita, icona }
+    let carrello = [];
 
     function renderizzaMenu() {
         const renderGruppo = (lista, containerId) => {
@@ -403,7 +403,6 @@
         renderGruppo(menuCompleto.bibite, 'grid-bibite');
     }
 
-    // Gestione Carrello
     window.aggiungiAlCarrello = (nome, icona) => {
         const trovato = carrello.find(i => i.nome === nome);
         if (trovato) {
@@ -503,7 +502,6 @@
             return;
         }
 
-        // Unisce gli elementi del carrello in una stringa leggibile (es. "2x Margherita + 1x Coca Cola")
         const prodottiStringa = carrello.map(i => `${i.quantita}x ${i.nome}`).join(" + ");
         const orarioCorrente = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
@@ -515,7 +513,6 @@
 
         localStorage.setItem('pizzeria_nome_utente', cliente);
         
-        // Svuota il carrello dopo l'invio
         carrello = [];
         aggiornaVistaCarrello();
         
